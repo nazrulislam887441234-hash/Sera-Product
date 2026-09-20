@@ -1,0 +1,1051 @@
+<!DOCTYPE html><html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  <!-- SEO -->  <title>SeraProduct - সাইটটি তৈরি হচ্ছে | খুব শীঘ্রই আসছি</title>
+  <meta name="title" content="SeraProduct - সাইটটি তৈরি হচ্ছে | খুব শীঘ্রই আসছি">
+  <meta name="description" content="SeraProduct এর নতুন ওয়েবসাইট তৈরি হচ্ছে। বাংলাদেশের সেরা রিসেলিং হাব এবং সেরা পণ্যের হাট নিয়ে আমরা খুব শীঘ্রই আসছি।">
+  <meta name="keywords" content="SeraProduct, Sera Product, reseller BD, wholesale BD, Bangladesh reseller, wholesale products Bangladesh">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#ff6a00">  <link rel="canonical" href="https://seraproduct.com/">
+  <link rel="icon" type="image/png" href="https://seraproduct.com/photo/logo.png">  <!-- Open Graph -->  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://seraproduct.com/">
+  <meta property="og:title" content="SeraProduct - খুব শীঘ্রই আসছি">
+  <meta property="og:description" content="বাংলাদেশের সেরা রিসেলিং হাব এবং সেরা পণ্যের হাট। আমাদের নতুন প্ল্যাটফর্ম তৈরি হচ্ছে।">
+  <meta property="og:image" content="https://seraproduct.com/photo/facebook-preview.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">  <!-- Twitter -->  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="SeraProduct - খুব শীঘ্রই আসছি">
+  <meta name="twitter:description" content="বাংলাদেশের সেরা রিসেলিং হাব এবং সেরা পণ্যের হাট।">
+  <meta name="twitter:image" content="https://seraproduct.com/photo/twitter.png">  <!-- Fonts -->  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">  <!-- Icons -->  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">  <style>
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --orange: #ff6a00;
+      --orange-light: #ff9d5c;
+      --dark: #090909;
+      --dark-2: #111111;
+      --dark-3: #171717;
+      --text: #f5f5f5;
+      --muted: #9ca3af;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      color: var(--text);
+      font-family: "Hind Siliguri", sans-serif;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(255,106,0,.14), transparent 30%),
+        radial-gradient(circle at 85% 80%, rgba(255,106,0,.10), transparent 30%),
+        var(--dark);
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* =========================
+       BACKGROUND GRID
+    ========================== */
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .18;
+
+      background-image:
+        linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+
+      background-size: 40px 40px;
+
+      mask-image: linear-gradient(
+        to bottom,
+        black,
+        transparent 90%
+      );
+
+      z-index: 0;
+    }
+
+    /* =========================
+       FLOATING CODE
+    ========================== */
+
+    .code-symbol {
+      position: fixed;
+      font-family: "Fira Code", monospace;
+      color: rgba(255,106,0,.16);
+      font-size: 24px;
+      pointer-events: none;
+      user-select: none;
+      animation: floatCode linear infinite;
+      z-index: 0;
+    }
+
+    .c1 {
+      left: 7%;
+      top: 20%;
+      animation-duration: 13s;
+    }
+
+    .c2 {
+      right: 8%;
+      top: 30%;
+      animation-duration: 16s;
+    }
+
+    .c3 {
+      left: 14%;
+      bottom: 18%;
+      animation-duration: 18s;
+    }
+
+    .c4 {
+      right: 15%;
+      bottom: 20%;
+      animation-duration: 15s;
+    }
+
+    @keyframes floatCode {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: .08;
+      }
+
+      50% {
+        transform: translateY(-35px) rotate(8deg);
+        opacity: .3;
+      }
+
+      100% {
+        transform: translateY(0) rotate(0deg);
+        opacity: .08;
+      }
+    }
+
+    /* =========================
+       MAIN
+    ========================== */
+
+    .page {
+      position: relative;
+      z-index: 2;
+      width: min(1120px, calc(100% - 30px));
+      margin: auto;
+      padding: 45px 0 35px;
+    }
+
+    /* =========================
+       TOP BRAND
+    ========================== */
+
+    .brand {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 13px;
+      margin-bottom: 35px;
+      animation: fadeDown .8s ease both;
+    }
+
+    .brand img {
+      width: 58px;
+      height: 58px;
+      border-radius: 17px;
+      object-fit: cover;
+      box-shadow:
+        0 0 0 1px rgba(255,106,0,.2),
+        0 12px 35px rgba(255,106,0,.2);
+    }
+
+    .brand-name {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -.5px;
+    }
+
+    .brand-name span {
+      color: var(--orange);
+    }
+
+    /* =========================
+       MAIN GRID
+    ========================== */
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      align-items: center;
+    }
+
+    /* =========================
+       LEFT
+    ========================== */
+
+    .hero-left {
+      animation: fadeLeft 1s ease both;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+
+      padding: 8px 15px;
+      border-radius: 999px;
+
+      color: #ffb27f;
+      background: rgba(255,106,0,.09);
+      border: 1px solid rgba(255,106,0,.22);
+
+      font-size: 14px;
+      font-weight: 600;
+
+      margin-bottom: 22px;
+    }
+
+    .pulse {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--orange);
+      position: relative;
+    }
+
+    .pulse::after {
+      content: "";
+      position: absolute;
+      inset: -5px;
+      border-radius: 50%;
+      border: 1px solid var(--orange);
+      animation: pulse 1.6s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(.6);
+        opacity: 1;
+      }
+
+      100% {
+        transform: scale(1.8);
+        opacity: 0;
+      }
+    }
+
+    h1 {
+      font-size: clamp(42px, 6vw, 72px);
+      line-height: 1.05;
+      letter-spacing: -2px;
+      margin-bottom: 22px;
+    }
+
+    h1 span {
+      color: var(--orange);
+      position: relative;
+    }
+
+    .description {
+      max-width: 590px;
+      color: #a7a7a7;
+      font-size: 18px;
+      line-height: 1.8;
+    }
+
+    .description strong {
+      color: #fff;
+    }
+
+    /* =========================
+       PROGRESS
+    ========================== */
+
+    .progress-box {
+      margin-top: 32px;
+      max-width: 580px;
+    }
+
+    .progress-info {
+      display: flex;
+      justify-content: space-between;
+      color: #aaa;
+      font-size: 14px;
+      margin-bottom: 9px;
+    }
+
+    .progress-info strong {
+      color: var(--orange);
+    }
+
+    .progress {
+      height: 9px;
+      width: 100%;
+      background: #222;
+      border-radius: 99px;
+      overflow: hidden;
+      border: 1px solid #292929;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 85%;
+      border-radius: inherit;
+
+      background:
+        repeating-linear-gradient(
+          45deg,
+          var(--orange),
+          var(--orange) 12px,
+          #ff8736 12px,
+          #ff8736 24px
+        );
+
+      animation: progressMove 1.5s linear infinite;
+    }
+
+    @keyframes progressMove {
+      from {
+        background-position: 0 0;
+      }
+
+      to {
+        background-position: 48px 0;
+      }
+    }
+
+    /* =========================
+       NOTIFY
+    ========================== */
+
+    .notify {
+      display: flex;
+      gap: 10px;
+      margin-top: 28px;
+      max-width: 580px;
+    }
+
+    .input-box {
+      flex: 1;
+      position: relative;
+    }
+
+    .input-box i {
+      position: absolute;
+      left: 17px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #666;
+    }
+
+    input {
+      width: 100%;
+      height: 54px;
+      padding: 0 17px 0 46px;
+
+      border-radius: 14px;
+      border: 1px solid #2b2b2b;
+      background: #151515;
+      color: white;
+      outline: none;
+
+      font-family: inherit;
+      font-size: 15px;
+
+      transition: .25s;
+    }
+
+    input:focus {
+      border-color: var(--orange);
+      box-shadow: 0 0 0 4px rgba(255,106,0,.08);
+    }
+
+    button {
+      height: 54px;
+      padding: 0 25px;
+
+      border: 0;
+      border-radius: 14px;
+
+      color: white;
+      background: var(--orange);
+
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 700;
+
+      cursor: pointer;
+
+      box-shadow:
+        0 10px 30px rgba(255,106,0,.2);
+
+      transition: .25s;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      background: #ff7b1f;
+      box-shadow:
+        0 15px 35px rgba(255,106,0,.3);
+    }
+
+    .success {
+      display: none;
+      margin-top: 10px;
+      color: #4ade80;
+      font-size: 14px;
+    }
+
+    /* =========================
+       CODE TERMINAL
+    ========================== */
+
+    .terminal-wrap {
+      animation: fadeRight 1s ease both;
+    }
+
+    .terminal {
+      position: relative;
+      border-radius: 22px;
+      overflow: hidden;
+
+      background: rgba(15,15,15,.88);
+      border: 1px solid #292929;
+
+      box-shadow:
+        0 30px 80px rgba(0,0,0,.55),
+        0 0 80px rgba(255,106,0,.06);
+
+      backdrop-filter: blur(15px);
+    }
+
+    .terminal::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+
+      background:
+        linear-gradient(
+          rgba(255,106,0,.02) 50%,
+          transparent 50%
+        );
+
+      background-size: 100% 5px;
+      opacity: .2;
+    }
+
+    .terminal-header {
+      height: 48px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+
+      padding: 0 17px;
+      background: #191919;
+      border-bottom: 1px solid #292929;
+    }
+
+    .dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: #555;
+    }
+
+    .terminal-title {
+      margin-left: 8px;
+      color: #777;
+      font-family: "Fira Code", monospace;
+      font-size: 12px;
+    }
+
+    .terminal-body {
+      padding: 25px;
+      min-height: 390px;
+
+      font-family: "Fira Code", monospace;
+      font-size: 13px;
+      line-height: 1.9;
+
+      color: #bdbdbd;
+    }
+
+    .line {
+      opacity: 0;
+      animation: codeLine .5s ease forwards;
+    }
+
+    .line:nth-child(1) { animation-delay: .4s; }
+    .line:nth-child(2) { animation-delay: .8s; }
+    .line:nth-child(3) { animation-delay: 1.2s; }
+    .line:nth-child(4) { animation-delay: 1.6s; }
+    .line:nth-child(5) { animation-delay: 2s; }
+    .line:nth-child(6) { animation-delay: 2.4s; }
+    .line:nth-child(7) { animation-delay: 2.8s; }
+    .line:nth-child(8) { animation-delay: 3.2s; }
+    .line:nth-child(9) { animation-delay: 3.6s; }
+    .line:nth-child(10) { animation-delay: 4s; }
+
+    @keyframes codeLine {
+      from {
+        opacity: 0;
+        transform: translateX(-10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .orange {
+      color: #ff8a42;
+    }
+
+    .green {
+      color: #70d99a;
+    }
+
+    .blue {
+      color: #75bfff;
+    }
+
+    .gray {
+      color: #666;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 7px;
+      height: 15px;
+      background: var(--orange);
+      vertical-align: middle;
+      animation: blink .8s infinite;
+    }
+
+    @keyframes blink {
+      50% {
+        opacity: 0;
+      }
+    }
+
+    /* =========================
+       FEATURES
+    ========================== */
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-top: 45px;
+    }
+
+    .feature {
+      padding: 20px;
+      border-radius: 17px;
+
+      background: rgba(255,255,255,.025);
+      border: 1px solid #242424;
+
+      transition: .3s;
+    }
+
+    .feature:hover {
+      transform: translateY(-5px);
+      border-color: rgba(255,106,0,.35);
+      background: rgba(255,106,0,.04);
+    }
+
+    .feature-icon {
+      width: 42px;
+      height: 42px;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 12px;
+      color: var(--orange);
+
+      background: rgba(255,106,0,.1);
+      margin-bottom: 13px;
+    }
+
+    .feature h3 {
+      font-size: 16px;
+      margin-bottom: 5px;
+    }
+
+    .feature p {
+      color: #777;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    /* =========================
+       FOOTER
+    ========================== */
+
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      color: #555;
+      font-size: 13px;
+    }
+
+    footer span {
+      color: var(--orange);
+    }
+
+    /* =========================
+       ANIMATION
+    ========================== */
+
+    @keyframes fadeDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes fadeRight {
+      from {
+        opacity: 0;
+        transform: translateX(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    /* =========================
+       MOBILE
+    ========================== */
+
+    @media (max-width: 850px) {
+
+      .page {
+        padding-top: 28px;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-left {
+        text-align: center;
+      }
+
+      .description,
+      .progress-box,
+      .notify {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .badge {
+        margin-bottom: 17px;
+      }
+
+      h1 {
+        font-size: 46px;
+      }
+
+      .terminal-wrap {
+        margin-top: 5px;
+      }
+
+      .features {
+        grid-template-columns: 1fr;
+      }
+
+    }
+
+    @media (max-width: 550px) {
+
+      .page {
+        width: min(100% - 20px, 600px);
+      }
+
+      .brand {
+        margin-bottom: 25px;
+      }
+
+      .brand img {
+        width: 50px;
+        height: 50px;
+      }
+
+      .brand-name {
+        font-size: 24px;
+      }
+
+      h1 {
+        font-size: 40px;
+        letter-spacing: -1px;
+      }
+
+      .description {
+        font-size: 16px;
+      }
+
+      .notify {
+        flex-direction: column;
+      }
+
+      button {
+        width: 100%;
+      }
+
+      .terminal-body {
+        min-height: 340px;
+        padding: 18px;
+        font-size: 11px;
+      }
+
+      .terminal-header {
+        height: 42px;
+      }
+
+      .code-symbol {
+        display: none;
+      }
+    }
+
+  </style></head><body>  <!-- Floating Code -->  <div class="code-symbol c1">&lt;/&gt;</div>
+  <div class="code-symbol c2">{ }</div>
+  <div class="code-symbol c3">01</div>
+  <div class="code-symbol c4">&lt;code&gt;</div>  <main class="page"><!-- Brand -->
+<div class="brand">
+  <img
+    src="https://seraproduct.com/photo/logo.png"
+    alt="SeraProduct Logo"
+  >
+
+  <div class="brand-name">
+    Sera<span>Product</span>
+  </div>
+</div>
+
+
+<section class="hero">
+
+  <!-- LEFT -->
+  <div class="hero-left">
+
+    <div class="badge">
+      <span class="pulse"></span>
+      DEVELOPMENT IN PROGRESS
+    </div>
+
+    <h1>
+      আপনার সাইট
+      <span>তৈরি হচ্ছে</span>
+    </h1>
+
+    <p class="description">
+      আমরা SeraProduct-এর নতুন প্ল্যাটফর্মকে আরও
+      <strong>দ্রুত, আধুনিক ও ব্যবহারবান্ধব</strong>
+      করে তৈরি করছি।
+      <br>
+      খুব শীঘ্রই আপনাদের জন্য নতুন অভিজ্ঞতা নিয়ে আসছি।
+    </p>
+
+
+    <!-- Progress -->
+    <div class="progress-box">
+
+      <div class="progress-info">
+        <span>Development Progress</span>
+        <strong>85%</strong>
+      </div>
+
+      <div class="progress">
+        <div class="progress-bar"></div>
+      </div>
+
+    </div>
+
+
+    <!-- Notify -->
+    <form class="notify" onsubmit="notifyUser(event)">
+
+      <div class="input-box">
+
+        <i class="fa-solid fa-envelope"></i>
+
+        <input
+          id="email"
+          type="email"
+          required
+          placeholder="আপনার ইমেইল লিখুন"
+          autocomplete="email"
+        >
+
+      </div>
+
+      <button type="submit">
+        জানাবেন
+        <i class="fa-solid fa-arrow-right"></i>
+      </button>
+
+    </form>
+
+    <div id="successMsg" class="success">
+      <i class="fa-solid fa-circle-check"></i>
+      ধন্যবাদ! সাইট চালু হলে আপনাকে জানানো হবে।
+    </div>
+
+  </div>
+
+
+  <!-- RIGHT TERMINAL -->
+  <div class="terminal-wrap">
+
+    <div class="terminal">
+
+      <div class="terminal-header">
+
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+
+        <span class="terminal-title">
+          seraproduct.dev — terminal
+        </span>
+
+      </div>
+
+
+      <div class="terminal-body">
+
+        <div class="line">
+          <span class="gray">$</span>
+          <span class="orange"> npm</span> run build
+        </div>
+
+        <div class="line">
+          <span class="gray">&gt;</span>
+          Starting SeraProduct...
+        </div>
+
+        <div class="line">
+          <span class="blue">[INFO]</span>
+          Initializing modules...
+        </div>
+
+        <div class="line">
+          <span class="green">✓</span>
+          User Experience loaded
+        </div>
+
+        <div class="line">
+          <span class="green">✓</span>
+          Product System connected
+        </div>
+
+        <div class="line">
+          <span class="green">✓</span>
+          Reseller Platform ready
+        </div>
+
+        <div class="line">
+          <span class="blue">[BUILD]</span>
+          Optimizing performance...
+        </div>
+
+        <div class="line">
+          <span class="blue">[BUILD]</span>
+          Securing application...
+        </div>
+
+        <div class="line">
+          <span class="orange">[85%]</span>
+          Compiling production files...
+        </div>
+
+        <div class="line">
+          <span class="gray">$</span>
+          <span class="green"> deploy</span>
+          --production
+          <span class="cursor"></span>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- Features -->
+
+<section class="features">
+
+  <div class="feature">
+
+    <div class="feature-icon">
+      <i class="fa-solid fa-bolt"></i>
+    </div>
+
+    <h3>দ্রুত প্ল্যাটফর্ম</h3>
+
+    <p>
+      দ্রুত লোডিং এবং smooth user experience-এর জন্য
+      প্ল্যাটফর্মটি optimized করা হচ্ছে।
+    </p>
+
+  </div>
+
+
+  <div class="feature">
+
+    <div class="feature-icon">
+      <i class="fa-solid fa-box-open"></i>
+    </div>
+
+    <h3>সেরা পণ্য</h3>
+
+    <p>
+      নতুন পণ্য ও অফারগুলো আরও সহজে খুঁজে পাওয়ার
+      জন্য নতুন সিস্টেম তৈরি হচ্ছে।
+    </p>
+
+  </div>
+
+
+  <div class="feature">
+
+    <div class="feature-icon">
+      <i class="fa-solid fa-code"></i>
+    </div>
+
+    <h3>নতুন প্রযুক্তি</h3>
+
+    <p>
+      আধুনিক প্রযুক্তি ব্যবহার করে SeraProduct-এর
+      নতুন অভিজ্ঞতা তৈরি করা হচ্ছে।
+    </p>
+
+  </div>
+
+</section>
+
+
+<footer>
+  © <span id="year"></span> SeraProduct.
+  All rights reserved.
+</footer>
+
+  </main>  <script>
+
+    /* =========================
+       YEAR
+    ========================== */
+
+    document.getElementById("year").textContent =
+      new Date().getFullYear();
+
+
+    /* =========================
+       EMAIL NOTIFICATION
+    ========================== */
+
+    function notifyUser(event) {
+
+      event.preventDefault();
+
+      const email =
+        document.getElementById("email").value.trim();
+
+      if (!email) return;
+
+      const success =
+        document.getElementById("successMsg");
+
+      success.style.display = "block";
+
+      document.getElementById("email").value = "";
+
+      /*
+        এখানে Firebase / Supabase / API
+        দিয়ে email database-এ save করতে পারবেন।
+
+        Example:
+
+        fetch("/api/notify", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ email })
+        });
+      */
+    }
+
+
+    /* =========================
+       TERMINAL RESTART
+       প্রতি 10 সেকেন্ডে coding animation আবার চলবে
+    ========================== */
+
+    setInterval(() => {
+
+      const lines =
+        document.querySelectorAll(".line");
+
+      lines.forEach(line => {
+
+        line.style.animation = "none";
+
+        void line.offsetWidth;
+
+        line.style.animation = "";
+
+      });
+
+    }, 10000);
+
+  </script>  <!-- Schema -->  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "SeraProduct",
+    "url": "https://seraproduct.com/",
+    "logo": "https://seraproduct.com/photo/logo.png",
+    "description": "SeraProduct - বাংলাদেশের সেরা রিসেলিং হাব এবং সেরা পণ্যের হাট।"
+  }
+  </script></body>
+</html>
