@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#ff6a00">
+    <meta name="robots" content="noindex, nofollow">
+    
+    <title>লগইন / সাইন আপ | Sera Product</title>
+    <meta name="description" content="Sera Product-এর অ্যাকাউন্ট লগইন অথবা নতুন অ্যাকাউন্ট তৈরি করুন।">
+    
+    <link rel="canonical" href="https://seraproduct.com/auth.html">
+    <link rel="icon" type="image/png" href="https://seraproduct.com/photo/logo.png">
+    <link rel="apple-touch-icon" href="https://seraproduct.com/photo/logo.png">
+
+    <style>
+        :root {
+            --primary-orange: #ff6a00;
+            --orange-light: #fff3eb;
+            --orange-hover: #e05d00;
+            --text-dark: #1f1f1f;
+            --text-muted: #777777;
+            --white: #ffffff;
+            --border: #e5e5e5;
+            --background: #f8f8f8;
+            --shadow: 0 4px 25px rgba(0, 0, 0, 0.06);
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'SolaimanLipi', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--background);
+            color: var(--text-dark);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Header */
+        .site-header {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 14px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .header-logo img {
+            height: 36px;
+            width: auto;
+            object-fit: contain;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .header-logo:hover img {
+            transform: scale(1.03);
+        }
+
+        /* Main Auth Layout */
+        .main-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 16px;
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 480px;
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px 28px;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        /* Tab Switcher */
+        .auth-tabs {
+            display: flex;
+            background: var(--background);
+            border-radius: 10px;
+            padding: 4px;
+            margin-bottom: 24px;
+            border: 1px solid var(--border);
+        }
+
+        .auth-tab-btn {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-radius: 8px;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        .auth-tab-btn.active {
+            background: var(--white);
+            color: var(--primary-orange);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Forms */
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13.5px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 6px;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 12px;
+            width: 18px;
+            height: 18px;
+            stroke: var(--text-muted);
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            pointer-events: none;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 11px 14px 11px 40px;
+            font-size: 14px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--white);
+            color: var(--text-dark);
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-orange);
+            box-shadow: 0 0 0 3px rgba(255, 106, 0, 0.12);
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            padding: 4px;
+        }
+
+        .password-toggle svg {
+            width: 18px;
+            height: 18px;
+            stroke: var(--text-muted);
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .password-toggle:hover svg {
+            stroke: var(--primary-orange);
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: var(--primary-orange);
+            color: var(--white);
+            border: none;
+            padding: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-family: inherit;
+        }
+
+        .btn-submit:hover {
+            background: var(--orange-hover);
+            box-shadow: 0 4px 12px rgba(255, 106, 0, 0.25);
+        }
+
+        .btn-submit:active {
+            transform: scale(0.99);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        /* Spinner inside button */
+        .btn-spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--white);
+            animation: spin 0.6s linear infinite;
+            display: none;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Custom Popup Modal System */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+
+        .modal-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-card {
+            background: var(--white);
+            width: 90%;
+            max-width: 400px;
+            border-radius: 14px;
+            padding: 24px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transform: translateY(15px);
+            transition: transform 0.25s ease;
+        }
+
+        .modal-overlay.open .modal-card {
+            transform: translateY(0);
+        }
+
+        .modal-icon-box {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin: 0 auto 16px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-icon-box.success { background: #e6f7ec; color: #27c93f; }
+        .modal-icon-box.error { background: #fde8e8; color: #ff5f56; }
+        .modal-icon-box.info { background: var(--orange-light); color: var(--primary-orange); }
+
+        .modal-icon-box svg {
+            width: 24px;
+            height: 24px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .modal-message {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .modal-btn {
+            background: var(--primary-orange);
+            color: var(--white);
+            border: none;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            font-family: inherit;
+            transition: var(--transition);
+        }
+
+        .modal-btn:hover {
+            background: var(--orange-hover);
+        }
+
+        /* Footer Fallback */
+        .footer-fallback {
+            background: #1a1a1a;
+            color: #ffffff;
+            text-align: center;
+            padding: 24px;
+            font-size: 14px;
+            border-top: 1px solid #333333;
+        }
+
+        .footer-fallback a {
+            color: var(--primary-orange);
+            text-decoration: underline;
+        }
+
+        @media (max-width: 480px) {
+            .auth-container {
+                padding: 24px 18px;
+                border: none;
+                box-shadow: none;
+                background: transparent;
+            }
+            body {
+                background: var(--white);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER SECTION -->
+    <header class="site-header">
+        <div class="header-container">
+            <div class="header-logo">
+                <a href="https://seraproduct.com">
+                    <img src="https://seraproduct.com/photo/header.png" alt="Sera Product Logo">
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN AUTH CONTENT -->
+    <main class="main-content">
+        <div class="auth-container">
+            <!-- Tabs -->
+            <div class="auth-tabs">
+                <button type="button" class="auth-tab-btn active" id="tabSignupBtn" onclick="switchTab('signup')">সাইন আপ</button>
+                <button type="button" class="auth-tab-btn" id="tabLoginBtn" onclick="switchTab('login')">লগইন</button>
+            </div>
+
+            <!-- Signup Form -->
+            <form id="signupForm" class="auth-form active">
+                <div class="form-group">
+                    <label class="form-label">নাম</label>
+                    <div class="input-wrapper">
+                        <svg class="input-icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        <input type="text" id="signupName" class="form-input" placeholder="আপনার নাম লিখুন">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">ফোন নম্বর</label>
+                    <div class="input-wrapper">
+                        <svg class="input-icon" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                        <input type="tel" id="signupPhone" class="form-input" placeholder="আপনার ফোন নম্বর লিখুন">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">ইমেইল</label>
+                    <div class="input-wrapper">
+                        <svg class="input-icon" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                        <input type="email" id="signupEmail" class="form-input" placeholder="আপনার ইমেইল লিখুন">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">পাসওয়ার্ড</label>
+                    <div class="input-wrapper">
+                        <svg class="input-icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                        <input type="password" id="signupPassword" class="form-input" placeholder="পাসওয়ার্ড দিন" style="padding-right: 40px;">
+                        <button type="button" class="password-toggle" onclick="togglePassword('signupPassword', this)">
+                            <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">পাসওয়ার্ড নিশ্চিত করুন</label>
+                    <div class="input-wrapper">
+                        <svg class="input-icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                        <input type="password" id="signupConfirmPassword" class="form-input" placeholder="পাসওয়ার্ড আবার লিখুন" style="padding-right: 40px;">
+                        <button type="button" class="password-toggle" onclick="togglePassword('signupConfirmPassword', this)">
+                            <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit" id="signupSubmitBtn">
+                    <span id="signupBtnText">সাইন আপ করুন</span>
+                    <div class="btn-spinner" id="signupSpinner"></div>
+                </button>
+            </form>
+
+            <!-- Login Form -->
+            <form id="loginForm" class="auth-form">
+                <div class="form-group">
+                    <label class="form-label">ইমেইল</label>
+                    <div class="input-wrapper">
+                        <svg class="input-icon" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                        <input type="email" id="loginEmail" class="form-input" placeholder="আপনার ইমেইল লিখুন">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">পাসওয়ার্ড</label>
+                    <div class="input-wrapper">
+                        <svg class="input-icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                        <input type="password" id="loginPassword" class="form-input" placeholder="পাসওয়ার্ড দিন" style="padding-right: 40px;">
+                        <button type="button" class="password-toggle" onclick="togglePassword('loginPassword', this)">
+                            <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit" id="loginSubmitBtn">
+                    <span id="loginBtnText">লগইন করুন</span>
+                    <div class="btn-spinner" id="loginSpinner"></div>
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <!-- Custom Modal Popup Component -->
+    <div class="modal-overlay" id="customModal">
+        <div class="modal-card">
+            <div class="modal-icon-box" id="modalIconBox">
+                <svg id="modalSvgIcon" viewBox="0 0 24 24"></svg>
+            </div>
+            <h3 class="modal-title" id="modalTitle">সতর্কবার্তা</h3>
+            <p class="modal-message" id="modalMessage">বার্তা এখানে প্রদর্শিত হবে।</p>
+            <button type="button" class="modal-btn" id="modalActionBtn" onclick="closeModal()">ঠিক আছে</button>
+        </div>
+    </div>
+
+    <!-- FOOTER CONTAINER -->
+    <div id="footer-container"></div>
+
+    <!-- Firebase SDK Compat -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        /* ==========================================
+           FIREBASE CONFIGURATION PLACEHOLDER
+           ========================================== */
+        const firebaseConfig = {
+  apiKey: "AIzaSyBRSt2aoSJ-lumYAWGAXE6ncui7__TqJ4E",
+  authDomain: "sera-product.firebaseapp.com",
+  projectId: "sera-product",
+  storageBucket: "sera-product.firebasestorage.app",
+  messagingSenderId: "516762224598",
+  appId: "1:516762224598:web:b6a571f355a8a4a97c0677",
+  measurementId: "G-RLMWH43FXX"
+};
+
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        /* ==========================================
+           CUSTOM POPUP & UI HELPERS
+           ========================================== */
+        function showModal(title, message, type = 'error', callback = null) {
+            const modal = document.getElementById('customModal');
+            const iconBox = document.getElementById('modalIconBox');
+            const svgIcon = document.getElementById('modalSvgIcon');
+            const titleEl = document.getElementById('modalTitle');
+            const msgEl = document.getElementById('modalMessage');
+
+            titleEl.textContent = title;
+            msgEl.textContent = message;
+            iconBox.className = `modal-icon-box ${type}`;
+
+            if (type === 'success') {
+                svgIcon.innerHTML = '<polyline points="20 6 9 17 4 12"></polyline>';
+            } else if (type === 'error') {
+                svgIcon.innerHTML = '<circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line>';
+            } else {
+                svgIcon.innerHTML = '<circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line>';
+            }
+
+            modal.classList.add('open');
+            window.modalCallback = callback;
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('customModal');
+            modal.classList.remove('open');
+            if (typeof window.modalCallback === 'function') {
+                window.modalCallback();
+                window.modalCallback = null;
+            }
+        }
+
+        function switchTab(tabName) {
+            const signupTab = document.getElementById('tabSignupBtn');
+            const loginTab = document.getElementById('tabLoginBtn');
+            const signupForm = document.getElementById('signupForm');
+            const loginForm = document.getElementById('loginForm');
+
+            if (tabName === 'signup') {
+                signupTab.classList.add('active');
+                loginTab.classList.remove('active');
+                signupForm.classList.add('active');
+                loginForm.classList.remove('active');
+            } else {
+                loginTab.classList.add('active');
+                signupTab.classList.remove('active');
+                loginForm.classList.add('active');
+                signupForm.classList.remove('active');
+            }
+        }
+
+        function togglePassword(fieldId, btn) {
+            const input = document.getElementById(fieldId);
+            if (input.type === 'password') {
+                input.type = 'text';
+                btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>';
+            } else {
+                input.type = 'password';
+                btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
+            }
+        }
+
+        function setButtonLoading(btnId, textId, spinnerId, isLoading, loadingText = "") {
+            const btn = document.getElementById(btnId);
+            const text = document.getElementById(textId);
+            const spinner = document.getElementById(spinnerId);
+
+            if (isLoading) {
+                btn.disabled = true;
+                text.textContent = loadingText;
+                spinner.style.display = "block";
+            } else {
+                btn.disabled = false;
+                text.textContent = loadingText;
+                spinner.style.display = "none";
+            }
+        }
+
+        function getFriendlyFirebaseError(code) {
+            switch (code) {
+                case 'auth/invalid-credential':
+                case 'auth/wrong-password':
+                case 'auth/user-not-found':
+                    return 'ইমেইল অথবা পাসওয়ার্ড সঠিক নয়।';
+                case 'auth/email-already-in-use':
+                    return 'এই ইমেইল দিয়ে ইতিমধ্যে একটি অ্যাকাউন্ট রয়েছে।';
+                case 'auth/weak-password':
+                    return 'পাসওয়ার্ডটি অন্তত ৬ অক্ষরের দিন।';
+                case 'auth/invalid-email':
+                    return 'সঠিক ইমেইল ঠিকানা দিন।';
+                case 'auth/too-many-requests':
+                    return 'অনেকবার চেষ্টা করা হয়েছে। কিছুক্ষণ পরে আবার চেষ্টা করুন।';
+                case 'auth/network-request-failed':
+                    return 'ইন্টারনেট সংযোগ পরীক্ষা করে আবার চেষ্টা করুন।';
+                default:
+                    return 'কাজটি সম্পন্ন করা যাচ্ছে না। কিছুক্ষণ পরে আবার চেষ্টা করুন।';
+            }
+        }
+
+        /* ==========================================
+           AUTHENTICATION & FIRESTORE LOGIC
+           ========================================== */
+        document.addEventListener("DOMContentLoaded", function () {
+            // Footer Loader
+            fetch("https://seraproduct.com/footer")
+                .then(response => {
+                    if (!response.ok) throw new Error("Footer load failed");
+                    return response.text();
+                })
+                .then(html => {
+                    document.getElementById("footer-container").innerHTML = html;
+                })
+                .catch(() => {
+                    document.getElementById("footer-container").innerHTML = `
+                        <footer class="footer-fallback">
+                            <p>&copy; 2026 Sera Product. সর্বস্বত্ব সংরক্ষিত। <a href="https://seraproduct.com">হোম পেজে যান</a></p>
+                        </footer>
+                    `;
+                });
+
+            // On Auth State Changed Check
+            auth.onAuthStateChanged(async (user) => {
+                if (user) {
+                    try {
+                        const docSnap = await db.collection("buyers").doc(user.uid).get();
+                        if (docSnap.exists) {
+                            window.location.href = "https://seraproduct.com/profile";
+                        }
+                    } catch (err) {
+                        console.error("Auth state error:", err);
+                    }
+                }
+            });
+        });
+
+        // Signup Submission Handler
+        document.getElementById("signupForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            const name = document.getElementById("signupName").value.trim();
+            const phone = document.getElementById("signupPhone").value.trim();
+            const email = document.getElementById("signupEmail").value.trim();
+            const password = document.getElementById("signupPassword").value;
+            const confirmPassword = document.getElementById("signupConfirmPassword").value;
+
+            if (!name) {
+                showModal("সতর্কবার্তা", "দয়া করে আপনার নাম লিখুন।", "error");
+                return;
+            }
+            if (!phone) {
+                showModal("সতর্কবার্তা", "দয়া করে আপনার ফোন নম্বর লিখুন।", "error");
+                return;
+            }
+            if (!email || !email.includes("@")) {
+                showModal("সতর্কবার্তা", "সঠিক ইমেইল ঠিকানা দিন।", "error");
+                return;
+            }
+            if (!password) {
+                showModal("সতর্কবার্তা", "দয়া করে পাসওয়ার্ড দিন।", "error");
+                return;
+            }
+            if (password.length < 6) {
+                showModal("সতর্কবার্তা", "পাসওয়ার্ড অন্তত ৬ অক্ষরের হতে হবে।", "error");
+                return;
+            }
+            if (password !== confirmPassword) {
+                showModal("সতর্কবার্তা", "পাসওয়ার্ড এবং নিশ্চিত পাসওয়ার্ড মিলছে না।", "error");
+                return;
+            }
+
+            setButtonLoading("signupSubmitBtn", "signupBtnText", "signupSpinner", true, "অ্যাকাউন্ট তৈরি হচ্ছে...");
+
+            try {
+                // Try creating new account
+                const userCred = await auth.createUserWithEmailAndPassword(email, password);
+                const uid = userCred.user.uid;
+
+                // Save to buyers collection
+                await db.collection("buyers").doc(uid).set({
+                    name: name,
+                    phone: phone,
+                    email: email,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                window.location.href = "https://seraproduct.com/profile";
+
+            } catch (error) {
+                setButtonLoading("signupSubmitBtn", "signupBtnText", "signupSpinner", false, "সাইন আপ করুন");
+
+                if (error.code === 'auth/email-already-in-use') {
+                    // Firebase account exists. Let's check buyers collection status.
+                    try {
+                        // Sign in with given credentials to verify and fetch UID
+                        const loginCred = await auth.signInWithEmailAndPassword(email, password);
+                        const uid = loginCred.user.uid;
+
+                        const buyerDoc = await db.collection("buyers").doc(uid).get();
+
+                        if (buyerDoc.exists) {
+                            // Case: Already has account + buyer doc -> redirect to profile
+                            showModal("তথ্য", "এই ইমেইল দিয়ে ইতিমধ্যে একটি অ্যাকাউন্ট রয়েছে। আপনাকে লগইন করিয়ে দেওয়া হচ্ছে।", "info", () => {
+                                window.location.href = "https://seraproduct.com/profile";
+                            });
+                        } else {
+                            // Case: Firebase account exists but buyer doc missing -> create buyer doc using signup details & login
+                            await db.collection("buyers").doc(uid).set({
+                                name: name,
+                                phone: phone,
+                                email: email,
+                                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                            });
+                            window.location.href = "https://seraproduct.com/profile";
+                        }
+                    } catch (loginErr) {
+                        // Password didn't match for existing account or other login issue
+                        showModal("তথ্য", "এই ইমেইল দিয়ে ইতিমধ্যে একটি অ্যাকাউন্ট রয়েছে। সঠিক পাসওয়ার্ড দিয়ে লগইন করুন অথবা লগইন ট্যাবে যান।", "info", () => {
+                            document.getElementById("loginEmail").value = email;
+                            switchTab('login');
+                        });
+                    }
+                } else {
+                    showModal("ত্রুটি", getFriendlyFirebaseError(error.code), "error");
+                }
+            }
+        });
+
+        // Login Submission Handler
+        document.getElementById("loginForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            const email = document.getElementById("loginEmail").value.trim();
+            const password = document.getElementById("loginPassword").value;
+
+            if (!email || !password) {
+                showModal("সতর্কবার্তা", "ইমেইল এবং পাসওয়ার্ড উভয়ই পূরণ করুন।", "error");
+                return;
+            }
+
+            setButtonLoading("loginSubmitBtn", "loginBtnText", "loginSpinner", true, "লগইন হচ্ছে...");
+
+            try {
+                const userCred = await auth.signInWithEmailAndPassword(email, password);
+                const uid = userCred.user.uid;
+
+                const buyerDoc = await db.collection("buyers").doc(uid).get();
+
+                if (buyerDoc.exists) {
+                    window.location.href = "https://seraproduct.com/profile";
+                } else {
+                    // Buyer doc missing, create it
+                    await db.collection("buyers").doc(uid).set({
+                        name: email.split('@')[0],
+                        phone: "01700000000",
+                        email: email,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    window.location.href = "https://seraproduct.com/profile";
+                }
+
+            } catch (error) {
+                setButtonLoading("loginSubmitBtn", "loginBtnText", "loginSpinner", false, "লগইন করুন");
+                showModal("লগইন ব্যর্থ", getFriendlyFirebaseError(error.code), "error");
+            }
+        });
+    </script>
+<nav class="sp-mobile-nav" aria-label="Mobile Navigation">
+
+  <a href="https://seraproduct.com/" class="sp-nav-item" data-page="home">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M3 10.5 12 3l9 7.5v9a1.5 1.5 0 0 1-1.5 1.5H4.5A1.5 1.5 0 0 1 3 19.5v-9Z"/>
+      <path d="M9 21v-6h6v6"/>
+    </svg>
+    <span>Home</span>
+  </a>
+
+
+  <a href="https://seraproduct.com/reseller" class="sp-nav-item" data-page="reseller">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M20 12a8 8 0 1 1-2.34-5.66"/>
+      <path d="M20 4v6h-6"/>
+      <path d="M8 16.5a4.5 4.5 0 0 0 8 0"/>
+      <path d="M9.5 9.5h.01M14.5 9.5h.01"/>
+    </svg>
+    <span>Reseller</span>
+  </a>
+
+
+  <a href="https://seraproduct.com/categories" class="sp-nav-item" data-page="categories">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <rect x="3" y="3" width="7" height="7" rx="1"/>
+      <rect x="14" y="3" width="7" height="7" rx="1"/>
+      <rect x="3" y="14" width="7" height="7" rx="1"/>
+      <rect x="14" y="14" width="7" height="7" rx="1"/>
+    </svg>
+    <span>Categories</span>
+  </a>
+
+
+  <a href="https://seraproduct.com/all-product" class="sp-nav-item" data-page="products">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M6 3h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/>
+      <path d="M8 7h8M8 11h8M8 15h5"/>
+    </svg>
+    <span>All Product</span>
+  </a>
+
+
+  <a href="https://seraproduct.com/profile" class="sp-nav-item" data-page="profile">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="12" cy="8" r="4"/>
+      <path d="M4 21a8 8 0 0 1 16 0"/>
+    </svg>
+    <span>Profile</span>
+  </a>
+
+
+  <style>
+
+    /* =====================================================
+       SERA PRODUCT — MOBILE BUTTON NAV
+       ===================================================== */
+
+    .sp-mobile-nav {
+
+      /* Hidden on desktop */
+      display: none;
+
+      position: fixed;
+
+      left: 12px;
+      right: 12px;
+      bottom: 12px;
+
+      z-index: 99999;
+
+      height: 66px;
+
+      padding: 6px;
+
+      align-items: stretch;
+
+      justify-content: space-between;
+
+      gap: 3px;
+
+      background:
+        rgba(255,255,255,.96);
+
+      border:
+        1px solid
+        rgba(0,0,0,.07);
+
+      border-radius: 20px;
+
+      box-shadow:
+        0 10px 35px
+        rgba(0,0,0,.16),
+        0 2px 8px
+        rgba(0,0,0,.06);
+
+      backdrop-filter:
+        blur(18px);
+
+      -webkit-backdrop-filter:
+        blur(18px);
+
+      font-family:
+        "Hind Siliguri",
+        "Noto Sans Bengali",
+        Arial,
+        sans-serif;
+
+      box-sizing: border-box;
+    }
+
+
+    .sp-mobile-nav *,
+    .sp-mobile-nav *::before,
+    .sp-mobile-nav *::after {
+      box-sizing: border-box;
+    }
+
+
+    /* =====================================================
+       NAV ITEM
+       ===================================================== */
+
+    .sp-mobile-nav .sp-nav-item {
+
+      position: relative;
+
+      flex: 1 1 0;
+
+      min-width: 0;
+
+      height: 54px;
+
+      display: flex;
+
+      flex-direction: column;
+
+      align-items: center;
+
+      justify-content: center;
+
+      gap: 3px;
+
+      padding: 4px 2px;
+
+      border-radius: 15px;
+
+      color: #777;
+
+      background: transparent;
+
+      text-decoration: none;
+
+      -webkit-tap-highlight-color: transparent;
+
+      transition:
+        color .25s ease,
+        background .25s ease,
+        transform .2s ease;
+    }
+
+
+    /* =====================================================
+       SVG ICON
+       ===================================================== */
+
+    .sp-mobile-nav .sp-nav-item svg {
+
+      width: 21px;
+      height: 21px;
+
+      flex-shrink: 0;
+
+      fill: none;
+
+      stroke: currentColor;
+
+      stroke-width: 1.8;
+
+      stroke-linecap: round;
+
+      stroke-linejoin: round;
+
+      transition:
+        transform .25s ease,
+        stroke-width .25s ease;
+    }
+
+
+    /* =====================================================
+       TEXT
+       ===================================================== */
+
+    .sp-mobile-nav .sp-nav-item span {
+
+      display: block;
+
+      max-width: 100%;
+
+      overflow: hidden;
+
+      text-overflow: ellipsis;
+
+      white-space: nowrap;
+
+      font-size: 10px;
+
+      font-weight: 600;
+
+      line-height: 1.2;
+
+      letter-spacing: -.1px;
+    }
+
+
+    /* =====================================================
+       ACTIVE ITEM
+       ===================================================== */
+
+    .sp-mobile-nav .sp-nav-item.active {
+
+      color: #ff6b35;
+
+      background:
+        rgba(255,107,53,.10);
+
+      box-shadow:
+        inset 0 0 0 1px
+        rgba(255,107,53,.08);
+    }
+
+
+    .sp-mobile-nav .sp-nav-item.active svg {
+
+      stroke-width: 2.2;
+
+      transform:
+        translateY(-1px);
+    }
+
+
+    /* Orange active indicator */
+    .sp-mobile-nav .sp-nav-item.active::before {
+
+      content: "";
+
+      position: absolute;
+
+      top: 3px;
+
+      left: 50%;
+
+      width: 22px;
+
+      height: 3px;
+
+      transform:
+        translateX(-50%);
+
+      border-radius: 0 0 10px 10px;
+
+      background:
+        linear-gradient(
+          90deg,
+          #ff6b35,
+          #ff9b70
+        );
+
+      box-shadow:
+        0 2px 8px
+        rgba(255,107,53,.28);
+    }
+
+
+    /* =====================================================
+       TOUCH EFFECT
+       ===================================================== */
+
+    .sp-mobile-nav .sp-nav-item:active {
+
+      transform:
+        scale(.94);
+    }
+
+
+    /* =====================================================
+       MOBILE ONLY
+       ===================================================== */
+
+    @media (max-width: 767px) {
+
+      .sp-mobile-nav {
+        display: flex;
+      }
+
+      /*
+       * Prevent fixed navigation from covering
+       * the last content of the page.
+       */
+      body {
+        padding-bottom: 88px;
+      }
+
+    }
+
+
+    /* =====================================================
+       VERY SMALL MOBILE
+       ===================================================== */
+
+    @media (max-width: 360px) {
+
+      .sp-mobile-nav {
+
+        left: 8px;
+        right: 8px;
+        bottom: 8px;
+
+        height: 62px;
+
+        border-radius: 18px;
+
+        padding: 5px;
+      }
+
+
+      .sp-mobile-nav .sp-nav-item {
+
+        height: 52px;
+
+        border-radius: 14px;
+      }
+
+
+      .sp-mobile-nav .sp-nav-item svg {
+
+        width: 20px;
+        height: 20px;
+      }
+
+
+      .sp-mobile-nav .sp-nav-item span {
+
+        font-size: 9px;
+      }
+
+    }
+
+
+    /* =====================================================
+       REDUCED MOTION
+       ===================================================== */
+
+    @media (prefers-reduced-motion: reduce) {
+
+      .sp-mobile-nav *,
+      .sp-mobile-nav *::before,
+      .sp-mobile-nav *::after {
+
+        transition: none !important;
+
+        animation: none !important;
+      }
+
+    }
+
+  </style>
+
+
+  <!-- =========================
+       AUTO ACTIVE PAGE
+       ========================= -->
+  <script>
+    (function () {
+
+      const currentPath =
+        window.location.pathname
+          .replace(/\/+$/, "")
+          .toLowerCase();
+
+      const navItems =
+        document.querySelectorAll(
+          ".sp-mobile-nav .sp-nav-item"
+        );
+
+
+      navItems.forEach(function (item) {
+
+        const page =
+          item.getAttribute("data-page");
+
+
+        let isActive = false;
+
+
+        /* HOME */
+        if (
+          page === "home" &&
+          (
+            currentPath === "" ||
+            currentPath === "/" ||
+            currentPath === "/index.html"
+          )
+        ) {
+          isActive = true;
+        }
+
+
+        /* RESELLER */
+        if (
+          page === "reseller" &&
+          (
+            currentPath === "/reseller" ||
+            currentPath === "/reseller.html"
+          )
+        ) {
+          isActive = true;
+        }
+
+
+        /* CATEGORIES */
+        if (
+          page === "categories" &&
+          (
+            currentPath === "/categories" ||
+            currentPath === "/categories.html"
+          )
+        ) {
+          isActive = true;
+        }
+
+
+        /* ALL PRODUCTS */
+        if (
+          page === "products" &&
+          (
+            currentPath === "/all-product" ||
+            currentPath === "/all-product.html"
+          )
+        ) {
+          isActive = true;
+        }
+
+
+        /* PROFILE */
+        if (
+          page === "profile" &&
+          (
+            currentPath === "/profile" ||
+            currentPath === "/profile.html"
+          )
+        ) {
+          isActive = true;
+        }
+
+
+        if (isActive) {
+          item.classList.add("active");
+          item.setAttribute(
+            "aria-current",
+            "page"
+          );
+        }
+
+      });
+
+    })();
+  </script>
+
+</nav>
+</body>
+</html>
