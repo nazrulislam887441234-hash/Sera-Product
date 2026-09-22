@@ -35,6 +35,12 @@ const loadMoreCategoryBtn = document.getElementById('loadMoreCategoryBtn');
 const productGrid = document.getElementById('productGrid');
 const infiniteLoader = document.getElementById('infiniteLoader');
 
+// YouTube section variables
+const ytVideosGrid = document.getElementById('ytVideosGrid');
+const loadMoreYtContainer = document.getElementById('loadMoreYtContainer');
+const loadMoreYtBtn = document.getElementById('loadMoreYtBtn');
+let ytLastVisible = null;
+
 let categoryLastVisible = null;
 let productLastVisible = null;
 let isProductFetching = false;
@@ -332,6 +338,86 @@ async function loadProducts(isInitial = true) {
 }
 
 /* ==========================================
+   YOUTUBE CHANNEL VIDEOS (FROM 'videos' COLLECTION)
+   ========================================== */
+async function loadYtVideos(isInitial = true) {
+    try {
+        let query = db.collection('videos').orderBy('createdAt', 'desc').limit(10);
+        if (!isInitial && ytLastVisible) {
+            query = query.startAfter(ytLastVisible);
+        }
+
+        const snapshot = await query.get();
+        if (isInitial) {
+            ytVideosGrid.innerHTML = '';
+        }
+
+        if (snapshot.empty && isInitial) {
+            ytVideosGrid.innerHTML = '<div style="grid-column: span 3; text-align: center; color: #777; padding: 20px;">কোনো ভিডিও পাওয়া যায়নি।</div>';
+            loadMoreYtContainer.style.display = 'none';
+            return;
+        }
+
+        if (snapshot.empty) {
+            loadMoreYtContainer.style.display = 'none';
+            return;
+        }
+
+        ytLastVisible = snapshot.docs[snapshot.docs.length - 1];
+
+        snapshot.forEach(doc => {
+            const v = doc.data();
+            const card = document.createElement('div');
+            card.className = 'yt-video-card';
+
+            card.innerHTML = `
+                <div class="yt-video-embed-wrap" onclick="playYtVideo(this, '${v.videoLink}')">
+                    <img src="${v.thumbnail || 'https://via.placeholder.com/300x169'}" alt="${v.title || 'VIDEO'}" class="yt-thumb" loading="lazy">
+                    <div class="yt-play-btn">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="#ff6a00"><path d="M8 5v14l11-7z"/></svg>
+                    </div>
+                </div>
+                <div class="yt-video-info">
+                    <h4 class="yt-video-title">${v.title || 'VIDEO'}</h4>
+                </div>
+            `;
+            ytVideosGrid.appendChild(card);
+        });
+
+        if (snapshot.docs.length < 10) {
+            loadMoreYtContainer.style.display = 'none';
+        } else {
+            loadMoreYtContainer.style.display = 'block';
+        }
+    } catch (error) {
+        console.error('Error loading YouTube videos:', error);
+        if (isInitial) {
+            ytVideosGrid.innerHTML = '<div style="grid-column: span 3; text-align: center; color: #e53935; padding: 20px;">ভিডিও লোড করতে সমস্যা হয়েছে।</div>';
+        }
+    }
+}
+
+function playYtVideo(element, embedLink) {
+    if (!embedLink) return;
+    const iframe = document.createElement('iframe');
+    iframe.setAttribute('src', `${embedLink}?autoplay=1`);
+    iframe.setAttribute('title', 'YouTube video player');
+    iframe.setAttribute('frameborder', '0');
+    iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+    iframe.setAttribute('allowfullscreen', 'true');
+    iframe.style.width = '100%';
+    iframe.style.height = '100%';
+    iframe.style.position = 'absolute';
+    iframe.style.top = '0';
+    iframe.style.left = '0';
+    
+    element.innerHTML = '';
+    element.appendChild(iframe);
+}
+
+loadMoreYtBtn.addEventListener('click', () => loadYtVideos(false));
+
+/* ==========================================
    INFINITE SCROLL OBSERVER
    ========================================== */
 function initInfiniteScroll() {
@@ -352,6 +438,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loadFirebaseBanners();
     loadCategories(true);
     loadProducts(true);
+    loadYtVideos(true);
     initInfiniteScroll();
     loadFooter();
 });
