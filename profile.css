@@ -33,7 +33,6 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
-/* Header Styles */
 .site-header {
     background-color: #ffffff;
     border-bottom: 1px solid var(--border-color);
@@ -88,7 +87,6 @@ body {
     object-fit: contain;
 }
 
-/* Main Container */
 .main-content {
     padding: 30px 16px 60px;
     min-height: calc(100vh - 160px);
@@ -103,7 +101,6 @@ body {
     display: none !important;
 }
 
-/* Profile Header Card */
 .profile-header-card {
     background: var(--card-bg);
     border-radius: var(--radius-lg);
@@ -147,7 +144,6 @@ body {
     color: var(--text-muted);
 }
 
-/* Blocked Account Alert */
 .blocked-alert-card {
     background-color: var(--danger-bg);
     border: 1px solid var(--danger-border);
@@ -185,7 +181,6 @@ body {
     line-height: 1.5;
 }
 
-/* Account Information Section */
 .info-section {
     background: var(--card-bg);
     border-radius: var(--radius-lg);
@@ -202,7 +197,16 @@ body {
     color: var(--text-main);
     display: flex;
     align-items: center;
-    gap: 8px;
+    justify-content: space-between;
+}
+
+.completion-badge {
+    font-size: 0.85rem;
+    padding: 4px 10px;
+    border-radius: 20px;
+    background-color: var(--primary-light);
+    color: var(--primary);
+    font-weight: 600;
 }
 
 .info-grid {
@@ -226,6 +230,13 @@ body {
     font-weight: 500;
 }
 
+.info-value-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
 .info-value {
     display: block;
     font-size: 0.95rem;
@@ -234,11 +245,68 @@ body {
     word-break: break-all;
 }
 
-/* Action Grid Menu */
+.copy-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--primary);
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+    transition: var(--transition);
+}
+
+.copy-btn:hover {
+    background-color: var(--primary-light);
+}
+
+.copy-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* Edit Form Styles */
+.edit-form-box {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.form-group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.form-group input {
+    padding: 10px 12px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+    font-size: 0.95rem;
+    outline: none;
+    transition: var(--transition);
+}
+
+.form-group input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-light);
+}
+
 .action-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
     gap: 16px;
+    margin-bottom: 24px;
 }
 
 .action-card {
@@ -297,7 +365,88 @@ body {
     color: var(--text-muted);
 }
 
-/* States (Error & Warning) */
+.logout-container {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.logout-btn {
+    background-color: var(--danger-bg);
+    color: var(--danger-text);
+    border: 1px solid var(--danger-border);
+    border-radius: var(--radius-md);
+    padding: 12px 28px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.logout-btn:hover {
+    background-color: var(--danger-text);
+    color: #ffffff;
+}
+
+/* Custom Popup Styles */
+.custom-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+    padding: 16px;
+    backdrop-filter: blur(4px);
+}
+
+.custom-popup-box {
+    background: var(--card-bg);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-color);
+    text-align: center;
+    animation: popupScale 0.2s ease;
+}
+
+@keyframes popupScale {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.custom-popup-title {
+    margin: 0 0 8px 0;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.custom-popup-msg {
+    margin: 0 0 16px 0;
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+.custom-popup-error-code {
+    background: var(--danger-bg);
+    border: 1px solid var(--danger-border);
+    color: var(--danger-text);
+    padding: 8px 12px;
+    border-radius: var(--radius-md);
+    font-size: 0.8rem;
+    font-family: monospace;
+    word-break: break-all;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
 .state-container {
     display: flex;
     justify-content: center;
@@ -353,11 +502,10 @@ body {
     transition: var(--transition);
 }
 
-.primary-btn:hover, .primary-btn:focus-visible {
+.primary-btn:hover {
     background-color: var(--primary-dark);
 }
 
-/* Skeleton Loader Styles */
 .skeleton-wrapper {
     display: flex;
     flex-direction: column;
@@ -413,27 +561,12 @@ body {
     animation: pulse 1.5s infinite;
 }
 
-.skeleton-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-    gap: 16px;
-}
-
-.skeleton-grid-item {
-    background: var(--card-bg);
-    border-radius: var(--radius-lg);
-    height: 90px;
-    border: 1px solid var(--border-color);
-    animation: pulse 1.5s infinite;
-}
-
 @keyframes pulse {
     0% { opacity: 0.6; }
     50% { opacity: 1; }
     100% { opacity: 0.6; }
 }
 
-/* Footer Error Styling */
 .footer-error {
     padding: 20px;
     text-align: center;
@@ -443,21 +576,10 @@ body {
     font-size: 0.9rem;
 }
 
-/* Accessibility Focus States */
-a:focus-visible, button:focus-visible {
-    outline: 2px solid var(--primary);
-    outline-offset: 2px;
-}
-
-/* Responsive Design Adjustments */
 @media (max-width: 640px) {
     .profile-header-card {
         padding: 20px;
         flex-direction: column;
         text-align: center;
-    }
-    
-    .main-content {
-        padding: 20px 12px 40px;
     }
 }
