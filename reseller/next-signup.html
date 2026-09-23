@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sera Product Reseller - রিসেলার তথ্য সম্পূর্ণ করুন</title>
+    <!-- SEO Strategy: Since this is an authenticated private page, it should not be indexed by search engines. -->
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#ff6a00">
+    <link rel="icon" type="image/png" href="https://seraproduct.com/photo/logo.png">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Sera Product Reseller - তথ্য সম্পূর্ণ করুন">
+    <meta property="og:image" content="https://seraproduct.com/photo/facebook-preview.png">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="main-header">
+        <div class="header-content">
+            <img src="https://seraproduct.com/photo/header.png" alt="Sera Product Logo" class="logo">
+            <h1 class="header-title">SERA PRODUCT RESELLER</h1>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Main Loading State while checking Auth -->
+        <div id="page-loader" class="page-loader">
+            <div class="spinner"></div>
+            <p>আপনার তথ্য যাচাই করা হচ্ছে...</p>
+        </div>
+
+        <div class="auth-card hidden" id="registration-card">
+            <h2>রিসেলার তথ্য সম্পূর্ণ করুন</h2>
+            <p class="subtitle">নিচের সকল তথ্য সঠিকভাবে পূরণ করুন</p>
+            
+            <form id="details-form">
+                <div class="form-group">
+                    <label for="name">পুরো নাম</label>
+                    <p class="instruction">NID কার্ড অনুযায়ী আপনার পুরো নাম লিখুন</p>
+                    <input type="text" id="name" name="name" placeholder="যেমন: মো: শাহিদ ইসলাম" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">মোবাইল নাম্বার</label>
+                    <input type="tel" id="phone" name="phone" placeholder="যেমন: 01712345678" pattern="^01[3-9]\d{8}$" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="whatsApp">হোয়াটসঅ্যাপ নাম্বার</label>
+                    <input type="tel" id="whatsApp" name="whatsApp" placeholder="যেমন: 01712345678" pattern="^01[3-9]\d{8}$" required>
+                </div>
+
+                <!-- NID Upload Section -->
+                <div class="upload-section">
+                    <h3>NID ভেরিফিকেশন</h3>
+                    
+                    <div class="form-group">
+                        <label for="nidFront">NID কার্ডের সামনের ছবি</label>
+                        <input type="file" id="nidFront" name="nidFront" accept="image/jpeg, image/png, image/webp" required>
+                        <div class="file-preview" id="previewFront"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nidBack">NID কার্ডের পেছনের ছবি</label>
+                        <input type="file" id="nidBack" name="nidBack" accept="image/jpeg, image/png, image/webp" required>
+                        <div class="file-preview" id="previewBack"></div>
+                    </div>
+                </div>
+
+                <!-- Payment Notice -->
+                <div class="payment-notice">
+                    <div class="notice-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                    </div>
+                    <div class="notice-text">
+                        <strong>জরুরী নোটিশ:</strong> 01615615260 এই নাম্বারে বিকাশে ১০০ টাকা পাঠান। টাকা পাঠানোর পর পাওয়া ট্রাঞ্জেকশন আইডি লিখুন। নোট: টাকা না পাঠালে একাউন্ট এক্টিভ এবং ভেরিফাইড করা হবে না ❌
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="sendMoneyNumber">যে নাম্বার থেকে টাকা পাঠানো হয়েছে</label>
+                    <input type="tel" id="sendMoneyNumber" name="sendMoneyNumber" placeholder="আপনার বিকাশ নাম্বার" pattern="^01[3-9]\d{8}$" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="transectionId">ট্রাঞ্জেকশন আইডি</label>
+                    <input type="text" id="transectionId" name="transectionId" placeholder="যেমন: 9KX7Y2Z123" required>
+                </div>
+
+                <button type="submit" class="primary-btn" id="submit-details-btn">
+                    <span class="btn-text">একাউন্ট তৈরি করুন</span>
+                    <span class="loader hidden"></span>
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <!-- Custom Modal -->
+    <div id="custom-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">বার্তা</h3>
+                <button class="close-modal" aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="modal-message"></p>
+                <div id="upload-progress-container" class="hidden">
+                    <div class="progress-text">ছবি আপলোড হচ্ছে...</div>
+                    <div class="progress-bar"><div class="progress-fill"></div></div>
+                </div>
+                <details class="error-details hidden" id="modal-details-container">
+                    <summary>Technical Error (বিস্তারিত)</summary>
+                    <pre id="modal-details"></pre>
+                </details>
+            </div>
+            <div class="modal-footer">
+                <button class="primary-btn close-modal-btn">ঠিক আছে</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK (Modular) -->
+    <script type="module" src="next-signup.js"></script>
+</body>
+</html>
