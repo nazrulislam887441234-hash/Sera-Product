@@ -297,3 +297,46 @@ forgotPasswordBtn.addEventListener('click', () => {
         }
     });
 });
+// ================================
+// Sera Product Footer Loader
+// ================================
+async function loadFooter() {
+    const footerContainer = document.getElementById("footer-container");
+
+    if (!footerContainer) return;
+
+    try {
+        const response = await fetch("https://seraproduct.com/footer", {
+            method: "GET",
+            cache: "no-store"
+        });
+
+        if (!response.ok) {
+            throw new Error(`Footer request failed: ${response.status}`);
+        }
+
+        const footerHTML = await response.text();
+
+        if (!footerHTML.trim()) {
+            throw new Error("Footer content is empty.");
+        }
+
+        footerContainer.innerHTML = footerHTML;
+
+    } catch (error) {
+        console.error("Footer loading error:", error);
+
+        footerContainer.innerHTML = `
+            <div style="
+                padding:20px;
+                text-align:center;
+                color:#777;
+                font-size:14px;
+            ">
+                Footer লোড করা যায়নি।
+            </div>
+        `;
+    }
+}
+
+loadFooter();
