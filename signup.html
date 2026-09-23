@@ -220,6 +220,61 @@
             stroke: var(--primary-orange);
         }
 
+        /* Google Login Button */
+        .btn-google {
+            width: 100%;
+            background: var(--white);
+            color: var(--text-dark);
+            border: 1px solid var(--border);
+            padding: 11px 14px;
+            font-size: 14.5px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-bottom: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-family: inherit;
+        }
+
+        .btn-google:hover {
+            background: var(--background);
+            border-color: #d1d1d1;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .btn-google svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .auth-divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 13px;
+            margin: 16px 0;
+        }
+
+        .auth-divider::before,
+        .auth-divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .auth-divider::before {
+            margin-right: 10px;
+        }
+
+        .auth-divider::after {
+            margin-left: 10px;
+        }
+
         .btn-submit {
             width: 100%;
             background: var(--primary-orange);
@@ -231,7 +286,7 @@
             border-radius: 8px;
             cursor: pointer;
             transition: var(--transition);
-            margin-top: 8px;
+            margin-top: 4px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -469,6 +524,19 @@
 
             <!-- Login Form -->
             <form id="loginForm" class="auth-form">
+                <!-- Google Login Button Added Here -->
+                <button type="button" class="btn-google" id="googleLoginBtn" onclick="loginWithGoogle()">
+                    <svg viewBox="0 0 24 24">
+                        <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
+                        <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.19v3.15C3.17 21.36 7.22 24 12 24z"/>
+                        <path fill="#FBBC05" d="M5.27 14.24c-.25-.72-.38-1.49-.38-2.24s.13-1.52.38-2.24V6.6H1.19C.43 8.13 0 9.87 0 11.7c0 1.83.43 3.57 1.19 5.1l4.08-2.56z"/>
+                        <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.22 0 3.17 2.64 1.19 6.6l4.08 3.15c.95-2.85 3.6-4.96 6.73-4.96z"/>
+                    </svg>
+                    গুগল দিয়ে লগিন করুন
+                </button>
+
+                <div class="auth-divider">অথবা</div>
+
                 <div class="form-group">
                     <label class="form-label">ইমেইল</label>
                     <div class="input-wrapper">
@@ -521,14 +589,14 @@
            FIREBASE CONFIGURATION PLACEHOLDER
            ========================================== */
         const firebaseConfig = {
-  apiKey: "AIzaSyBRSt2aoSJ-lumYAWGAXE6ncui7__TqJ4E",
-  authDomain: "sera-product.firebaseapp.com",
-  projectId: "sera-product",
-  storageBucket: "sera-product.firebasestorage.app",
-  messagingSenderId: "516762224598",
-  appId: "1:516762224598:web:b6a571f355a8a4a97c0677",
-  measurementId: "G-RLMWH43FXX"
-};
+          apiKey: "AIzaSyBRSt2aoSJ-lumYAWGAXE6ncui7__TqJ4E",
+          authDomain: "sera-product.firebaseapp.com",
+          projectId: "sera-product",
+          storageBucket: "sera-product.firebasestorage.app",
+          messagingSenderId: "516762224598",
+          appId: "1:516762224598:web:b6a571f355a8a4a97c0677",
+          measurementId: "G-RLMWH43FXX"
+        };
 
         if (!firebase.apps.length) {
             firebase.initializeApp(firebaseConfig);
@@ -635,6 +703,35 @@
                     return 'ইন্টারনেট সংযোগ পরীক্ষা করে আবার চেষ্টা করুন।';
                 default:
                     return 'কাজটি সম্পন্ন করা যাচ্ছে না। কিছুক্ষণ পরে আবার চেষ্টা করুন।';
+            }
+        }
+
+        /* ==========================================
+           GOOGLE LOGIN HANDLER
+           ========================================== */
+        async function loginWithGoogle() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            try {
+                const result = await auth.signInWithPopup(provider);
+                const user = result.user;
+                const uid = user.uid;
+
+                const buyerDoc = await db.collection("buyers").doc(uid).get();
+
+                if (!buyerDoc.exists) {
+                    await db.collection("buyers").doc(uid).set({
+                        name: user.displayName || "ব্যবহারকারী",
+                        phone: user.phoneNumber || "01700000000",
+                        email: user.email,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                }
+
+                window.location.href = "https://seraproduct.com/profile";
+            } catch (error) {
+                if (error.code !== 'auth/popup-closed-by-user') {
+                    showModal("ত্রুটি", getFriendlyFirebaseError(error.code), "error");
+                }
             }
         }
 
