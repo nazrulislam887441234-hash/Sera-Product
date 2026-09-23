@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sera Product Reseller Login - সেলার লগিন</title>
+    <meta name="description" content="Sera Product Reseller একাউন্টে নিরাপদে লগিন করুন এবং আপনার রিসেলার ড্যাশবোর্ড ব্যবহার করুন।">
+    <meta name="theme-color" content="#ff6a00">
+    <meta name="robots" content="index, follow">
+    <link rel="icon" type="image/png" href="https://seraproduct.com/photo/logo.png">
+    <link rel="canonical" href="https://seraproduct.com/reseller/login">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://seraproduct.com/reseller/login">
+    <meta property="og:title" content="Sera Product Reseller Login">
+    <meta property="og:description" content="Sera Product Reseller একাউন্টে লগিন করুন।">
+    <meta property="og:image" content="https://seraproduct.com/photo/facebook-preview.png">
+
+    <!-- X / Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Sera Product Reseller Login">
+    <meta name="twitter:description" content="Sera Product Reseller একাউন্টে লগিন করুন।">
+    <meta name="twitter:image" content="https://seraproduct.com/photo/twitter.png">
+
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="main-header">
+        <div class="header-content">
+            <a href="https://seraproduct.com" class="logo-link">
+                <img src="https://seraproduct.com/photo/header.png" alt="Sera Product Logo" class="logo">
+            </a>
+            <span class="header-title">SERA PRODUCT RESELLER</span>
+        </div>
+    </header>
+
+    <!-- Main Container / Login Card -->
+    <main class="container">
+        <div class="auth-card">
+            <h2>সেলার লগিন</h2>
+            <p class="subtitle">আপনার একাউন্টে লগিন করুন</p>
+
+            <form id="login-form" novalidate>
+                <div class="form-group">
+                    <label for="email">ইমেইল এড্রেস</label>
+                    <div class="input-wrapper">
+                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                            <polyline points="22,6 12,13 2,6"></polyline>
+                        </svg>
+                        <input type="email" id="email" name="email" placeholder="আপনার ইমেইল এড্রেস লিখুন" required autocomplete="email">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">পাসওয়ার্ড</label>
+                    <div class="input-wrapper">
+                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        </svg>
+                        <input type="password" id="password" name="password" placeholder="পাসওয়ার্ড দিন" required autocomplete="current-password">
+                        <button type="button" class="toggle-password" id="toggle-password" aria-label="পাসওয়ার্ড দৃশ্যমান করুন">
+                            <svg id="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-actions-link">
+                    <button type="button" class="text-btn" id="forgot-password-btn">পাসওয়ার্ড ভুলে গেছেন?</button>
+                </div>
+
+                <button type="submit" class="primary-btn" id="login-btn">
+                    <span class="btn-text">লগিন করুন</span>
+                    <span class="loader hidden" aria-hidden="true"></span>
+                </button>
+            </form>
+
+            <div class="card-footer-link">
+                <p>কোনো একাউন্ট নেই? <a href="https://seraproduct.com/reseller/signup">নতুন একাউন্ট তৈরি করুন</a></p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Custom Reusable Modal System -->
+    <div id="custom-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal-content">
+            <div class="modal-header" id="modal-header-bg">
+                <div class="modal-header-title-wrap">
+                    <svg id="modal-icon" class="modal-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"></svg>
+                    <h3 id="modal-title">বার্তা</h3>
+                </div>
+                <button class="close-modal" id="modal-close-x" aria-label="বন্ধ করুন">&times;</button>
+            </div>
+            
+            <div class="modal-body" id="modal-body-content">
+                <!-- Dynamic Content goes here (Error text, Form for Password Reset, etc.) -->
+                <p id="modal-message"></p>
+                
+                <div id="modal-dynamic-area"></div>
+
+                <details class="error-details hidden" id="modal-details-container">
+                    <summary>Technical Details (প্রযুক্তিগত বিবরণ)</summary>
+                    <pre id="modal-details"></pre>
+                </details>
+            </div>
+
+            <div class="modal-footer" id="modal-footer-actions">
+                <button class="primary-btn" id="modal-ok-btn">ঠিক আছে</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase App & Modular SDKs -->
+    <script type="module" src="login.js"></script>
+</body>
+</html>
