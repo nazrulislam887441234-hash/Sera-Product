@@ -9,7 +9,7 @@
     <title>লগইন / সাইন আপ | Sera Product</title>
     <meta name="description" content="Sera Product-এর অ্যাকাউন্ট লগইন অথবা নতুন অ্যাকাউন্ট তৈরি করুন।">
     
-    <link rel="canonical" href="https://seraproduct.com/auth.html">
+    <link rel="canonical" href="https://seraproduct.com/login">
     <link rel="icon" type="image/png" href="https://seraproduct.com/photo/logo.png">
     <link rel="apple-touch-icon" href="https://seraproduct.com/photo/logo.png">
 
@@ -409,12 +409,12 @@
         <div class="auth-container">
             <!-- Tabs -->
             <div class="auth-tabs">
-                <button type="button" class="auth-tab-btn active" id="tabSignupBtn" onclick="switchTab('signup')">সাইন আপ</button>
-                <button type="button" class="auth-tab-btn" id="tabLoginBtn" onclick="switchTab('login')">লগইন</button>
+                <button type="button" class="auth-tab-btn" id="tabSignupBtn" onclick="switchTab('signup')">সাইন আপ</button>
+                <button type="button" class="auth-tab-btn active" id="tabLoginBtn" onclick="switchTab('login')">লগইন</button>
             </div>
 
             <!-- Signup Form -->
-            <form id="signupForm" class="auth-form active">
+            <form id="signupForm" class="auth-form">
                 <div class="form-group">
                     <label class="form-label">নাম</label>
                     <div class="input-wrapper">
@@ -468,7 +468,7 @@
             </form>
 
             <!-- Login Form -->
-            <form id="loginForm" class="auth-form">
+            <form id="loginForm" class="auth-form active">
                 <div class="form-group">
                     <label class="form-label">ইমেইল</label>
                     <div class="input-wrapper">
