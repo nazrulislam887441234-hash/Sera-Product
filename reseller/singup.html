@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sera Product Reseller - রিসেলার একাউন্ট তৈরি করুন</title>
+    <meta name="description" content="সেরা প্রোডাক্ট রিসেলার প্রোগ্রামে যুক্ত হোন এবং আপনার ব্যবসা শুরু করুন। একাউন্ট তৈরি বা লগইন করতে ইমেইল এবং পাসওয়ার্ড দিন।">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#ff6a00">
+    <link rel="icon" type="image/png" href="https://seraproduct.com/photo/logo.png">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Sera Product Reseller - একাউন্ট তৈরি করুন">
+    <meta property="og:description" content="সেরা প্রোডাক্ট রিসেলার প্রোগ্রামে যুক্ত হোন এবং আপনার ব্যবসা শুরু করুন।">
+    <meta property="og:image" content="https://seraproduct.com/photo/facebook-preview.png">
+    <meta property="og:url" content="https://seraproduct.com/reseller/signup">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://seraproduct.com/photo/twitter.png">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <div class="header-content">
+            <img src="https://seraproduct.com/photo/header.png" alt="Sera Product Logo" class="logo">
+            <h1 class="header-title">SERA PRODUCT RESELLER</h1>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <div class="auth-card">
+            <h2>রিসেলার তৈরি করুন</h2>
+            <p class="subtitle">আপনার ইমেইল ও পাসওয়ার্ড দিয়ে এগিয়ে যান</p>
+            
+            <form id="signup-form">
+                <div class="form-group">
+                    <label for="email">ইমেইল</label>
+                    <div class="input-wrapper">
+                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                        <input type="email" id="email" name="email" placeholder="example@gmail.com" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">পাসওয়ার্ড</label>
+                    <div class="input-wrapper">
+                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                        <input type="password" id="password" name="password" placeholder="আপনার পাসওয়ার্ড দিন" required>
+                        <button type="button" class="toggle-password" id="toggle-password" aria-label="Show password">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" class="primary-btn" id="submit-btn">
+                    <span class="btn-text">চালিয়ে যান</span>
+                    <span class="loader hidden"></span>
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <!-- Custom Modal -->
+    <div id="custom-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">বার্তা</h3>
+                <button class="close-modal" aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="modal-message"></p>
+                <details class="error-details hidden" id="modal-details-container">
+                    <summary>Technical Error (বিস্তারিত)</summary>
+                    <pre id="modal-details"></pre>
+                </details>
+            </div>
+            <div class="modal-footer">
+                <button class="primary-btn close-modal-btn">ঠিক আছে</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK (Modular) -->
+    <script type="module" src="signup.js"></script>
+</body>
+</html>
