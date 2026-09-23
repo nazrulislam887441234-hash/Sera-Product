@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sera Product Profile - প্রোফাইল</title>
+    
+    <!-- SEO & Meta Tags -->
+    <meta name="description" content="Sera Product Buyer Profile থেকে আপনার অ্যাকাউন্টের তথ্য, অর্ডার, কার্ট এবং অন্যান্য সুবিধা দেখুন।">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#ff6a00">
+    <link rel="canonical" href="https://seraproduct.com/profile">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://seraproduct.com/profile">
+    <meta property="og:title" content="Sera Product Profile - প্রোফাইল">
+    <meta property="og:description" content="Sera Product Buyer Profile থেকে আপনার অ্যাকাউন্টের তথ্য, অর্ডার, কার্ট এবং অন্যান্য সুবিধা দেখুন।">
+    <meta property="og:image" content="https://seraproduct.com/photo/facebook-preview.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://seraproduct.com/profile">
+    <meta property="twitter:title" content="Sera Product Profile - প্রোফাইল">
+    <meta property="twitter:description" content="Sera Product Buyer Profile থেকে আপনার অ্যাকাউন্টের তথ্য, অর্ডার, কার্ট এবং অন্যান্য সুবিধা দেখুন।">
+    <meta property="twitter:image" content="https://seraproduct.com/photo/twitter.png">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://seraproduct.com/photo/logo.png">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="profile.css">
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header class="site-header">
+        <div class="header-container">
+            <a href="https://seraproduct.com/cart" class="cart-icon-btn" aria-label="কার্ট দেখুন">
+                <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="9" cy="21" r="1"></circle>
+                    <circle cx="20" cy="21" r="1"></circle>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                </svg>
+            </a>
+            <a href="https://seraproduct.com" class="logo-link">
+                <img src="https://seraproduct.com/photo/header.png" alt="Sera Product Logo" class="logo-img">
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="main-content">
+        <div class="container" id="profile-container">
+            
+            <!-- Skeleton Loader (Initial State) -->
+            <div id="skeleton-loader" class="skeleton-wrapper">
+                <div class="skeleton-header-card">
+                    <div class="skeleton-avatar"></div>
+                    <div class="skeleton-lines">
+                        <div class="skeleton-line title-line"></div>
+                        <div class="skeleton-line sub-line"></div>
+                    </div>
+                </div>
+                <div class="skeleton-card"></div>
+                <div class="skeleton-grid">
+                    <div class="skeleton-grid-item"></div>
+                    <div class="skeleton-grid-item"></div>
+                    <div class="skeleton-grid-item"></div>
+                    <div class="skeleton-grid-item"></div>
+                    <div class="skeleton-grid-item"></div>
+                </div>
+            </div>
+
+            <!-- Profile Content Area (Hidden initially) -->
+            <div id="profile-content" class="hidden"></div>
+
+            <!-- Error State Container (Hidden initially) -->
+            <div id="error-state" class="state-container hidden">
+                <div class="state-card error-card">
+                    <svg class="state-icon error-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                    <h2>প্রোফাইল তথ্য লোড করা যায়নি</h2>
+                    <p>ইন্টারনেট সংযোগ পরীক্ষা করে আবার চেষ্টা করুন।</p>
+                    <button id="retry-btn" class="primary-btn">আবার চেষ্টা করুন</button>
+                </div>
+            </div>
+
+            <!-- Empty / Warning State Container (Hidden initially) -->
+            <div id="empty-state" class="state-container hidden">
+                <div class="state-card warning-card">
+                    <svg class="state-icon warning-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                    <h2>প্রোফাইল তথ্য পাওয়া যায়নি</h2>
+                    <p>আপনার অ্যাকাউন্টের প্রোফাইল তথ্য এখনো তৈরি হয়নি।</p>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer Container -->
+    <div id="footer-container"></div>
+
+    <!-- JavaScript Application Script -->
+    <script type="module" src="profile.js"></script>
+<nav class="sp-mobile-nav" aria-label="Mobile Navigation">
+
+  <a href="https://seraproduct.com/" class="sp-nav-item" data-page="home">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M3 10.5 12 3l9 7.5v9a1.5 1.5 0 0 1-1.5 1.5H4.5A1.5 1.5 0 0 1 3 19.5v-9Z"/>
+      <path d="M9 21v-6h6v6"/>
+    </svg>
+    <span>Home</span>
+  </a>
+
+
+  <a href="https://seraproduct.com/reseller" class="sp-nav-item" data-page="reseller">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M20 12a8 8 0 1 1-2.34-5.66"/>
+      <path d="M20 4v6h-6"/>
+      <path d="M8 16.5a4.5 4.5 0 0 0 8 0"/>
+      <path d="M9.5 9.5h.01M14.5 9.5h.01"/>
+    </svg>
+    <span>Reseller</span>
+  </a>
+
+
+  <a href="https://seraproduct.com/categories" class="sp-nav-item" data-page="categories">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <rect x="3" y="3" width="7" height="7" rx="1"/>
+      <rect x="14" y="3" width="7" height="7" rx="1"/>
+      <rect x="3" y="14" width="7" height="7" rx="1"/>
+      <rect x="14" y="14" width="7" height="7" rx="1"/>
+    </svg>
+    <span>Categories</span>
+  </a>
+
+
+  <a href="https://seraproduct.com/all-product" class="sp-nav-item" data-page="products">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M6 3h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/>
+      <path d="M8 7h8M8 11h8M8 15h5"/>
+    </svg>
+    <span>All Product</span>
+  </a>
+
+
+  <a href="https://seraproduct.com/profile" class="sp-nav-item" data-page="profile">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="12" cy="8" r="4"/>
+      <path d="M4 21a8 8 0 0 1 16 0"/>
+    </svg>
+    <span>Profile</span>
+  </a>
+
+
+  <style>
+
+    /* =====================================================
+       SERA PRODUCT — MOBILE BUTTON NAV
+       ===================================================== */
+
+    .sp-mobile-nav {
+
+      /* Hidden on desktop */
+      display: none;
+
+      position: fixed;
+
+      left: 12px;
+      right: 12px;
+      bottom: 12px;
+
+      z-index: 99999;
+
+      height: 66px;
+
+      padding: 6px;
+
+      align-items: stretch;
+
+      justify-content: space-between;
+
+      gap: 3px;
+
+      background:
+        rgba(255,255,255,.96);
+
+      border:
+        1px solid
+        rgba(0,0,0,.07);
+
+      border-radius: 20px;
+
+      box-shadow:
+        0 10px 35px
+        rgba(0,0,0,.16),
+        0 2px 8px
+        rgba(0,0,0,.06);
+
+      backdrop-filter:
+        blur(18px);
+
+      -webkit-backdrop-filter:
+        blur(18px);
+
+      font-family:
+        "Hind Siliguri",
+        "Noto Sans Bengali",
+        Arial,
+        sans-serif;
+
+      box-sizing: border-box;
+    }
+
+
+    .sp-mobile-nav *,
+    .sp-mobile-nav *::before,
+    .sp-mobile-nav *::after {
+      box-sizing: border-box;
+    }
+
+
+    /* =====================================================
+       NAV ITEM
+       ===================================================== */
+
+    .sp-mobile-nav .sp-nav-item {
+
+      position: relative;
+
+      flex: 1 1 0;
+
+      min-width: 0;
+
+      height: 54px;
+
+      display: flex;
+
+      flex-direction: column;
+
+      align-items: center;
+
+      justify-content: center;
+
+      gap: 3px;
+
+      padding: 4px 2px;
+
+      border-radius: 15px;
+
+      color: #777;
+
+      background: transparent;
+
+      text-decoration: none;
+
+      -webkit-tap-highlight-color: transparent;
+
+      transition:
+        color .25s ease,
+        background .25s ease,
+        transform .2s ease;
+    }
+
+
+    /* =====================================================
+       SVG ICON
+       ===================================================== */
+
+    .sp-mobile-nav .sp-nav-item svg {
+
+      width: 21px;
+      height: 21px;
+
+      flex-shrink: 0;
+
+      fill: none;
+
+      stroke: currentColor;
+
+      stroke-width: 1.8;
+
+      stroke-linecap: round;
+
+      stroke-linejoin: round;
+
+      transition:
+        transform .25s ease,
+        stroke-width .25s ease;
+    }
+
+
+    /* =====================================================
+       TEXT
+       ===================================================== */
+
+    .sp-mobile-nav .sp-nav-item span {
+
+      display: block;
+
+      max-width: 100%;
+
+      overflow: hidden;
+
+      text-overflow: ellipsis;
+
+      white-space: nowrap;
+
+      font-size: 10px;
+
+      font-weight: 600;
+
+      line-height: 1.2;
+
+      letter-spacing: -.1px;
+    }
+
+
+    /* =====================================================
+       ACTIVE ITEM
+       ===================================================== */
+
+    .sp-mobile-nav .sp-nav-item.active {
+
+      color: #ff6b35;
+
+      background:
+        rgba(255,107,53,.10);
+
+      box-shadow:
+        inset 0 0 0 1px
+        rgba(255,107,53,.08);
+    }
+
+
+    .sp-mobile-nav .sp-nav-item.active svg {
+
+      stroke-width: 2.2;
+
+      transform:
+        translateY(-1px);
+    }
+
+
+    /* Orange active indicator */
+    .sp-mobile-nav .sp-nav-item.active::before {
+
+      content: "";
+
+      position: absolute;
+
+      top: 3px;
+
+      left: 50%;
+
+      width: 22px;
+
+      height: 3px;
+
+      transform:
+        translateX(-50%);
+
+      border-radius: 0 0 10px 10px;
+
+      background:
+        linear-gradient(
+          90deg,
+          #ff6b35,
+          #ff9b70
+        );
+
+      box-shadow:
+        0 2px 8px
+        rgba(255,107,53,.28);
+    }
+
+
+    /* =====================================================
+       TOUCH EFFECT
+       ===================================================== */
+
+    .sp-mobile-nav .sp-nav-item:active {
+
+      transform:
+        scale(.94);
+    }
+
+
+    /* =====================================================
+       MOBILE ONLY
+       ===================================================== */
+
+    @media (max-width: 767px) {
+
+      .sp-mobile-nav {
+        display: flex;
+      }
+
+      /*
+       * Prevent fixed navigation from covering
+       * the last content of the page.
+       */
+      body {
+        padding-bottom: 88px;
+      }
+
+    }
+
+
+    /* =====================================================
+       VERY SMALL MOBILE
+       ===================================================== */
+
+    @media (max-width: 360px) {
+
+      .sp-mobile-nav {
+
+        left: 8px;
+        right: 8px;
+        bottom: 8px;
+
+        height: 62px;
+
+        border-radius: 18px;
+
+        padding: 5px;
+      }
+
+
+      .sp-mobile-nav .sp-nav-item {
+
+        height: 52px;
+
+        border-radius: 14px;
+      }
+
+
+      .sp-mobile-nav .sp-nav-item svg {
+
+        width: 20px;
+        height: 20px;
+      }
+
+
+      .sp-mobile-nav .sp-nav-item span {
+
+        font-size: 9px;
+      }
+
+    }
+
+
+    /* =====================================================
+       REDUCED MOTION
+       ===================================================== */
+
+    @media (prefers-reduced-motion: reduce) {
+
+      .sp-mobile-nav *,
+      .sp-mobile-nav *::before,
+      .sp-mobile-nav *::after {
+
+        transition: none !important;
+
+        animation: none !important;
+      }
+
+    }
+
+  </style>
+
+
+  <!-- =========================
+       AUTO ACTIVE PAGE
+       ========================= -->
+  <script>
+    (function () {
+
+      const currentPath =
+        window.location.pathname
+          .replace(/\/+$/, "")
+          .toLowerCase();
+
+      const navItems =
+        document.querySelectorAll(
+          ".sp-mobile-nav .sp-nav-item"
+        );
+
+
+      navItems.forEach(function (item) {
+
+        const page =
+          item.getAttribute("data-page");
+
+
+        let isActive = false;
+
+
+        /* HOME */
+        if (
+          page === "home" &&
+          (
+            currentPath === "" ||
+            currentPath === "/" ||
+            currentPath === "/index.html"
+          )
+        ) {
+          isActive = true;
+        }
+
+
+        /* RESELLER */
+        if (
+          page === "reseller" &&
+          (
+            currentPath === "/reseller" ||
+            currentPath === "/reseller.html"
+          )
+        ) {
+          isActive = true;
+        }
+
+
+        /* CATEGORIES */
+        if (
+          page === "categories" &&
+          (
+            currentPath === "/categories" ||
+            currentPath === "/categories.html"
+          )
+        ) {
+          isActive = true;
+        }
+
+
+        /* ALL PRODUCTS */
+        if (
+          page === "products" &&
+          (
+            currentPath === "/all-product" ||
+            currentPath === "/all-product.html"
+          )
+        ) {
+          isActive = true;
+        }
+
+
+        /* PROFILE */
+        if (
+          page === "profile" &&
+          (
+            currentPath === "/profile" ||
+            currentPath === "/profile.html"
+          )
+        ) {
+          isActive = true;
+        }
+
+
+        if (isActive) {
+          item.classList.add("active");
+          item.setAttribute(
+            "aria-current",
+            "page"
+          );
+        }
+
+      });
+
+    })();
+  </script>
+
+</nav>
+</body>
+</html>
