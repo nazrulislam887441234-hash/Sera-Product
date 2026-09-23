@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#ff6a00">
-    <meta name="robots" content="index, follow">
+    <meta name="robots" content="noindex, nofollow">
     
     <title>লগইন / সাইন আপ | Sera Product</title>
     <meta name="description" content="Sera Product-এর অ্যাকাউন্ট লগইন অথবা নতুন অ্যাকাউন্ট তৈরি করুন।">
     
-    <link rel="canonical" href="https://seraproduct.com/login">
+    <link rel="canonical" href="https://seraproduct.com/auth.html">
     <link rel="icon" type="image/png" href="https://seraproduct.com/photo/logo.png">
     <link rel="apple-touch-icon" href="https://seraproduct.com/photo/logo.png">
 
@@ -253,6 +253,64 @@
             cursor: not-allowed;
         }
 
+        /* Google Login Button Style */
+        .btn-google {
+            width: 100%;
+            background: var(--white);
+            color: var(--text-dark);
+            border: 1px solid var(--border);
+            padding: 11px 12px;
+            font-size: 14.5px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-family: inherit;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .btn-google:hover {
+            background: var(--background);
+            border-color: #d0d0d0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .btn-google img {
+            width: 18px;
+            height: 18px;
+            object-fit: contain;
+        }
+
+        /* Divider for Google login */
+        .auth-divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 16px 0 4px 0;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        .auth-divider::before,
+        .auth-divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .auth-divider::before {
+            margin-right: 10px;
+        }
+
+        .auth-divider::after {
+            margin-left: 10px;
+        }
+
         /* Spinner inside button */
         .btn-spinner {
             width: 18px;
@@ -492,6 +550,13 @@
                     <span id="loginBtnText">লগইন করুন</span>
                     <div class="btn-spinner" id="loginSpinner"></div>
                 </button>
+
+                <div class="auth-divider">অথবা</div>
+
+                <button type="button" class="btn-google" id="googleLoginBtn" onclick="loginWithGoogle()">
+                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google Logo">
+                    <span>গুগল দিয়ে লগিন করুন</span>
+                </button>
             </form>
         </div>
     </main>
@@ -521,14 +586,14 @@
            FIREBASE CONFIGURATION PLACEHOLDER
            ========================================== */
         const firebaseConfig = {
-  apiKey: "AIzaSyBRSt2aoSJ-lumYAWGAXE6ncui7__TqJ4E",
-  authDomain: "sera-product.firebaseapp.com",
-  projectId: "sera-product",
-  storageBucket: "sera-product.firebasestorage.app",
-  messagingSenderId: "516762224598",
-  appId: "1:516762224598:web:b6a571f355a8a4a97c0677",
-  measurementId: "G-RLMWH43FXX"
-};
+          apiKey: "AIzaSyBRSt2aoSJ-lumYAWGAXE6ncui7__TqJ4E",
+          authDomain: "sera-product.firebaseapp.com",
+          projectId: "sera-product",
+          storageBucket: "sera-product.firebasestorage.app",
+          messagingSenderId: "516762224598",
+          appId: "1:516762224598:web:b6a571f355a8a4a97c0677",
+          measurementId: "G-RLMWH43FXX"
+        };
 
         if (!firebase.apps.length) {
             firebase.initializeApp(firebaseConfig);
@@ -633,6 +698,8 @@
                     return 'অনেকবার চেষ্টা করা হয়েছে। কিছুক্ষণ পরে আবার চেষ্টা করুন।';
                 case 'auth/network-request-failed':
                     return 'ইন্টারনেট সংযোগ পরীক্ষা করে আবার চেষ্টা করুন।';
+                case 'auth/popup-closed-by-user':
+                    return 'গুগল লগইন পপআপটি বন্ধ করে দেওয়া হয়েছে।';
                 default:
                     return 'কাজটি সম্পন্ন করা যাচ্ছে না। কিছুক্ষণ পরে আবার চেষ্টা করুন।';
             }
@@ -673,6 +740,39 @@
                 }
             });
         });
+
+        // Google Login Handler
+        async function loginWithGoogle() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            const googleBtn = document.getElementById("googleLoginBtn");
+            
+            try {
+                googleBtn.disabled = true;
+                googleBtn.style.opacity = '0.7';
+
+                const result = await auth.signInWithPopup(provider);
+                const user = result.user;
+                const uid = user.uid;
+
+                const buyerDoc = await db.collection("buyers").doc(uid).get();
+
+                if (!buyerDoc.exists) {
+                    await db.collection("buyers").doc(uid).set({
+                        name: user.displayName || user.email.split('@')[0],
+                        phone: user.phoneNumber || "01700000000",
+                        email: user.email,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                }
+
+                window.location.href = "https://seraproduct.com/profile";
+
+            } catch (error) {
+                googleBtn.disabled = false;
+                googleBtn.style.opacity = '1';
+                showModal("লগইন ব্যর্থ", getFriendlyFirebaseError(error.code), "error");
+            }
+        }
 
         // Signup Submission Handler
         document.getElementById("signupForm").addEventListener("submit", async function (e) {
