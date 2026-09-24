@@ -18,6 +18,27 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+// ================================
+// Referral Code Auto Detection & Storage Logic
+// ================================
+function handleReferralCode() {
+    try {
+        const urlParams = new URLSearchParams(window.location.search);
+        let refCode = urlParams.get('ref');
+
+        if (refCode && refCode.trim() !== "") {
+            refCode = refCode.trim();
+            // লোকাল স্টোরেজে সেভ করা হলো
+            localStorage.setItem('sera_ref_code', refCode);
+        }
+    } catch (err) {
+        console.error("Referral handling error:", err);
+    }
+}
+
+// পেজ লোড হওয়ার সাথে সাথেই রেফারেল কোড চেক ও সেভ করবে
+handleReferralCode();
+
 // DOM Elements
 const form = document.getElementById('signup-form');
 const btn = document.getElementById('submit-btn');
