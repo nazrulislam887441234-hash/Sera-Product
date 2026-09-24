@@ -1,8 +1,8 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getFirestore, doc, getDoc, setDoc, collection, query, where, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-// Firebase Configuration (signup.js এর মতো একই কনফিগ দিন)
+// Firebase Configuration
 const firebaseConfig = {
   apiKey: "AIzaSyBRSt2aoSJ-lumYAWGAXE6ncui7__TqJ4E",
   authDomain: "sera-product.firebaseapp.com",
@@ -12,7 +12,7 @@ const firebaseConfig = {
   appId: "1:516762224598:web:b6a571f355a8a4a97c0677",
   measurementId: "G-RLMWH43FXX"
 };
-// Cloudflare Worker URL - আপনার ডেপ্লয় করা Worker URL এখানে বসান
+// Cloudflare Worker URL
 const WORKER_UPLOAD_URL = "https://image.seraproduct.com";
 
 const app = initializeApp(firebaseConfig);
@@ -27,6 +27,11 @@ const btn = document.getElementById('submit-details-btn');
 const btnText = btn.querySelector('.btn-text');
 const loader = btn.querySelector('.loader');
 
+const referralInput = document.getElementById('referralCode');
+const referralStatus = document.getElementById('referral-status');
+const feeAmountSpan = document.getElementById('fee-amount');
+const paymentNoticeBox = document.getElementById('payment-notice-box');
+
 // Modal Elements
 const modal = document.getElementById('custom-modal');
 const modalTitle = document.getElementById('modal-title');
@@ -37,6 +42,7 @@ const progressContainer = document.getElementById('upload-progress-container');
 const closeBtns = document.querySelectorAll('.close-modal, .close-modal-btn');
 
 let currentUser = null;
+let validatedReferralData = null; // { refferalCode, refferalUserId }
 
 // Modal Functions
 function showModal(title, message, isError = false, errorDetails = null, showProgress = false) {
@@ -67,6 +73,52 @@ closeBtns.forEach(btn => {
     });
 });
 
+// Check and Verify Referral Code Function
+async function checkReferralCode(code) {
+    if (!code) {
+        validatedReferralData = null;
+        feeAmountSpan.textContent = "১০০ টাকা";
+        referralStatus.textContent = "";
+        return;
+    }
+
+    try {
+        const q = query(collection(db, "refferal_code"), where("code", "==", code));
+        const querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+            const docData = querySnapshot.docs[0].data();
+            const matchedUid = docData.uid;
+
+            if (matchedUid) {
+                validatedReferralData = {
+                    refferalCode: code,
+                    refferalUserId: matchedUid
+                };
+                feeAmountSpan.textContent = "৮০ টাকা (২০ টাকা ডিসকাউন্ট)";
+                referralStatus.textContent = "রেফারেল কোড সফলভাবে যাচাই করা হয়েছে! ২০ টাকা ডিসকাউন্ট প্রযোজ্য।";
+                referralStatus.style.color = "var(--success-color)";
+            } else {
+                validatedReferralData = null;
+                feeAmountSpan.textContent = "১০০ টাকা";
+                referralStatus.textContent = "কোড পাওয়া গেছে কিন্তু ইউজার আইডি অনুপস্থিত।";
+                referralStatus.style.color = "var(--error-color)";
+            }
+        } else {
+            validatedReferralData = null;
+            feeAmountSpan.textContent = "১০০ টাকা";
+            referralStatus.textContent = "সঠিক রেফারেল কোড দিন।";
+            referralStatus.style.color = "var(--error-color)";
+        }
+    } catch (error) {
+        console.error("Referral check error:", error);
+        validatedReferralData = null;
+        feeAmountSpan.textContent = "১০০ টাকা";
+        referralStatus.textContent = "রেফারেল যাচাইকরণে সমস্যা হয়েছে।";
+        referralStatus.style.color = "var(--error-color)";
+    }
+}
+
 // AUTH GUARD & DUPLICATE CHECK
 onAuthStateChanged(auth, async (user) => {
     if (!user) {
@@ -84,11 +136,28 @@ onAuthStateChanged(auth, async (user) => {
         } else {
             pageLoader.classList.add('hidden');
             regCard.classList.remove('hidden');
+
+            // Check LocalStorage for sera_ref_code
+            const localRefCode = localStorage.getItem('sera_ref_code');
+            if (localRefCode) {
+                referralInput.value = localRefCode;
+                await checkReferralCode(localRefCode.trim());
+            }
         }
     } catch (error) {
         console.error(error);
         showModal("ত্রুটি", "ডাটাবেস কানেকশনে সমস্যা হয়েছে।", true, error);
     }
+});
+
+// Event listener for manual referral input changes
+let refTimer;
+referralInput.addEventListener('input', (e) => {
+    clearTimeout(refTimer);
+    const code = e.target.value.trim();
+    refTimer = setTimeout(() => {
+        checkReferralCode(code);
+    }, 500);
 });
 
 // Helper: File to URL via Cloudflare Worker
@@ -118,7 +187,6 @@ function setLoading(isLoading) {
     if(isLoading) {
         btnText.textContent = "একাউন্ট তৈরি হচ্ছে...";
         loader.classList.remove('hidden');
-        // disable modal close buttons during load
         closeBtns.forEach(b => b.disabled = true);
     } else {
         btnText.textContent = "একাউন্ট তৈরি করুন";
@@ -131,7 +199,6 @@ function setLoading(isLoading) {
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
     
-    // Get values
     const name = document.getElementById('name').value.trim();
     const phone = document.getElementById('phone').value.trim();
     const whatsApp = document.getElementById('whatsApp').value.trim();
@@ -140,7 +207,6 @@ form.addEventListener('submit', async (e) => {
     const sendMoneyNumber = document.getElementById('sendMoneyNumber').value.trim();
     const transectionId = document.getElementById('transectionId').value.trim();
 
-    // Basic Validation (Pattern matching is handled by HTML5, but we ensure not empty)
     if (!name || !phone || !whatsApp || !nidFrontFile || !nidBackFile || !sendMoneyNumber || !transectionId) {
         showModal("সতর্কতা", "সকল তথ্য সঠিকভাবে পূরণ করুন।", true);
         return;
@@ -150,12 +216,9 @@ form.addEventListener('submit', async (e) => {
     showModal("অপেক্ষা করুন", "আপনার ছবি এবং তথ্য আপলোড হচ্ছে...", false, null, true);
 
     try {
-        // 1. Upload NID Front
         const frontUrl = await uploadImageToWorker(nidFrontFile);
-        // 2. Upload NID Back
         const backUrl = await uploadImageToWorker(nidBackFile);
 
-        // 3. Save to Firestore
         const resellerData = {
             name: name,
             email: currentUser.email,
@@ -169,12 +232,15 @@ form.addEventListener('submit', async (e) => {
             nidBack: backUrl,
             uid: currentUser.uid,
             createdAt: serverTimestamp(),
-            balance: 0
+            balance: 0,
+            ...(validatedReferralData ? validatedReferralData : {})
         };
 
         await setDoc(doc(db, "reseller", currentUser.uid), resellerData);
         
-        // Success!
+        // Clear referral code from localstorage after successful signup
+        localStorage.removeItem('sera_ref_code');
+
         progressContainer.classList.add('hidden');
         modalTitle.textContent = "অভিনন্দন!";
         modalMessage.textContent = "আপনার রিসেলার একাউন্ট সফলভাবে তৈরি হয়েছে।";
@@ -189,12 +255,10 @@ form.addEventListener('submit', async (e) => {
         showModal("ত্রুটি (Error)", "তথ্য সংরক্ষণ করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।", true, error);
     }
 });
-// ================================
-// Sera Product Footer Loader
-// ================================
+
+// Footer Loader
 async function loadFooter() {
     const footerContainer = document.getElementById("footer-container");
-
     if (!footerContainer) return;
 
     try {
@@ -208,23 +272,14 @@ async function loadFooter() {
         }
 
         const footerHTML = await response.text();
-
         if (!footerHTML.trim()) {
             throw new Error("Footer content is empty.");
         }
-
         footerContainer.innerHTML = footerHTML;
-
     } catch (error) {
         console.error("Footer loading error:", error);
-
         footerContainer.innerHTML = `
-            <div style="
-                padding:20px;
-                text-align:center;
-                color:#777;
-                font-size:14px;
-            ">
+            <div style="padding:20px; text-align:center; color:#777; font-size:14px;">
                 Footer লোড করা যায়নি।
             </div>
         `;
