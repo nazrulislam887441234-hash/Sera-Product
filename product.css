@@ -143,7 +143,7 @@ body {
     border: 1px solid var(--border-color);
     border-radius: var(--radius);
     overflow: hidden;
-    background: #000;
+    background: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -161,6 +161,7 @@ body {
     width: 100%;
     height: 100%;
     border: none;
+    display: block;
     position: absolute;
     top: 0;
     left: 0;
