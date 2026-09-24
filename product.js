@@ -185,17 +185,12 @@ function setupGallery(images, reviewVideo) {
     }
 
     // Video Toggle Handling
-    if (reviewVideo && (reviewVideo.includes("youtube.com") || reviewVideo.includes("youtu.be") || reviewVideo.includes("embed"))) {
+    if (reviewVideo && reviewVideo.trim() !== "") {
         mediaToggle.classList.remove('hidden');
         const toggleBtns = mediaToggle.querySelectorAll('.toggle-btn');
 
-        let embedUrl = reviewVideo;
-        if (reviewVideo.includes("watch?v=")) {
-            const videoId = reviewVideo.split("watch?v=")[1].split("&")[0];
-            embedUrl = `https://www.youtube.com/embed/${videoId}`;
-        } else if (reviewVideo.includes("youtu.be/")) {
-            const videoId = reviewVideo.split("youtu.be/")[1].split("?")[0];
-            embedUrl = `https://www.youtube.com/embed/${videoId}`;
+        if (!videoView.innerHTML.trim()) {
+            videoView.innerHTML = `<iframe src="${reviewVideo}" allowfullscreen loading="lazy"></iframe>`;
         }
 
         toggleBtns.forEach(btn => {
@@ -210,9 +205,6 @@ function setupGallery(images, reviewVideo) {
                 } else {
                     imageView.classList.add('hidden');
                     videoView.classList.remove('hidden');
-                    if (!videoView.innerHTML.trim()) {
-                        videoView.innerHTML = `<iframe src="${embedUrl}" title="Product Video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>`;
-                    }
                 }
             });
         });
