@@ -83,7 +83,7 @@ async function checkReferralCode(code) {
     }
 
     try {
-        const q = query(collection(db, "refferal_code"), where("code", "==", code));
+        const q = query(collection(db, "referral_code"), where("code", "==", code));
         const querySnapshot = await getDocs(q);
 
         if (!querySnapshot.empty) {
@@ -137,11 +137,12 @@ onAuthStateChanged(auth, async (user) => {
             pageLoader.classList.add('hidden');
             regCard.classList.remove('hidden');
 
-            // Check LocalStorage for sera_ref_code
+            // Check LocalStorage for sera_ref_code and apply it
             const localRefCode = localStorage.getItem('sera_ref_code');
             if (localRefCode) {
-                referralInput.value = localRefCode;
-                await checkReferralCode(localRefCode.trim());
+                const trimmedCode = localRefCode.trim();
+                referralInput.value = trimmedCode;
+                await checkReferralCode(trimmedCode);
             }
         }
     } catch (error) {
