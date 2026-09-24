@@ -96,7 +96,7 @@ async function checkReferralCode(code) {
                     refferalUserId: matchedUid
                 };
                 feeAmountSpan.textContent = "৮০ টাকা (২০ টাকা ডিসকাউন্ট)";
-                referralStatus.textContent = "রেফারেল কোড সফলভাবে যাচাই করা হয়েছে! ২০ টাকা ডিসকাউন্ট প্রযোজ্য।";
+                referralStatus.textContent = "রেফারেল কোড সফলভাবে যাচাই করা হয়েছে! ২০ টাকা ডিসকাউন্ট পেয়েছেন। ১০০-২০=৮০ টাকা";
                 referralStatus.style.color = "var(--success-color)";
             } else {
                 validatedReferralData = null;
