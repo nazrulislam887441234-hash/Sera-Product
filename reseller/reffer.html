@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>রেফারেল কোড ম্যানেজমেন্ট - Sera Product</title>
+    <meta name="description" content="Sera Product-এর রিসেলারদের জন্য রেফারেল কোড তৈরি এবং পরিচালনা করার পেজ। রেফার করে আয় করুন।">
+    <link rel="canonical" href="https://seraproduct.com/reseller-referral">
+    
+    <!-- SEO & Open Graph Metadata -->
+    <meta name="theme-color" content="#ff6a00">
+    <meta name="robots" content="index, follow">
+    <link rel="icon" href="https://seraproduct.com/photo/logo.png">
+    
+    <meta property="og:title" content="রেফারেল কোড ম্যানেজমেন্ট - Sera Product">
+    <meta property="og:description" content="আপনার রেফারেল কোড দিয়ে নতুন সদস্যকে যুক্ত করুন এবং প্রতি সফল রেফারে ৩০ টাকা আয় করুন।">
+    <meta property="og:url" content="https://seraproduct.com/reseller-referral">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://seraproduct.com/photo/facebook-preview.png">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="রেফারেল কোড ম্যানেজমেন্ট - Sera Product">
+    <meta name="twitter:description" content="আপনার রেফারেল কোড দিয়ে নতুন সদস্যকে যুক্ত করুন এবং প্রতি সফল রেফারে ৩০ টাকা আয় করুন।">
+    <meta name="twitter:image" content="https://seraproduct.com/photo/twitter.png">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="reffer.css">
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header class="site-header">
+        <div class="header-container">
+            <a href="https://seraproduct.com" class="logo-link">
+                <img src="https://seraproduct.com/photo/header.png" alt="Sera Product Logo" class="wide-logo">
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            
+            <!-- Page Title Area -->
+            <div class="page-title-area">
+                <h1>রিসেলার রেফারেল পোর্টাল</h1>
+                <p>আপনার রেফারেল কার্যক্রম পরিচালনা করুন এক ক্লিকে</p>
+            </div>
+
+            <!-- Global Alert / Notification Box -->
+            <div id="alert-box" class="alert-box hidden" role="alert">
+                <span id="alert-message"></span>
+            </div>
+
+            <!-- Initial Global Loading State -->
+            <div id="global-loader" class="loader-container">
+                <div class="spinner"></div>
+                <p>তথ্য লোড হচ্ছে, অনুগ্রহ করে অপেক্ষা করুন...</p>
+            </div>
+
+            <!-- Main Application Card Container -->
+            <div id="app-container" class="app-container hidden">
+                
+                <!-- Referral Code Section Card -->
+                <section class="card referral-card">
+                    <div class="card-header">
+                        <h2>রেফারেল কোড ও লিংক</h2>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-desc">আপনার পছন্দমতো রেফারেল কোড তৈরি করুন এবং নতুন সদস্যকে Sera Product-এ যুক্ত করে প্রতি সফল রেফারে ৩০ টাকা আয় করুন।</p>
+                        
+                        <!-- State 1: Code Not Generated Yet (Custom Input) -->
+                        <div id="generate-section" class="hidden">
+                            <div class="input-group-custom">
+                                <input type="text" id="custom-code-input" placeholder="আপনার পছন্দমতো কোড দিন (যেমন: NAZRUL)" maxlength="15">
+                                <button id="generate-btn" class="primary-btn">
+                                    <svg class="btn-icon" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                    <span class="btn-text">রেফারেল কোড তৈরি করুন</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- State 2: Code Already Generated / Display Area -->
+                        <div id="display-section" class="hidden">
+                            <!-- Code Box -->
+                            <div class="code-display-box">
+                                <span class="code-label">আপনার Referral Code</span>
+                                <div class="code-box-inner">
+                                    <strong id="referral-code-text">------</strong>
+                                    <button id="copy-btn" class="icon-btn" title="কোড কপি করুন">
+                                        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Link Box -->
+                            <div class="code-display-box link-box-area">
+                                <span class="code-label">আপনার Referral Link</span>
+                                <div class="code-box-inner">
+                                    <input type="text" id="referral-link-input" readonly value="https://seraproduct.com/reseller/signup?ref=">
+                                    <button id="copy-link-btn" class="icon-btn" title="লিংক কপি করুন">
+                                        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                    </button>
+                                    <button id="share-link-btn" class="icon-btn" title="শেয়ার করুন">
+                                        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Optional: Code Update Option -->
+                            <div class="update-toggle-area">
+                                <button id="toggle-edit-btn" class="text-btn">কোড পরিবর্তন করতে চান?</button>
+                            </div>
+                            
+                            <div id="update-section" class="update-section hidden">
+                                <input type="text" id="new-code-input" placeholder="নতুন কোড দিন (যেমন: NAZRUL)" maxlength="15">
+                                <button id="update-btn" class="secondary-btn">কোড আপডেট করুন</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <!-- Referral Income & Rules Information Card -->
+                <section class="card info-card">
+                    <div class="card-header">
+                        <h2>রেফারেল আয় ও নিয়মাবলী</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="highlight-banner">
+                            <h3>প্রতি রেফারে আয় ৩০ টাকা</h3>
+                        </div>
+                        <ul class="info-list">
+                            <li>
+                                <svg viewBox="0 0 24 24" width="18" height="18" stroke="#ff6a00" stroke-width="2" fill="none"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                <span>আপনি যখন কাউকে রেফার করবেন, তখন শুধু রেফারেল কোড বা লিংক ব্যবহার করতে হবে।</span>
+                            </li>
+                            <li>
+                                <svg viewBox="0 0 24 24" width="18" height="18" stroke="#ff6a00" stroke-width="2" fill="none"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                <span>যাকে রেফার করবেন তাকে Sera Product-এ অ্যাকাউন্ট খুলে অ্যাকাউন্ট ভেরিফাই করতে হবে।</span>
+                            </li>
+                            <li>
+                                <svg viewBox="0 0 24 24" width="18" height="18" stroke="#ff6a00" stroke-width="2" fill="none"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                <span>অ্যাকাউন্ট সফলভাবে ভেরিফাইড হলে সাথে সাথেই আপনার ব্যালেন্সে ৩০ টাকা অটোমেটিকভাবে যুক্ত হবে।</span>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer Dynamic Container -->
+    <div id="footer-container">
+        <div class="footer-loader">ফুটার লোড হচ্ছে...</div>
+    </div>
+
+    <!-- Firebase SDKs (Modular) & App Script -->
+    <script type="module" src="reffer.js"></script>
+</body>
+</html>
