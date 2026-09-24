@@ -1,0 +1,654 @@
+:root {
+    --primary-orange: #ff6a00;
+    --primary-orange-hover: #e85d00;
+    --primary-orange-dark: #d94f00;
+    --primary-orange-light: #fff3eb;
+    --primary-orange-soft: #fff8f3;
+
+    --text-dark: #1f2937;
+    --text-muted: #6b7280;
+
+    --bg-light: #fffaf7;
+    --white: #ffffff;
+
+    --border-color: #ffe0cc;
+    --border-orange: #ffbd91;
+
+    --shadow-sm: 0 2px 6px rgba(255, 106, 0, 0.08);
+    --shadow-md: 0 6px 18px rgba(255, 106, 0, 0.14);
+    --shadow-lg: 0 10px 30px rgba(255, 106, 0, 0.18);
+
+    --radius: 10px;
+    --transition: all 0.25s ease-in-out;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+
+    color: var(--text-dark);
+    background: linear-gradient(
+        180deg,
+        #fffaf7 0%,
+        #fff7f2 100%
+    );
+
+    line-height: 1.5;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* ================================
+   Header Styles
+================================ */
+
+.site-header {
+    background: rgba(255, 255, 255, 0.97);
+    border-bottom: 1px solid var(--border-color);
+
+    position: sticky;
+    top: 0;
+    z-index: 100;
+
+    box-shadow: var(--shadow-sm);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+
+    padding: 12px 16px;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.header-logo {
+    height: 36px;
+    width: auto;
+    object-fit: contain;
+    display: block;
+}
+
+
+/* ================================
+   Main Layout
+================================ */
+
+.main-content {
+    flex: 1;
+    padding: 32px 16px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+
+/* ================================
+   Page Header
+================================ */
+
+.page-header-title {
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.page-header-title h1 {
+    font-size: 26px;
+    font-weight: 700;
+
+    color: var(--text-dark);
+
+    margin-bottom: 4px;
+
+    position: relative;
+    display: inline-block;
+}
+
+.page-header-title h1::after {
+    content: "";
+
+    display: block;
+
+    width: 45px;
+    height: 3px;
+
+    margin: 7px auto 0;
+
+    background: linear-gradient(
+        90deg,
+        var(--primary-orange),
+        #ff9d5c
+    );
+
+    border-radius: 10px;
+}
+
+.page-header-title p {
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+
+/* ================================
+   Categories Grid
+================================ */
+
+.categories-grid {
+    display: grid;
+
+    /* Mobile: 3 columns */
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+
+    gap: 10px;
+}
+
+
+/* Tablet: 5 columns */
+@media (min-width: 600px) {
+    .categories-grid {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 14px;
+    }
+}
+
+
+/* Laptop: 6 columns */
+@media (min-width: 992px) {
+    .categories-grid {
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 18px;
+    }
+}
+
+
+/* Computer / Desktop: 7 columns */
+@media (min-width: 1200px) {
+    .categories-grid {
+        grid-template-columns: repeat(7, minmax(0, 1fr));
+        gap: 20px;
+    }
+}
+
+
+/* ================================
+   Category Card
+================================ */
+
+.category-card {
+    background-color: var(--white);
+
+    border: 1px solid var(--border-color);
+
+    border-radius: var(--radius);
+
+    overflow: hidden;
+
+    text-decoration: none;
+    color: inherit;
+
+    display: flex;
+    flex-direction: column;
+
+    box-shadow: var(--shadow-sm);
+
+    transition: var(--transition);
+
+    cursor: pointer;
+
+    position: relative;
+}
+
+
+/* Orange top accent */
+.category-card::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 3px;
+
+    background: linear-gradient(
+        90deg,
+        var(--primary-orange),
+        #ff9d5c
+    );
+
+    transform: scaleX(0);
+
+    transform-origin: left;
+
+    transition: transform 0.25s ease;
+
+    z-index: 2;
+}
+
+
+.category-card:hover {
+    transform: translateY(-4px);
+
+    box-shadow: var(--shadow-lg);
+
+    border-color: var(--border-orange);
+}
+
+
+.category-card:hover::before {
+    transform: scaleX(1);
+}
+
+
+.category-card:focus-visible {
+    outline: 2px solid var(--primary-orange);
+    outline-offset: 2px;
+}
+
+
+/* ================================
+   Category Image
+================================ */
+
+.category-image-wrap {
+    width: 100%;
+
+    aspect-ratio: 1 / 1;
+
+    background: linear-gradient(
+        135deg,
+        #fff4ec,
+        #fff9f5
+    );
+
+    position: relative;
+
+    overflow: hidden;
+}
+
+
+.category-img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    transition: transform 0.3s ease;
+}
+
+
+.category-card:hover .category-img {
+    transform: scale(1.05);
+}
+
+
+/* ================================
+   Category Name
+================================ */
+
+.category-name {
+    padding: 12px;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    text-align: center;
+
+    color: var(--text-dark);
+
+    background-color: var(--white);
+
+    border-top: 1px solid var(--border-color);
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    transition: var(--transition);
+}
+
+
+.category-card:hover .category-name {
+    color: var(--primary-orange-dark);
+
+    background-color: var(--primary-orange-soft);
+}
+
+
+@media (min-width: 768px) {
+    .category-name {
+        font-size: 15px;
+        padding: 14px;
+    }
+}
+
+
+/* ================================
+   Fallback Image Container
+================================ */
+
+.image-fallback {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: linear-gradient(
+        135deg,
+        #fff1e8,
+        #fff8f3
+    );
+
+    color: var(--primary-orange);
+
+    border: 1px solid #ffe2d0;
+}
+
+
+/* ================================
+   Skeleton Loading
+================================ */
+
+.skeleton-card {
+    background: linear-gradient(
+        90deg,
+        #fff1e8 25%,
+        #ffe3d2 50%,
+        #fff1e8 75%
+    );
+
+    background-size: 200% 100%;
+
+    animation: shimmer 1.5s infinite;
+
+    min-height: 220px;
+
+    border: none;
+
+    box-shadow: none;
+}
+
+
+@keyframes shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+
+/* ================================
+   Load More Section
+================================ */
+
+.load-more-container {
+    margin-top: 40px;
+
+    display: flex;
+
+    justify-content: center;
+}
+
+
+.load-more-btn {
+    background: linear-gradient(
+        135deg,
+        var(--primary-orange),
+        #ff8500
+    );
+
+    color: var(--white);
+
+    border: none;
+
+    padding: 12px 28px;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    border-radius: var(--radius);
+
+    cursor: pointer;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    box-shadow: 0 4px 12px rgba(255, 106, 0, 0.20);
+
+    transition: var(--transition);
+}
+
+
+.load-more-btn:hover:not(:disabled) {
+    background: linear-gradient(
+        135deg,
+        var(--primary-orange-hover),
+        var(--primary-orange)
+    );
+
+    box-shadow: 0 7px 18px rgba(255, 106, 0, 0.28);
+
+    transform: translateY(-2px);
+}
+
+
+.load-more-btn:active:not(:disabled) {
+    transform: translateY(0);
+
+    box-shadow: var(--shadow-sm);
+}
+
+
+.load-more-btn:disabled {
+    opacity: 0.7;
+
+    cursor: not-allowed;
+}
+
+
+/* ================================
+   States
+================================ */
+
+.hidden {
+    display: none !important;
+}
+
+
+.empty-state,
+.error-state,
+.end-message {
+    text-align: center;
+
+    padding: 48px 16px;
+
+    color: var(--text-muted);
+}
+
+
+/* ================================
+   Empty Icon
+================================ */
+
+.empty-icon-wrap {
+    margin-bottom: 12px;
+
+    color: #ffb17c;
+}
+
+
+/* ================================
+   Error State
+================================ */
+
+.error-state p {
+    color: #dc2626;
+
+    margin-bottom: 16px;
+
+    font-weight: 500;
+}
+
+
+/* ================================
+   Retry Button
+================================ */
+
+.retry-btn {
+    background-color: var(--primary-orange);
+
+    color: var(--white);
+
+    border: none;
+
+    padding: 10px 20px;
+
+    font-size: 14px;
+
+    border-radius: var(--radius);
+
+    cursor: pointer;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    transition: var(--transition);
+
+    box-shadow: var(--shadow-sm);
+}
+
+
+.retry-btn:hover {
+    background-color: var(--primary-orange-hover);
+
+    box-shadow: var(--shadow-md);
+
+    transform: translateY(-1px);
+}
+
+
+.retry-btn:active {
+    transform: translateY(0);
+}
+
+
+/* ================================
+   End Message
+================================ */
+
+.end-message {
+    font-size: 14px;
+
+    font-weight: 500;
+
+    color: var(--text-muted);
+}
+
+
+/* ================================
+   Footer Dynamic View
+================================ */
+
+.footer-loading {
+    text-align: center;
+
+    padding: 24px;
+
+    color: var(--text-muted);
+
+    font-size: 14px;
+}
+
+
+/* ================================
+   Mobile Optimization
+================================ */
+
+@media (max-width: 599px) {
+
+    .main-content {
+        padding: 24px 10px;
+    }
+
+    .page-header-title {
+        margin-bottom: 18px;
+    }
+
+    .page-header-title h1 {
+        font-size: 22px;
+    }
+
+    .page-header-title p {
+        font-size: 13px;
+    }
+
+    .category-card {
+        border-radius: 8px;
+    }
+
+    .category-name {
+        padding: 9px 5px;
+
+        font-size: 12px;
+    }
+
+    .load-more-container {
+        margin-top: 30px;
+    }
+
+    .load-more-btn {
+        padding: 11px 22px;
+
+        font-size: 14px;
+    }
+}
+
+
+/* ================================
+   Small Mobile Optimization
+================================ */
+
+@media (max-width: 380px) {
+
+    .categories-grid {
+        gap: 8px;
+    }
+
+    .category-name {
+        font-size: 11px;
+
+        padding: 8px 4px;
+    }
+}
