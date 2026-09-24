@@ -13,7 +13,7 @@
     <meta property="og:title" content="Sera Product Reseller - তথ্য সম্পূর্ণ করুন">
     <meta property="og:image" content="https://seraproduct.com/photo/facebook-preview.png">
     
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="next-signup.css">
 </head>
 <body>
     <header class="main-header">
@@ -51,6 +51,13 @@
                     <input type="tel" id="whatsApp" name="whatsApp" placeholder="যেমন: 01712345678" pattern="^01[3-9]\d{8}$" required>
                 </div>
 
+                <!-- Referral Code Section -->
+                <div class="form-group" id="referral-group">
+                    <label for="referralCode">রেফারেন্স কোড (অপশনাল)</label>
+                    <input type="text" id="referralCode" name="referralCode" placeholder="রেফার কোড থাকলে দিন">
+                    <small id="referral-status" class="ref-status"></small>
+                </div>
+
                 <!-- NID Upload Section -->
                 <div class="upload-section">
                     <h3>NID ভেরিফিকেশন</h3>
@@ -69,12 +76,12 @@
                 </div>
 
                 <!-- Payment Notice -->
-                <div class="payment-notice">
+                <div class="payment-notice" id="payment-notice-box">
                     <div class="notice-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
                     </div>
-                    <div class="notice-text">
-                        <strong>জরুরী নোটিশ:</strong> 01615615260 এই নাম্বারে বিকাশে ১০০ টাকা পাঠান। টাকা পাঠানোর পর পাওয়া ট্রাঞ্জেকশন আইডি লিখুন। নোট: টাকা না পাঠালে একাউন্ট এক্টিভ এবং ভেরিফাইড করা হবে না ❌
+                    <div class="notice-text" id="notice-text-content">
+                        <strong>জরুরী নোটিশ:</strong> <span class="bkash-highlight">01615615260</span> এই নাম্বারে বিকাশে <span id="fee-amount">১০০ টাকা</span> পাঠান। টাকা পাঠানোর পর পাওয়া ট্রাঞ্জেকশন আইডি লিখুন। নোট: টাকা না পাঠালে একাউন্ট এক্টিভ এবং ভেরিফাইড করা হবে না ❌
                     </div>
                 </div>
 
