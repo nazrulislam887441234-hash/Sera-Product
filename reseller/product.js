@@ -414,7 +414,7 @@ function calculateOrderPrice() {
     let basePrice = currentProductData.resellerPrice || 0;
     
     Object.keys(selectedVariantsState).forEach(groupName => {
-        basePrice += selectedVariantsState[groupName].extraPrice;
+        basePrice += (selectedVariantsState[groupName].extraPrice || 0);
     });
 
     const fullProducePrice = basePrice * currentQuantity;
@@ -529,6 +529,8 @@ async function handleOrderSubmit(e) {
     }
 
     const deliveryChargeValue = deliverySite === "inside_dhaka" ? 60 : 120;
+    
+    // ফায়ারবেস সিকিউরিটি রুলস অনুযায়ী deliveryChargeStatus == true হলে deliveryCharge ও ProductdeliveryCharge অবশ্যই null হতে হবে।
     let deliveryCharge = deliveryChargeStatus ? null : deliveryChargeValue;
     let productDeliveryCharge = deliveryChargeStatus ? null : deliveryChargeValue;
     let total = deliveryChargeStatus ? fullProductPriceInputVal : fullProductPriceInputVal + deliveryChargeValue;
@@ -546,7 +548,7 @@ async function handleOrderSubmit(e) {
         "upojela/thana": upojelaThana,
         customerNote: customerNote,
         quantity: currentQuantity,
-        warranty: currentProductData.warranty || null,
+        warranty: currentProductData.warranty !== undefined ? currentProductData.warranty : null,
         orderStatus: "pending",
         variants: formattedVariants,
         productName: currentProductData.productName,
