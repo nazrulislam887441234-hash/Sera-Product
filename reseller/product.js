@@ -57,6 +57,8 @@ function setupAppLogic() {
         }
     });
 
+    document.getElementById("fullProductPriceInput").addEventListener("input", calculateOrderPrice);
+
     document.querySelectorAll("input[name='deliverySite']").forEach(el => {
         el.addEventListener("change", calculateOrderPrice);
     });
@@ -234,7 +236,6 @@ function downloadAllImages() {
     });
 }
 
-// ইমেজ ডাউনলোডের সময় অন্য কোথাও বা নতুন ট্যাবে না পাঠিয়ে সরাসরি ডাউনলোড করার ফিক্সড ফাংশন
 function triggerDownload(url, filename) {
     fetch(url)
         .then(response => response.blob())
@@ -417,23 +418,41 @@ function calculateOrderPrice() {
     });
 
     const fullProducePrice = basePrice * currentQuantity;
-    const subtotal = fullProducePrice;
+    const maxCustomerPrice = currentProductData.customerPrice || 0;
+    
+    const fullProductPriceInputVal = parseFloat(document.getElementById("fullProductPriceInput").value) || 0;
+    const priceErrorText = document.getElementById("priceErrorText");
+
+    let profit = 0;
+    if (fullProductPriceInputVal > 0) {
+        if (fullProductPriceInputVal <= fullProducePrice) {
+            priceErrorText.innerText = `বিক্রয়মূল্য অবশ্যই ন্যূনতম মূল্য (৳${fullProducePrice}) এর চেয়ে বেশি হতে হবে!`;
+            priceErrorText.style.display = "block";
+        } else if (fullProductPriceInputVal > maxCustomerPrice) {
+            priceErrorText.innerText = `সর্বোচ্চ বিক্রয়মূল্য ৳${maxCustomerPrice} এর বেশি হতে পারবে না!`;
+            priceErrorText.style.display = "block";
+        } else {
+            priceErrorText.innerText = "";
+            priceErrorText.style.display = "none";
+            profit = fullProductPriceInputVal - fullProducePrice;
+        }
+    } else {
+        priceErrorText.style.display = "none";
+    }
 
     const deliverySite = document.querySelector("input[name='deliverySite']:checked").value;
     const deliveryChargeValue = deliverySite === "inside_dhaka" ? 60 : 120;
-
     const chargeStatus = document.querySelector("input[name='deliveryChargeStatus']:checked").value;
     
-    let total = subtotal;
+    let total = fullProductPriceInputVal > fullProducePrice ? fullProductPriceInputVal : fullProducePrice;
     let effectiveDeliveryCharge = deliveryChargeValue;
 
     if (chargeStatus === "no") {
-        total = subtotal + deliveryChargeValue;
-    } else {
-        effectiveDeliveryCharge = deliveryChargeValue;
+        total += deliveryChargeValue;
     }
 
     document.getElementById("summaryProdPrice").innerText = `৳${fullProducePrice}`;
+    document.getElementById("summaryProfitPrice").innerText = `৳${profit}`;
     document.getElementById("summaryDelivCharge").innerText = `৳${effectiveDeliveryCharge}${chargeStatus === "yes" ? " (অগ্রিম দেওয়া)" : ""}`;
     document.getElementById("summaryTotalPrice").innerText = `৳${total}`;
 }
@@ -449,6 +468,34 @@ async function handleOrderSubmit(e) {
                 return;
             }
         }
+    }
+
+    let basePrice = currentProductData.resellerPrice || 0;
+    let formattedVariants = null;
+
+    if (variants && variants.length > 0) {
+        formattedVariants = {};
+        Object.keys(selectedVariantsState).forEach(key => {
+            const item = selectedVariantsState[key];
+            formattedVariants[key] = `${item.value}${item.extraPrice > 0 ? '+৳' + item.extraPrice : ''}`;
+            basePrice += item.extraPrice;
+        });
+    }
+
+    const fullProducePrice = basePrice * currentQuantity;
+    const fullProductPriceInputVal = parseFloat(document.getElementById("fullProductPriceInput").value) || 0;
+    const maxCustomerPrice = currentProductData.customerPrice || 0;
+
+    if (fullProductPriceInputVal <= fullProducePrice) {
+        showToast("সব প্রোডাক্টের মোট বিক্রয়মূল্য ন্যূনতম মূল্যের চেয়ে বেশি হতে হবে।");
+        document.getElementById("fullProductPriceInput").focus();
+        return;
+    }
+
+    if (fullProductPriceInputVal > maxCustomerPrice) {
+        showToast(`সর্বোচ্চ বিক্রয়মূল্য ৳${maxCustomerPrice} এর বেশি হতে পারবে না।`);
+        document.getElementById("fullProductPriceInput").focus();
+        return;
     }
 
     const customerName = document.getElementById("customerNameInput").value.trim();
@@ -481,29 +528,16 @@ async function handleOrderSubmit(e) {
         return;
     }
 
-    let basePrice = currentProductData.resellerPrice || 0;
-    let formattedVariants = null;
-
-    if (variants && variants.length > 0) {
-        formattedVariants = {};
-        Object.keys(selectedVariantsState).forEach(key => {
-            const item = selectedVariantsState[key];
-            formattedVariants[key] = `${item.value}${item.extraPrice > 0 ? '+৳' + item.extraPrice : ''}`;
-            basePrice += item.extraPrice;
-        });
-    }
-
-    const fullProducePrice = basePrice * currentQuantity;
-    const subtotal = fullProducePrice;
     const deliveryChargeValue = deliverySite === "inside_dhaka" ? 60 : 120;
-
     let deliveryCharge = deliveryChargeStatus ? null : deliveryChargeValue;
     let productDeliveryCharge = deliveryChargeStatus ? null : deliveryChargeValue;
-    let total = deliveryChargeStatus ? subtotal : subtotal + deliveryChargeValue;
+    let total = deliveryChargeStatus ? fullProductPriceInputVal : fullProductPriceInputVal + deliveryChargeValue;
 
     const images = currentProductData.image || [];
     const productImage = images.length > 0 ? images[0] : "";
+    const sellPriceValue = fullProductPriceInputVal;
 
+    // ফায়ারবেস রুলসের সাথে ১০০% মিল রেখে তৈরি করা অর্ডার অবজেক্ট
     const orderData = {
         customerName: customerName,
         customerPhone: customerPhone,
@@ -518,6 +552,8 @@ async function handleOrderSubmit(e) {
         productName: currentProductData.productName,
         productImage: productImage,
         productPrice: currentProductData.resellerPrice,
+        productId: currentProductData.id,
+        originalPrice: currentProductData.resellerPrice,
         uid: currentUser.uid,
         email: currentUser.email || "",
         deliveryChargeStatus: deliveryChargeStatus,
@@ -528,8 +564,9 @@ async function handleOrderSubmit(e) {
         deliveryCharge: deliveryCharge,
         fullProducePrice: fullProducePrice,
         ProductdeliveryCharge: productDeliveryCharge,
-        subtotal: subtotal,
+        subtotal: fullProducePrice,
         total: total,
+        sellPrice: sellPriceValue,
         createdAt: window.firebaseAppModules.serverTimestamp()
     };
 
