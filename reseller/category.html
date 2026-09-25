@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#ff6a00">
+    <link rel="icon" href="https://seraproduct.com/photo/logo.png">
+    <title>Sera Product - Reseller Category</title>
+    <link rel="stylesheet" href="categories.css">
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header class="reseller-header">
+        <div class="header-container">
+            <a href="https://seraproduct.com/reseller/dashboard" class="header-logo-link">
+                <img src="https://seraproduct.com/photo/header.png" alt="Sera Product" class="header-logo">
+            </a>
+            <div class="header-actions">
+                <a href="https://seraproduct.com/reseller/settings" class="icon-btn" title="Settings">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <div id="app-container">
+            <!-- Loading State -->
+            <div id="loading-state" class="state-container">
+                <div class="spinner"></div>
+                <p>লোড হচ্ছে...</p>
+            </div>
+
+            <!-- Access Denied / Error Modal State -->
+            <div id="access-denied-state" class="state-container" style="display: none;">
+                <div class="error-card">
+                    <h2 id="error-title">অনুমতি নেই</h2>
+                    <p id="error-desc">আপনার একাউন্টটি এই পেজটি দেখার জন্য উপযুক্ত নয়।</p>
+                    <button id="error-action-btn" class="orange-btn">লগআউট</button>
+                </div>
+            </div>
+
+            <!-- Dynamic Category Header -->
+            <div id="category-header" class="category-header" style="display: none;">
+                <div class="category-img-wrap">
+                    <img id="cat-image" src="" alt="Category">
+                </div>
+                <h1 id="cat-name"></h1>
+            </div>
+
+            <!-- Product Grid Section -->
+            <div id="product-section" style="display: none;">
+                <div id="product-grid" class="product-grid"></div>
+                
+                <div id="pagination-wrap" class="pagination-wrap" style="display: none;">
+                    <button id="load-more-btn" class="orange-btn outline-btn">আরও পণ্য দেখুন</button>
+                </div>
+
+                <div id="empty-products" class="empty-state" style="display: none;">
+                    <p>এই ক্যাটাগরিতে বর্তমানে কোনো পণ্য পাওয়া যায়নি।</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Dynamic Footer Container -->
+    <div id="dynamic-footer"></div>
+
+    <!-- Application Script -->
+    <script type="module" src="categories.js"></script>
+</body>
+</html>
