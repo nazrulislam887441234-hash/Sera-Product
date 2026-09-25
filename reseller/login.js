@@ -152,9 +152,9 @@ async function checkResellerAndRedirect(uid) {
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
-            window.location.replace('/dashboard');
+            window.location.replace('https://seraproduct.com/reseller/dashboard');
         } else {
-            window.location.replace('/next-signup.html');
+            window.location.replace('https://seraproduct.com/reseller/next-signup.html');
         }
     } catch (error) {
         console.error("Reseller doc check error:", error);
