@@ -13,7 +13,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function initApp() {
-    // Wait for Firebase modules from HTML
     const checkFirebaseLoaded = setInterval(() => {
         if (window.firebaseAppModules) {
             clearInterval(checkFirebaseLoaded);
@@ -25,10 +24,8 @@ function initApp() {
 function setupAppLogic() {
     const { auth, onAuthStateChanged, signOut } = window.firebaseAppModules;
 
-    // Load Footer dynamically
     loadFooter();
 
-    // Setup Auth Listener
     onAuthStateChanged(auth, async (user) => {
         if (!user) {
             window.location.href = "https://seraproduct.com/reseller/login";
@@ -39,7 +36,6 @@ function setupAppLogic() {
         }
     });
 
-    // Logout Handler
     document.getElementById("logoutBtn").addEventListener("click", async () => {
         try {
             await signOut(auth);
@@ -49,7 +45,6 @@ function setupAppLogic() {
         }
     });
 
-    // Quantity Handlers
     document.getElementById("qtyPlus").addEventListener("click", () => {
         currentQuantity++;
         updateQuantityUI();
@@ -62,7 +57,6 @@ function setupAppLogic() {
         }
     });
 
-    // Delivery Site & Advance Charge Listeners
     document.querySelectorAll("input[name='deliverySite']").forEach(el => {
         el.addEventListener("change", calculateOrderPrice);
     });
@@ -79,10 +73,8 @@ function setupAppLogic() {
         });
     });
 
-    // Order Submit Form
     document.getElementById("orderForm").addEventListener("submit", handleOrderSubmit);
 
-    // Modal Events
     document.getElementById("downloadModalBtn").addEventListener("click", () => {
         document.getElementById("downloadModal").style.display = "flex";
     });
@@ -98,35 +90,27 @@ function setupAppLogic() {
         document.getElementById("downloadModal").style.display = "none";
     });
 
-    // Copy Description Event
     document.getElementById("copyDescBtn").addEventListener("click", copyDescription);
 }
 
-// 1. Get Product Slug from URL
 function getProductSlugFromURL() {
     const searchString = window.location.search;
     if (!searchString) return "";
     
-    // Remove leading '?'
     let cleanQuery = searchString.startsWith('?') ? searchString.substring(1) : searchString;
-    
-    // Split by '&' to get parameters
     let params = cleanQuery.split('&');
     if (params.length === 0) return "";
     
     let firstParam = params[0];
-    // Handle cases like ?tenda-router= or ?tenda-router
     let slugPart = firstParam.split('=')[0];
     
     return decodeURIComponent(slugPart).trim();
 }
 
-// 2 & 3. Load Reseller & Product Data
 async function loadResellerAndProduct() {
     const { db, doc, getDoc, collection, query, where, limit, getDocs } = window.firebaseAppModules;
     
     try {
-        // Load Reseller Document
         const resellerRef = doc(db, "reseller", currentUser.uid);
         const resellerSnap = await getDoc(resellerRef);
 
@@ -147,14 +131,12 @@ async function loadResellerAndProduct() {
             return;
         }
 
-        // Get Product Slug
         const productSlug = getProductSlugFromURL();
         if (!productSlug) {
             showError("এই পণ্যটি পাওয়া যায়নি!");
             return;
         }
 
-        // Query Product
         const productsQuery = query(collection(db, "products"), where("productSlug", "==", productSlug), limit(1));
         const querySnapshot = await getDocs(productsQuery);
 
@@ -175,19 +157,15 @@ async function loadResellerAndProduct() {
     }
 }
 
-// Render Product UI
 function renderProduct() {
     document.getElementById("loadingState").style.display = "none";
-    document.getElementById("productContent.style")?.remove();
     document.getElementById("productContent").style.display = "grid";
 
-    // Name, Description, Warranty
     document.getElementById("productName").innerText = currentProductData.productName || "";
     document.getElementById("productDescriptionText").innerText = currentProductData.productDescription || "";
     document.getElementById("warrantyDisplay").innerText = `ওয়ারেন্টি: ${currentProductData.warranty || "প্রযোজ্য নয়"}`;
     document.getElementById("customerMaxPriceDisplay").innerText = `এই প্রোডাক্ট সর্বোচ্চ ৳${currentProductData.customerPrice || 0} দামে বিক্রি করতে পারবেন!`;
 
-    // Pricing & Discount
     const resellerPrice = currentProductData.resellerPrice || 0;
     const resellerOldPrice = currentProductData.resellerOldPrice;
     
@@ -206,7 +184,6 @@ function renderProduct() {
     calculateOrderPrice();
 }
 
-// 4. Product Image Gallery
 function renderGallery() {
     const images = currentProductData.image || [];
     const mainImageEl = document.getElementById("mainImage");
@@ -236,7 +213,6 @@ function renderGallery() {
     });
 }
 
-// 5. Image Download System
 function downloadSelectedImage() {
     const images = currentProductData.image || [];
     if (images.length === 0) {
@@ -258,6 +234,7 @@ function downloadAllImages() {
     });
 }
 
+// ইমেজ ডাউনলোডের সময় অন্য কোথাও বা নতুন ট্যাবে না পাঠিয়ে সরাসরি ডাউনলোড করার ফিক্সড ফাংশন
 function triggerDownload(url, filename) {
     fetch(url)
         .then(response => response.blob())
@@ -273,18 +250,15 @@ function triggerDownload(url, filename) {
             document.body.removeChild(a);
         })
         .catch(() => {
-            // Fallback if CORS or fetch fails
             const a = document.createElement('a');
             a.href = url;
             a.download = filename;
-            a.target = '_blank';
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
         });
 }
 
-// 8. Favorite / Whilst System
 async function loadFavoriteState() {
     const { db, collection, query, where, getDocs } = window.firebaseAppModules;
     try {
@@ -353,7 +327,6 @@ function updateFavoriteUI() {
     }
 }
 
-// 10. Copy Description
 function copyDescription() {
     const text = currentProductData.productDescription || "";
     if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -382,7 +355,6 @@ function fallbackCopyText(text) {
     document.body.removeChild(textArea);
 }
 
-// 12 & 13. Variants System
 function renderVariants() {
     const variantsSection = document.getElementById("variantsSection");
     variantsSection.innerHTML = "";
@@ -414,7 +386,6 @@ function renderVariants() {
             chip.innerText = `${valObj.value}${extraPriceText}`;
 
             chip.addEventListener("click", () => {
-                // Clear selection in group
                 optionsDiv.querySelectorAll(".variant-chip").forEach(c => c.classList.remove("selected"));
                 chip.classList.add("selected");
 
@@ -433,7 +404,6 @@ function renderVariants() {
     });
 }
 
-// 15, 16, 19. Quantity & Price Calculation
 function updateQuantityUI() {
     document.getElementById("quantityDisplay").innerText = currentQuantity;
     calculateOrderPrice();
@@ -442,7 +412,6 @@ function updateQuantityUI() {
 function calculateOrderPrice() {
     let basePrice = currentProductData.resellerPrice || 0;
     
-    // Add variant extra prices
     Object.keys(selectedVariantsState).forEach(groupName => {
         basePrice += selectedVariantsState[groupName].extraPrice;
     });
@@ -469,11 +438,9 @@ function calculateOrderPrice() {
     document.getElementById("summaryTotalPrice").innerText = `৳${total}`;
 }
 
-// 21 & 25. Order Submit Validation & Processing
 async function handleOrderSubmit(e) {
     e.preventDefault();
 
-    // Validate Variants
     const variants = currentProductData.variants;
     if (variants && Array.isArray(variants) && variants.length > 0) {
         for (let group of variants) {
@@ -484,7 +451,6 @@ async function handleOrderSubmit(e) {
         }
     }
 
-    // Form Field values
     const customerName = document.getElementById("customerNameInput").value.trim();
     const customerPhone = document.getElementById("customerPhoneInput").value.trim();
     const customerVibag = document.getElementById("customerVibagInput").value.trim();
@@ -515,7 +481,6 @@ async function handleOrderSubmit(e) {
         return;
     }
 
-    // Calculations for order payload
     let basePrice = currentProductData.resellerPrice || 0;
     let formattedVariants = null;
 
@@ -583,12 +548,10 @@ async function handleOrderSubmit(e) {
     }
 }
 
-// 27. Order Success Popup & JSON Copy
 function showOrderSuccessPopup(orderData) {
     document.getElementById("successModal").style.display = "flex";
     
     document.getElementById("copyJsonBtn").onclick = () => {
-        // Convert serverTimestamp placeholder for JSON preview
         const jsonString = JSON.stringify({ ...orderData, createdAt: "Server Timestamp" }, null, 2);
         if (navigator.clipboard && navigator.clipboard.writeText) {
             navigator.clipboard.writeText(jsonString).then(() => {
@@ -598,7 +561,6 @@ function showOrderSuccessPopup(orderData) {
     };
 }
 
-// 31. Load Footer
 async function loadFooter() {
     try {
         const response = await fetch("https://seraproduct.com/footer");
@@ -607,15 +569,13 @@ async function loadFooter() {
             document.getElementById("footerContainer").innerHTML = html;
         }
     } catch (e) {
-        // Fallback footer
         document.getElementById("footerContainer").innerHTML = `
             <footer style="text-align: center; padding: 20px; color: #6c757d; font-size: 14px; border-top: 1px solid #dee2e6; margin-top: 40px;">
                 &copy; 2026 Sera Product. All Rights Reserved.
-            `;
+            </footer>`;
     }
 }
 
-// UI Notification Helpers
 function showToast(message) {
     const toast = document.getElementById("toastNotification");
     toast.innerText = message;
