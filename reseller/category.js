@@ -20,7 +20,7 @@ import {
     serverTimestamp 
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-// Firebase Configuration (আপনার প্রজেক্টের রিয়েল কনফিগ এখানে বসবে)
+// Firebase Configuration
 const firebaseConfig = {
   apiKey: "AIzaSyBRSt2aoSJ-lumYAWGAXE6ncui7__TqJ4E",
   authDomain: "sera-product.firebaseapp.com",
@@ -82,7 +82,6 @@ async function validateResellerAndLoadContent(uid) {
             return;
         }
 
-        // All checks passed, proceed to load category & products
         const slug = getCategorySlugFromURL();
         if (!slug) {
             showAccessDenied("ক্যাটাগরি নির্বাচন করা হয়নি", "অনুগ্রহ করে সঠিক ক্যাটাগরি নির্বাচন করুন।");
@@ -243,7 +242,7 @@ function renderProductCard(docSnap, gridContainer) {
     const card = document.createElement("div");
     card.className = "product-card";
     
-    // Card Click to open product page
+    // Card Click to open product page (Prevent triggering if clicking heart button or its children)
     card.onclick = (e) => {
         if (e.target.closest('.heart-btn') || e.target.closest('.card-footer-btn')) return;
         window.open(`https://seraproduct.com/reseller/product?${encodeURIComponent(productSlug)}`, "_blank", "noopener,noreferrer");
@@ -281,7 +280,7 @@ function renderProductCard(docSnap, gridContainer) {
         window.open(`https://seraproduct.com/reseller/product?${encodeURIComponent(productSlug)}`, "_blank", "noopener,noreferrer");
     };
 
-    // Heart click
+    // Heart click (Stops event bubbling properly to card click)
     const heartBtn = card.querySelector('.heart-btn');
     heartBtn.onclick = async (e) => {
         e.stopPropagation();
