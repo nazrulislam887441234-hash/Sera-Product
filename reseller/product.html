@@ -220,6 +220,29 @@
 
     <!-- Toast Notification -->
     <div id="toastNotification" class="toast"></div>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, doc, getDoc, collection, query, where, limit, getDocs, addDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // Firebase Configuration - Your Config Here
+        const firebaseConfig = {
+  apiKey: "AIzaSyBRSt2aoSJ-lumYAWGAXE6ncui7__TqJ4E",
+  authDomain: "sera-product.firebaseapp.com",
+  projectId: "sera-product",
+  storageBucket: "sera-product.firebasestorage.app",
+  messagingSenderId: "516762224598",
+  appId: "1:516762224598:web:b6a571f355a8a4a97c0677",
+  measurementId: "G-RLMWH43FXX"
+};
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Expose Firebase modules to window for app.js
+        window.firebaseAppModules = { auth, db, doc, getDoc, collection, query, where, limit, getDocs, addDoc, deleteDoc, serverTimestamp, signOut, onAuthStateChanged };
+    </script>
     <script src="product.js"></script>
 </body>
 </html>
