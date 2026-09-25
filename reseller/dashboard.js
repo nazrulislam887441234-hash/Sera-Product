@@ -82,7 +82,7 @@ function renderBalance() {
         const btn = document.createElement("button");
         btn.className = "withdraw-btn";
         btn.textContent = "Withdraw";
-        btn.onclick = () => { window.location.href = "/withdraw"; };
+        btn.onclick = () => { window.location.href = "https://seraproduct.com/reseller/withdraw"; };
         withdrawContainer.appendChild(btn);
     }
 }
