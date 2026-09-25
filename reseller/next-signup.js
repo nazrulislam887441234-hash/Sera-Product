@@ -132,7 +132,7 @@ onAuthStateChanged(auth, async (user) => {
         const docSnap = await getDoc(docRef);
         
         if (docSnap.exists()) {
-            window.location.replace('/dashboard');
+            window.location.replace('https://seraproduct.com/reseller/dashboard');
         } else {
             pageLoader.classList.add('hidden');
             regCard.classList.remove('hidden');
@@ -247,7 +247,7 @@ form.addEventListener('submit', async (e) => {
         modalMessage.textContent = "আপনার রিসেলার একাউন্ট সফলভাবে তৈরি হয়েছে।";
         
         setTimeout(() => {
-            window.location.replace('/dashboard');
+            window.location.replace('https://seraproduct.com/reseller/dashboard');
         }, 2000);
 
     } catch (error) {
