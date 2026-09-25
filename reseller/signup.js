@@ -132,10 +132,10 @@ form.addEventListener('submit', async (e) => {
 
         if (docSnap.exists()) {
             // Document exists -> Dashboard
-            window.location.href = '/dashboard';
+            window.location.href = 'https://seraproduct.com/reseller/dashboard';
         } else {
             // Document does NOT exist -> Next Signup Phase
-            window.location.href = 'next-signup.html';
+            window.location.href = 'https://seraproduct.com/reseller/next-signup';
         }
 
     } catch (error) {
