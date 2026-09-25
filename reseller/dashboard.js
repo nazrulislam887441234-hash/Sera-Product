@@ -32,7 +32,7 @@ function initApp() {
 function handleAuthState() {
     onAuthStateChanged(auth, async (user) => {
         if (!user) {
-            window.location.href = "/login";
+            window.location.href = "https://seraproduct.com/reseller/login";
             return;
         }
 
@@ -294,7 +294,7 @@ function setupNavigation() {
 async function logoutUser() {
     try {
         await signOut(auth);
-        window.location.href = "/login";
+        window.location.href = "https://seraproduct.com/reseller/login";
     } catch (error) {
         console.error("Logout error:", error);
     }
