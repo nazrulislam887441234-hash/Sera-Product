@@ -259,13 +259,29 @@ function downloadAllImages() {
 }
 
 function triggerDownload(url, filename) {
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    a.target = '_blank';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    fetch(url)
+        .then(response => response.blob())
+        .then(blob => {
+            const blobUrl = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = blobUrl;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(blobUrl);
+            document.body.removeChild(a);
+        })
+        .catch(() => {
+            // Fallback if CORS or fetch fails
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.target = '_blank';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        });
 }
 
 // 8. Favorite / Whilst System
@@ -388,7 +404,7 @@ function renderVariants() {
 
         variantGroup.values.forEach((valObj) => {
             const chip = document.createElement("button");
-            type = "button";
+            chip.type = "button";
             chip.className = "variant-chip";
             
             let extraPriceText = "";
