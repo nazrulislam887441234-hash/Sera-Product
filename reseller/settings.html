@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sera Product - সেটিংস</title>
+    <link rel="icon" href="https://seraproduct.com/photo/logo.png">
+    <meta name="theme-color" content="#ff6a00">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="stylesheet" href="settings.css">
+</head>
+<body>
+    <!-- Top Header -->
+    <header class="app-header">
+        <div class="header-container">
+            <div class="header-left">
+                <img src="https://seraproduct.com/photo/header.png" alt="Sera Product Logo" class="brand-logo" onerror="this.style.display='none'">
+                <div class="header-title-wrapper">
+                    <svg class="header-icon" viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.69 0 1.31.4 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                    </svg>
+                    <h1>সেটিংস</h1>
+                </div>
+            </div>
+            <div class="header-right">
+                <a href="https://seraproduct.com/reseller/dashboard" class="dashboard-btn" aria-label="ড্যাশবোর্ডে ফিরে যান">
+                    <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    <span>ড্যাশবোর্ডে ফিরে যান</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="main-content">
+        <!-- Skeleton UI Container -->
+        <div id="skeleton-container" class="skeleton-wrapper">
+            <div class="skeleton profile-skeleton"></div>
+            <div class="skeleton-grid">
+                <div class="skeleton card-skeleton"></div>
+                <div class="skeleton card-skeleton"></div>
+                <div class="skeleton card-skeleton"></div>
+                <div class="skeleton card-skeleton"></div>
+            </div>
+        </div>
+
+        <!-- Actual Content Container (Hidden initially) -->
+        <div id="app-container" class="app-container hidden" data-view-mode="true">
+            
+            <!-- Profile Header Card -->
+            <section class="card profile-card">
+                <div class="profile-info">
+                    <div class="avatar-placeholder" id="profile-initials">আ</div>
+                    <div class="profile-meta">
+                        <span class="profile-badge">রিসেলার প্রফাইল</span>
+                        <h2 id="profile-name">লোড হচ্ছে...</h2>
+                        <p id="profile-email">email@example.com</p>
+                    </div>
+                </div>
+                <div class="profile-actions">
+                    <button id="edit-toggle-btn" class="btn btn-primary" onclick="toggleEditMode()" aria-label="এডিট করুন">
+                        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                        <span id="edit-btn-text">এডিট করুন</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Edit Mode Action Bar (Hidden by default) -->
+            <div id="edit-action-bar" class="edit-action-bar hidden">
+                <p>আপনি বর্তমানে এডিট মোডে আছেন। শুধুমাত্র ফোন নম্বর এবং WhatsApp নম্বর পরিবর্তন করা যাবে।</p>
+                <div class="edit-action-buttons">
+                    <button type="button" class="btn btn-outline" onclick="cancelEdit()" aria-label="বাতিল">বাতিল</button>
+                    <button type="button" class="btn btn-primary" id="save-btn" onclick="saveChanges()" aria-label="সংরক্ষণ করুন">সংরক্ষণ করুন</button>
+                </div>
+            </div>
+
+            <div class="dashboard-grid">
+                
+                <!-- Personal Information Card -->
+                <section class="card">
+                    <div class="card-header">
+                        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        <h3>ব্যক্তিগত তথ্য</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="info-group">
+                            <label>নাম</label>
+                            <div class="info-value-box read-only">
+                                <span id="val-name">-</span>
+                                <span class="badge-readonly">Read Only</span>
+                            </div>
+                        </div>
+                        <div class="info-group">
+                            <label>ইমেইল</label>
+                            <div class="info-value-box read-only">
+                                <span id="val-email">-</span>
+                                <span class="badge-readonly">Read Only</span>
+                            </div>
+                        </div>
+                        <div class="info-group">
+                            <label>ফোন নম্বর</label>
+                            <div class="info-value-box" id="box-phone">
+                                <span id="val-phone-display" class="editable-display">-</span>
+                                <input type="tel" id="val-phone-input" class="editable-input hidden" placeholder="01XXXXXXXXX" maxlength="11">
+                                <span class="badge-editable hidden edit-indicator">Editable</span>
+                            </div>
+                            <span class="error-msg" id="error-phone"></span>
+                        </div>
+                        <div class="info-group">
+                            <label>WhatsApp নম্বর</label>
+                            <div class="info-value-box" id="box-whatsapp">
+                                <span id="val-whatsapp-display" class="editable-display">-</span>
+                                <input type="tel" id="val-whatsapp-input" class="editable-input hidden" placeholder="01XXXXXXXXX" maxlength="11">
+                                <span class="badge-editable hidden edit-indicator">Editable</span>
+                            </div>
+                            <span class="error-msg" id="error-whatsapp"></span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Financial Information Card -->
+                <section class="card">
+                    <div class="card-header">
+                        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                        <h3>আর্থিক তথ্য</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="balance-display-box">
+                            <span class="balance-label">বর্তমান ব্যালেন্স</span>
+                            <h2 class="balance-amount" id="val-balance">৳ ০</h2>
+                        </div>
+                        <div class="info-group">
+                            <label>Send Money Number</label>
+                            <div class="info-value-box read-only">
+                                <span id="val-sendMoneyNumber">-</span>
+                                <span class="badge-readonly">Read Only</span>
+                            </div>
+                        </div>
+                        <div class="info-group">
+                            <label>Transaction ID</label>
+                            <div class="info-value-box read-only">
+                                <span id="val-transectionId">-</span>
+                                <span class="badge-readonly">Read Only</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Account Status Card -->
+                <section class="card">
+                    <div class="card-header">
+                        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                        <h3>একাউন্ট স্টেটাস</h3>
+                    </div>
+                    <div class="card-body status-body">
+                        <div class="status-item" id="status-verified-box">
+                            <div class="status-icon" id="icon-verified"></div>
+                            <div class="status-text">
+                                <span class="status-title">ভেরিফিকেশন</span>
+                                <p id="text-verified">যাচাই করা হচ্ছে...</p>
+                            </div>
+                        </div>
+                        <div class="status-item" id="status-active-box">
+                            <div class="status-icon" id="icon-active"></div>
+                            <div class="status-text">
+                                <span class="status-title">এক্টিভ স্টেটাস</span>
+                                <p id="text-active">যাচাই করা হচ্ছে...</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Account Information Card -->
+                <section class="card">
+                    <div class="card-header">
+                        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                        <h3>একাউন্ট তথ্য</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="info-group">
+                            <label>UID</label>
+                            <div class="info-value-box read-only">
+                                <span id="val-uid" class="font-mono">-</span>
+                                <span class="badge-readonly">Read Only</span>
+                            </div>
+                        </div>
+                        <div class="info-group">
+                            <label>Account তৈরি</label>
+                            <div class="info-value-box read-only">
+                                <span id="val-createdAt">-</span>
+                                <span class="badge-readonly">Read Only</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Referral Information Card -->
+                <section class="card full-width-card">
+                    <div class="card-header">
+                        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                        <h3>রেফারেল তথ্য</h3>
+                    </div>
+                    <div class="card-body referral-grid">
+                        <div class="info-group">
+                            <label>Referral Code</label>
+                            <div class="info-value-box read-only">
+                                <span id="val-refferalCode" class="font-bold">-</span>
+                                <span class="badge-readonly">Read Only</span>
+                            </div>
+                        </div>
+                        <div class="info-group">
+                            <label>Referral User ID</label>
+                            <div class="info-value-box read-only">
+                                <span id="val-refferalUserId" class="font-mono">-</span>
+                                <span class="badge-readonly">Read Only</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+
+            <!-- NID Information Section -->
+            <section class="card nid-card-section">
+                <div class="card-header">
+                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
+                    <h3>NID তথ্য</h3>
+                </div>
+                <div class="card-body nid-grid">
+                    <div class="nid-box">
+                        <label>NID কার্ডের সামনের অংশ</label>
+                        <div class="nid-image-wrapper" id="wrapper-nidFront" onclick="openImagePreview(this)">
+                            <img id="val-nidFront" src="" alt="NID Front" loading="lazy" onerror="handleImageError(this)">
+                            <div class="nid-fallback hidden">NID ছবি পাওয়া যায়নি</div>
+                            <div class="image-zoom-overlay">
+                                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="nid-box">
+                        <label>NID কার্ডের পিছনের অংশ</label>
+                        <div class="nid-image-wrapper" id="wrapper-nidBack" onclick="openImagePreview(this)">
+                            <img id="val-nidBack" src="" alt="NID Back" loading="lazy" onerror="handleImageError(this)">
+                            <div class="nid-fallback hidden">NID ছবি পাওয়া যায়নি</div>
+                            <div class="image-zoom-overlay">
+                                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Logout Section -->
+            <div class="logout-section">
+                <button type="button" class="btn btn-logout" onclick="logoutUser()" aria-label="লগআউট">
+                    <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                    <span>লগআউট</span>
+                </button>
+            </div>
+
+            <!-- Dynamic Footer Container -->
+            <div id="footer-container"></div>
+
+        </div>
+    </main>
+
+    <!-- NID Image Lightbox Modal -->
+    <div id="image-modal" class="image-modal hidden" onclick="closeImagePreview()">
+        <div class="modal-content-wrapper" onclick="event.stopPropagation()">
+            <button class="modal-close-btn" onclick="closeImagePreview()" aria-label="বন্ধ করুন">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            <img id="modal-zoomed-img" src="" alt="Zoomed NID">
+        </div>
+    </div>
+
+    <!-- Missing User Modal -->
+    <div id="missing-user-modal" class="custom-modal hidden">
+        <div class="custom-modal-box">
+            <div class="modal-warning-icon">
+                <svg viewBox="0 0 24 24" width="48" height="48" stroke="#ff6a00" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+            </div>
+            <h3>আপনার তথ্য পাওয়া যায়নি!</h3>
+            <p>আপনার Reseller তথ্য বর্তমানে পাওয়া যাচ্ছে না। অনুগ্রহ করে পরে আবার চেষ্টা করুন।</p>
+            <button class="btn btn-primary full-width" onclick="logoutUser()" aria-label="লগআউট">লগআউট</button>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Firebase & App Script -->
+    <script type="module" src="settings.js"></script>
+</body>
+</html>
