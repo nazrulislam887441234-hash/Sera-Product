@@ -1,0 +1,224 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { 
+    getAuth, 
+    onAuthStateChanged 
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js"; 
+import { 
+    getFirestore, 
+    doc, 
+    getDoc, 
+    setDoc, 
+    serverTimestamp, 
+    runTransaction 
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+// Firebase Configuration (Replace with your actual project credentials)
+const firebaseConfig = {
+  apiKey: "AIzaSyBRSt2aoSJ-lumYAWGAXE6ncui7__TqJ4E",
+  authDomain: "sera-product.firebaseapp.com",
+  projectId: "sera-product",
+  storageBucket: "sera-product.firebasestorage.app",
+  messagingSenderId: "516762224598",
+  appId: "1:516762224598:web:b6a571f355a8a4a97c0677",
+  measurementId: "G-RLMWH43FXX"
+};
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// DOM Elements
+const loadingState = document.getElementById("loadingState");
+const messageState = document.getElementById("messageState");
+const messageTitle = document.getElementById("messageTitle");
+const messageDesc = document.getElementById("messageDesc");
+const withdrawPanel = document.getElementById("withdrawPanel");
+const displayBalance = document.getElementById("displayBalance");
+const withdrawAmountText = document.getElementById("withdrawAmountText");
+const withdrawForm = document.getElementById("withdrawForm");
+const bkashNumberInput = document.getElementById("bkashNumber");
+const bkashError = document.getElementById("bkashError");
+const submitBtn = document.getElementById("submitBtn");
+
+const customPopup = document.getElementById("customPopup");
+const popupTitle = document.getElementById("popupTitle");
+const popupMessage = document.getElementById("popupMessage");
+const popupCloseBtn = document.getElementById("popupCloseBtn");
+const popupIconBox = document.getElementById("popupIconBox");
+
+// Fetch Footer dynamically
+fetch("https://seraproduct.com/footer")
+    .then(response => response.text())
+    .then(html => {
+        document.getElementById("footerContainer").innerHTML = html;
+    })
+    .catch(err => console.error("Footer fetch failed:", err));
+
+// Helper: Bengali Number Formatting
+function formatBengaliNumber(num) {
+    const bengaliDigits = {'0':'০','1':'১','2':'২','3':'৩','4':'৪','5':'৫','6':'৬','7':'৭','8':'৮','9':'৯'};
+    return "৳" + num.toString().replace(/\d/g, d => bengaliDigits[d]);
+}
+
+// Show Popup Modal
+function showPopup(title, message, isSuccess = true) {
+    popupTitle.textContent = title;
+    popupMessage.textContent = message;
+    if (!isSuccess) {
+        popupIconBox.className = "popup-icon danger-bg";
+        popupIconBox.innerHTML = `<svg class="icon-large" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`;
+    } else {
+        popupIconBox.className = "popup-icon success-bg";
+        popupIconBox.innerHTML = `<svg class="icon-large" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>`;
+    }
+    customPopup.classList.remove("hidden");
+}
+
+popupCloseBtn.addEventListener("click", () => {
+    customPopup.classList.add("hidden");
+    window.location.reload();
+});
+
+// Authentication State Listener
+onAuthStateChanged(auth, async (user) => {
+    if (!user) {
+        window.location.href = "https://seraproduct.com/reseller/login";
+        return;
+    }
+
+    try {
+        // 1. Check existing pending withdraw request first
+        const withdrawDocRef = doc(db, "withdraw", user.uid);
+        const withdrawSnap = await getDoc(withdrawDocRef);
+        
+        if (withdrawSnap.exists()) {
+            const withdrawData = withdrawSnap.data();
+            if (withdrawData.status === "pending") {
+                loadingState.classList.add("hidden");
+                messageState.classList.remove("hidden");
+                messageTitle.textContent = "অনুরোধ পেন্ডিং রয়েছে";
+                messageDesc.textContent = "আপনার একটি Withdraw request ইতোমধ্যে pending রয়েছে। সেটি সম্পন্ন হওয়া পর্যন্ত নতুন request করা যাবে না।";
+                return;
+            }
+        }
+
+        // 2. Fetch Reseller Document (Ignoring active field, checking verified)
+        const resellerDocRef = doc(db, "reseller", user.uid);
+        const resellerSnap = await getDoc(resellerDocRef);
+
+        if (!resellerSnap.exists()) {
+            loadingState.classList.add("hidden");
+            messageState.classList.remove("hidden");
+            messageTitle.textContent = "রিসেলার অ্যাকাউন্ট পাওয়া যায়নি";
+            messageDesc.textContent = "আপনার রিসেলার অ্যাকাউন্ট তথ্য ডাটাবেসে পাওয়া যায়নি।";
+            return;
+        }
+
+        const resellerData = resellerSnap.data();
+
+        // Verified Check
+        if (resellerData.verified !== true) {
+            loadingState.classList.add("hidden");
+            messageState.classList.remove("hidden");
+            messageTitle.textContent = "অ্যাকাউন্ট ভেরিফাইড নয়";
+            messageDesc.textContent = "আপনার রিসেলার অ্যাকাউন্ট এখনো ভেরিফাইড হয়নি। উইথড্র করার জন্য অ্যাকাউন্ট ভেরিফাইড হতে হবে।";
+            return;
+        }
+
+        const balance = Number(resellerData.balance) || 0;
+
+        // Negative Balance Check
+        if (balance < 0) {
+            loadingState.classList.add("hidden");
+            messageState.classList.remove("hidden");
+            messageTitle.textContent = "উইথড্র বর্তমানে বন্ধ রয়েছে";
+            messageDesc.textContent = "আপনার বর্তমান ব্যালেন্স ঋণাত্মক হওয়ায় Withdraw request করা যাবে না।";
+            return;
+        }
+
+        // Minimum Balance Rule (Must be > 100)
+        if (balance <= 100) {
+            loadingState.classList.add("hidden");
+            messageState.classList.remove("hidden");
+            messageTitle.textContent = "অপর্যাপ্ত ব্যালেন্স";
+            messageDesc.textContent = balance === 100 ? "Withdraw করার জন্য আরও ব্যালেন্স প্রয়োজন (১০০ টাকার বেশি হতে হবে)।" : "Withdraw করার জন্য আপনার ব্যালেন্স ১০০ টাকার বেশি হতে হবে।";
+            return;
+        }
+
+        // All checks passed: Render Panel
+        loadingState.classList.add("hidden");
+        withdrawPanel.classList.remove("hidden");
+
+        displayBalance.textContent = formatBengaliNumber(balance);
+        withdrawAmountText.textContent = formatBengaliNumber(balance);
+
+        // Handle Form Submission with Transaction & Fresh Verification
+        withdrawForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            bkashError.classList.add("hidden");
+
+            const bkashNum = bkashNumberInput.value.trim();
+            const bkashRegex = /^01\d{9}$/;
+
+            if (!bkashRegex.test(bkashNum)) {
+                bkashError.classList.remove("hidden");
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = "Withdraw request তৈরি হচ্ছে...";
+
+            try {
+                await runTransaction(db, async (transaction) => {
+                    // Fresh fetch inside transaction to prevent race conditions
+                    const freshResellerSnap = await transaction.get(resellerDocRef);
+                    if (!freshResellerSnap.exists()) {
+                        throw new Error("Reseller account not found.");
+                    }
+
+                    const freshData = freshResellerSnap.data();
+                    const freshBalance = Number(freshData.balance) || 0;
+
+                    if (freshData.verified !== true) {
+                        throw new Error("Account is not verified.");
+                    }
+
+                    if (freshBalance <= 100) {
+                        throw new Error("Balance must be greater than 100.");
+                    }
+
+                    if (freshBalance < 0) {
+                        throw new Error("Balance is negative.");
+                    }
+
+                    // Set Withdraw Document (Forced ID: withdraw/{uid})
+                    const newWithdrawData = {
+                        withdrawAmount: freshBalance,
+                        uid: user.uid,
+                        currentBalance: freshBalance,
+                        status: "pending",
+                        createdAt: serverTimestamp(),
+                        bkashNumber: bkashNum
+                    };
+
+                    transaction.set(withdrawDocRef, newWithdrawData);
+                });
+
+                showPopup("Withdraw Request সফল হয়েছে!", "আপনার Withdraw request সফলভাবে জমা হয়েছে। আপনার request এখন pending অবস্থায় রয়েছে।", true);
+
+            } catch (error) {
+                console.error("Withdraw Error:", error);
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg> Withdraw Request করুন`;
+                showPopup("ত্রুটি ঘটেছে!", "উইথড্র অনুরোধ সম্পন্ন করা যায়নি। দয়া করে আবার চেষ্টা করুন।", false);
+            }
+        });
+
+    } catch (error) {
+        console.error("Initialization Error:", error);
+        loadingState.classList.add("hidden");
+        messageState.classList.remove("hidden");
+        messageTitle.textContent = "সিস্টেম ত্রুটি";
+        messageDesc.textContent = "তথ্য লোড করার সময় একটি সমস্যা হয়েছে। দয়া করে পেজটি রিফ্রেশ করুন।";
+    }
+});
