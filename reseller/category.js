@@ -14,10 +14,7 @@ import {
     limit, 
     getDocs, 
     orderBy, 
-    startAfter,
-    setDoc,
-    deleteDoc,
-    serverTimestamp 
+    startAfter 
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 // Firebase Configuration
@@ -38,7 +35,6 @@ const db = getFirestore(app);
 let currentUser = null;
 let categoryId = null;
 let lastVisibleProduct = null;
-let favoritesMap = new Set();
 
 document.addEventListener("DOMContentLoaded", () => {
     initApp();
@@ -123,7 +119,6 @@ async function loadCategoryAndProducts(slug) {
         const categoryData = categoryDoc.data();
 
         renderCategoryHeader(categoryData);
-        await loadFavorites(currentUser.uid);
         await loadProductsFirstBatch(categoryId);
 
     } catch (error) {
@@ -140,16 +135,6 @@ function renderCategoryHeader(category) {
     document.getElementById("cat-image").src = category.image || "https://seraproduct.com/photo/logo.png";
     document.getElementById("cat-name").textContent = category.categoryName || "";
     document.getElementById("product-section").style.display = "block";
-}
-
-async function loadFavorites(uid) {
-    try {
-        const favRef = collection(db, "whilst", uid, "products");
-        const favSnap = await getDocs(favRef);
-        favSnap.forEach(doc => favoritesMap.add(doc.id));
-    } catch (e) {
-        console.error("Error loading favorites:", e);
-    }
 }
 
 async function loadProductsFirstBatch(catId) {
@@ -225,10 +210,8 @@ async function loadMoreProducts() {
 
 function renderProductCard(docSnap, gridContainer) {
     const product = docSnap.data();
-    const productId = docSnap.id;
     const productSlug = product.productSlug || "";
     const images = Array.isArray(product.image) ? product.image : [product.image || ""];
-    const firstImg = images[0] || "";
 
     const resellerPrice = Number(product.resellerPrice) || 0;
     const resellerOldPrice = Number(product.resellerOldPrice) || 0;
@@ -237,14 +220,12 @@ function renderProductCard(docSnap, gridContainer) {
     let discountAmount = hasDiscount ? (resellerOldPrice - resellerPrice) : 0;
     let discountPercent = hasDiscount ? Math.round(((resellerOldPrice - resellerPrice) / resellerOldPrice) * 100) : 0;
 
-    const isFav = favoritesMap.has(productId);
-
     const card = document.createElement("div");
     card.className = "product-card";
     
-    // Card Click to open product page (Prevent triggering if clicking heart button or its children)
+    // Card Click to open product page
     card.onclick = (e) => {
-        if (e.target.closest('.heart-btn') || e.target.closest('.card-footer-btn')) return;
+        if (e.target.closest('.card-footer-btn')) return;
         window.open(`https://seraproduct.com/reseller/product?${encodeURIComponent(productSlug)}`, "_blank", "noopener,noreferrer");
     };
 
@@ -252,9 +233,6 @@ function renderProductCard(docSnap, gridContainer) {
 
     card.innerHTML = `
         <div class="card-img-container">
-            <button class="heart-btn ${isFav ? 'active' : ''}" data-id="${productId}" title="Favorite">
-                <svg viewBox="0 0 24 24" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-            </button>
             ${imagesHtml}
         </div>
         <div class="card-body">
@@ -280,13 +258,6 @@ function renderProductCard(docSnap, gridContainer) {
         window.open(`https://seraproduct.com/reseller/product?${encodeURIComponent(productSlug)}`, "_blank", "noopener,noreferrer");
     };
 
-    // Heart click (Stops event bubbling properly to card click)
-    const heartBtn = card.querySelector('.heart-btn');
-    heartBtn.onclick = async (e) => {
-        e.stopPropagation();
-        await toggleFavorite(productId, product, firstImg, heartBtn);
-    };
-
     gridContainer.appendChild(card);
 
     // Setup Independent Image Slider if multiple images exist
@@ -305,31 +276,6 @@ function setupProductImageSlider(container) {
         currentIndex = (currentIndex + 1) % imgs.length;
         imgs[currentIndex].classList.add('active');
     }, 3500);
-}
-
-async function toggleFavorite(productId, product, firstImg, btnElement) {
-    if (!currentUser) return;
-    const favDocRef = doc(db, "whilst", currentUser.uid, "products", productId);
-    
-    try {
-        if (favoritesMap.has(productId)) {
-            await deleteDoc(favDocRef);
-            favoritesMap.delete(productId);
-            btnElement.classList.remove('active');
-        } else {
-            await setDoc(favDocRef, {
-                productName: product.productName || "",
-                productImage: firstImg,
-                productSlug: product.productSlug || "",
-                uid: currentUser.uid,
-                createdAt: serverTimestamp()
-            });
-            favoritesMap.add(productId);
-            btnElement.classList.add('active');
-        }
-    } catch (error) {
-        console.error("Favorite Toggle Error:", error);
-    }
 }
 
 function showAccessDenied(title, desc) {
