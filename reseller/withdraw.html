@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#ff6a00">
+    <title>Withdraw | Sera Product</title>
+    <link rel="icon" type="image/png" href="https://seraproduct.com/photo/logo.png">
+    <link rel="stylesheet" href="withdraw.css">
+</head>
+<body>
+
+    <!-- Professional Header -->
+    <header class="reseller-header">
+        <div class="header-container">
+            <a href="https://seraproduct.com/reseller/dashboard" class="logo-link">
+                <img src="https://seraproduct.com/photo/header.png" alt="Sera Product Logo" class="brand-logo">
+            </a>
+            <div class="header-actions">
+                <a href="https://seraproduct.com/reseller/dashboard" class="back-btn">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                    ফিরে যান
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <div class="withdraw-wrapper">
+            
+            <div class="page-title-box">
+                <h1>রিসেলার উইথড্র প্যানেল</h1>
+                <p>আপনার আয়কৃত ব্যালেন্স বিকাশ নম্বরের মাধ্যমে উত্তোলন করুন</p>
+            </div>
+
+            <!-- Loading State Container -->
+            <div id="loadingState" class="card state-card">
+                <div class="spinner"></div>
+                <p>আপনার ব্যালেন্স যাচাই করা হচ্ছে...</p>
+            </div>
+
+            <!-- Locked / Error State Container -->
+            <div id="messageState" class="card state-card hidden">
+                <div class="state-icon-box danger-bg">
+                    <svg class="icon-large" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                </div>
+                <h3 id="messageTitle">উইথড্র বন্ধ রয়েছে</h3>
+                <p id="messageDesc">এই মুহূর্তে উইথড্র করা সম্ভব নয়।</p>
+            </div>
+
+            <!-- Active Withdraw Panel -->
+            <div id="withdrawPanel" class="withdraw-panel hidden">
+                
+                <!-- Balance Display Card -->
+                <div class="balance-card">
+                    <div class="balance-info">
+                        <span class="balance-label">আপনার বর্তমান ব্যালেন্স</span>
+                        <h2 id="displayBalance">৳০</h2>
+                    </div>
+                    <div class="balance-icon-box">
+                        <svg class="icon-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+                    </div>
+                </div>
+
+                <!-- Withdraw Form Card -->
+                <div class="card form-card">
+                    <form id="withdrawForm">
+                        
+                        <!-- Withdraw Amount (Readonly) -->
+                        <div class="form-group">
+                            <label>উইথড্র করার পরিমাণ</label>
+                            <div class="amount-display-box">
+                                <span id="withdrawAmountText">৳০</span>
+                                <small>সম্পূর্ণ ব্যালেন্স স্বয়ংক্রিয়ভাবে নির্ধারিত</small>
+                            </div>
+                        </div>
+
+                        <!-- bKash Number Input -->
+                        <div class="form-group">
+                            <label for="bkashNumber">আপনার বিকাশ নাম্বার</label>
+                            <div class="input-with-icon">
+                                <span class="input-icon">
+                                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                                </span>
+                                <input type="text" id="bkashNumber" placeholder="01XXXXXXXXX" maxlength="11" autocomplete="off">
+                            </div>
+                            <span id="bkashError" class="error-text hidden">সঠিক ১১ ডিজিটের বাংলাদেশি মোবাইল নাম্বার দিন। নাম্বারটি 01 দিয়ে শুরু হতে হবে।</span>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" id="submitBtn" class="primary-btn">
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>
+                            Withdraw Request করুন
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer Container -->
+    <div id="footerContainer"></div>
+
+    <!-- Custom Popup Modal -->
+    <div id="customPopup" class="popup-overlay hidden">
+        <div class="popup-box">
+            <div id="popupIconBox" class="popup-icon success-bg">
+                <svg class="icon-large" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+            </div>
+            <h3 id="popupTitle">Withdraw Request সফল হয়েছে!</h3>
+            <p id="popupMessage">আপনার Withdraw request সফলভাবে জমা হয়েছে। আপনার request এখন pending অবস্থায় রয়েছে।</p>
+            <button type="button" id="popupCloseBtn" class="primary-btn">ঠিক আছে</button>
+        </div>
+    </div>
+
+    <!-- Firebase Scripts (Modular SDK) -->
+    <script type="module" src="withdraw.js"></script>
+</body>
+</html>
