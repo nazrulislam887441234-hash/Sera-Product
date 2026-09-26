@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>লেনদেনের ইতিহাস — Sera Product Reseller</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://seraproduct.com/photo/header.png">
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="transection.css">
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header class="app-header">
+        <div class="header-container">
+            <div class="header-left">
+                <a href="https://seraproduct.com/reseller/dashboard" class="back-btn" title="পেছনে যান">
+                    <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                </a>
+                <a href="https://seraproduct.com" class="brand-logo">
+                    <img src="https://seraproduct.com/photo/header.png" alt="Sera Product Logo">
+                    <span>সেরা প্রডাক্ট</span>
+                </a>
+            </div>
+            <div class="header-right">
+                <div class="user-profile-info">
+                    <span id="reseller-name">লোড হচ্ছে...</span>
+                </div>
+                <button id="logout-btn" class="logout-btn" title="লগআউট">
+                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="page-title-box">
+                <h1>লেনদেনের ইতিহাস</h1>
+                <p>আপনার অ্যাকাউন্ট সংক্রান্ত সকল জমা ও খরচের বিস্তারিত হিসাব</p>
+            </div>
+
+            <!-- Transaction Container -->
+            <div id="transaction-container" class="transaction-container">
+                <!-- Skeleton Loading State -->
+                <div class="skeleton-card">
+                    <div class="skeleton-line shimmer"></div>
+                    <div class="skeleton-line shimmer short"></div>
+                </div>
+                <div class="skeleton-card">
+                    <div class="skeleton-line shimmer"></div>
+                    <div class="skeleton-line shimmer short"></div>
+                </div>
+                <div class="skeleton-card">
+                    <div class="skeleton-line shimmer"></div>
+                    <div class="skeleton-line shimmer short"></div>
+                </div>
+            </div>
+
+            <!-- Empty State (Hidden by default) -->
+            <div id="empty-state" class="empty-state hidden">
+                <div class="empty-icon">
+                    <svg viewBox="0 0 24 24" width="64" height="64" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2" ry="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
+                </div>
+                <h3>এখনও কোনো ট্রাঞ্জেকশন পাওয়া যায়নি।</h3>
+                <p>আপনার অ্যাকাউন্টে লেনদেন হলে এখানে তার বিস্তারিত দেখা যাবে।</p>
+            </div>
+
+            <!-- Error State (Hidden by default) -->
+            <div id="error-state" class="error-state hidden">
+                <p id="error-message">ট্রাঞ্জেকশন লোড করতে সমস্যা হয়েছে। অনুগ্রহ করে কিছুক্ষণ পর আবার চেষ্টা করুন।</p>
+                <button id="retry-btn" class="retry-btn">পুনরায় চেষ্টা করুন</button>
+            </div>
+
+            <!-- Load More Button -->
+            <div id="load-more-container" class="load-more-container hidden">
+                <button id="load-more-btn" class="load-more-btn">
+                    <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    আরও দেখুন
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Dynamic Section -->
+    <div id="footer-container">
+        <footer class="fallback-footer">
+            <p>&copy; ২০২৬ Sera Product. সর্বস্বত্ব সংরক্ষিত।</p>
+        </footer>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">ট্রাঞ্জেকশন আইডি কপি হয়েছে।</div>
+
+    <!-- App Script -->
+    <script type="module" src="transection.js"></script>
+</body>
+</html>
