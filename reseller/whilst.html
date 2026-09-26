@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>আমার পছন্দের প্রোডাক্ট | Sera Product</title>
+    <meta name="description" content="Sera Product রিসেলারদের পছন্দের প্রোডাক্ট তালিকা।">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#ff6a00">
+    <link rel="icon" type="image/png" href="https://seraproduct.com/photo/logo.png">
+    <link rel="stylesheet" href="whilst.css">
+</head>
+<body>
+
+    <!-- Header Container -->
+    <header class="site-header" id="siteHeader">
+        <div class="header-container">
+            <div class="header-left">
+                <a href="https://seraproduct.com/reseller/dashboard" class="back-btn" title="ফিরে যান">
+                    <svg class="icon" viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                    <span>ফিরে যান</span>
+                </a>
+                <a href="https://seraproduct.com/reseller/dashboard" class="logo-link">
+                    <img src="https://seraproduct.com/photo/header.png" alt="Sera Product" class="header-logo">
+                </a>
+            </div>
+            <div class="header-right">
+                <button class="menu-toggle" id="menuToggle" aria-label="মেনু খুলুন">
+                    <svg class="icon" viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                </button>
+            </div>
+        </div>
+        <nav class="mobile-nav" id="mobileNav">
+            <a href="https://seraproduct.com/reseller/dashboard">ড্যাশবোর্ড</a>
+            <a href="https://seraproduct.com/reseller/all-product">সকল প্রোডাক্ট</a>
+            <a href="#" id="mobileLogoutBtn">লগআউট</a>
+        </nav>
+    </header>
+
+    <!-- Main Container -->
+    <main class="main-content">
+        <div class="container">
+            <div class="page-title-section">
+                <h1 class="page-title">আমার পছন্দের প্রোডাক্ট</h1>
+                <p class="page-desc">আপনি যেসব প্রোডাক্ট পছন্দের তালিকায় রেখেছেন সেগুলো এখানে দেখতে পারবেন।</p>
+            </div>
+
+            <!-- Alert Box / Status Messages -->
+            <div id="statusMessage" class="status-message hidden"></div>
+
+            <!-- Product Grid -->
+            <div id="productGrid" class="product-grid">
+                <!-- Skeleton Loader (Initial State) -->
+                <div class="skeleton-card">
+                    <div class="skeleton-img"></div>
+                    <div class="skeleton-line"></div>
+                </div>
+                <div class="skeleton-card">
+                    <div class="skeleton-img"></div>
+                    <div class="skeleton-line"></div>
+                </div>
+                <div class="skeleton-card">
+                    <div class="skeleton-img"></div>
+                    <div class="skeleton-line"></div>
+                </div>
+                <div class="skeleton-card">
+                    <div class="skeleton-img"></div>
+                    <div class="skeleton-line"></div>
+                </div>
+            </div>
+            <p id="loadingText" class="loading-indicator">আপনার পছন্দের প্রোডাক্ট লোড হচ্ছে...</p>
+
+            <!-- Load More Section -->
+            <div class="load-more-container" id="loadMoreContainer" style="display: none;">
+                <button id="loadMoreBtn" class="btn-primary-outline">আরও দেখুন</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Custom Confirmation Modal -->
+    <div id="customModal" class="modal-overlay hidden">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 id="modalTitle">পছন্দের তালিকা থেকে সরাবেন?</h3>
+                <button class="modal-close" id="modalCloseBtn">
+                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="modalMessage">আপনি কি এই প্রোডাক্টটি আপনার পছন্দের তালিকা থেকে সরাতে চান?</p>
+            </div>
+            <div class="modal-footer">
+                <button id="modalCancelBtn" class="btn-secondary">বাতিল</button>
+                <button id="modalConfirmBtn" class="btn-danger">সরিয়ে দিন</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Container -->
+    <div id="footerContainer"></div>
+
+    <!-- App Script -->
+    <script type="module" src="whilst.js"></script>
+</body>
+</html>
