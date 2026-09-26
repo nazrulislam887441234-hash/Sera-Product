@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>আমার অর্ডারসমূহ - Sera Product Reseller</title>
+    <link rel="icon" type="image/png" href="https://seraproduct.com/photo/logo.png">
+    <meta name="theme-color" content="#ff6a00">
+    <link rel="stylesheet" href="my-orders.css">
+    <!-- Google Fonts for professional Bengali typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header class="app-header">
+        <div class="header-container">
+            <div class="header-left">
+                <a href="https://seraproduct.com/reseller/dashboard" class="back-btn" title="ড্যাশবোর্ডে ফিরে যান">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                </a>
+                <img src="https://seraproduct.com/photo/header.png" alt="Sera Product Logo" class="brand-logo" onerror="this.src='https://seraproduct.com/photo/logo.png'">
+            </div>
+            <div class="header-right">
+                <span class="user-greeting" id="userEmailDisplay">লোড হচ্ছে...</span>
+                <button id="logoutBtn" class="logout-btn" title="লগআউট">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                    <span>লগআউট</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="main-container">
+        <div class="page-title-box">
+            <h1>আমার রিসেলার অর্ডারসমূহ</h1>
+            <p>আপনার সকল অর্ডারের তালিকা এবং বর্তমান অবস্থা এখানে দেখতে পাবেন।</p>
+        </div>
+
+        <!-- Search Bar Section -->
+        <div class="search-box-container">
+            <div class="search-input-wrapper">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" id="searchInput" placeholder="ফোন নাম্বার বা অর্ডার আইডি (Document ID) দিয়ে খুঁজুন...">
+                <button id="clearSearchBtn" class="clear-search-btn hidden" title="রিসেট করুন">&times;</button>
+            </div>
+            <button id="searchBtn" class="search-action-btn">সার্চ করুন</button>
+        </div>
+
+        <!-- Orders Container -->
+        <div id="ordersContainer" class="orders-container">
+            <!-- Skeleton Loading State (Initial) -->
+            <div class="skeleton-card">
+                <div class="skeleton-img"></div>
+                <div class="skeleton-content">
+                    <div class="skeleton-line short"></div>
+                    <div class="skeleton-line long"></div>
+                    <div class="skeleton-line medium"></div>
+                </div>
+            </div>
+            <div class="skeleton-card">
+                <div class="skeleton-img"></div>
+                <div class="skeleton-content">
+                    <div class="skeleton-line short"></div>
+                    <div class="skeleton-line long"></div>
+                    <div class="skeleton-line medium"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading More Spinner / Status -->
+        <div id="loadingMore" class="loading-more hidden">
+            <div class="spinner"></div>
+            <span>আরও অর্ডার লোড হচ্ছে...</span>
+        </div>
+
+        <!-- Load More Button -->
+        <div class="load-more-wrapper">
+            <button id="loadMoreBtn" class="load-more-btn hidden">আরও অর্ডার দেখুন</button>
+        </div>
+
+        <!-- Empty State Container -->
+        <div id="emptyState" class="empty-state hidden">
+            <div class="empty-icon">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#ff6a00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+            </div>
+            <h3>আপনার কোনো অর্ডার পাওয়া যায়নি।</h3>
+            <p>আপনি কোনো অর্ডার করলে সেটির সম্পূর্ণ তথ্য এখানে দেখতে পারবেন।</p>
+        </div>
+
+        <!-- Error State Container -->
+        <div id="errorState" class="error-state hidden">
+            <div class="error-icon">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+            </div>
+            <h3>অর্ডার লোড করতে সমস্যা হয়েছে</h3>
+            <p id="errorMessageText">অনুগ্রহ করে কিছুক্ষণ পর আবার চেষ্টা করুন।</p>
+            <button id="retryBtn" class="retry-btn">আবার চেষ্টা করুন</button>
+        </div>
+    </main>
+
+    <!-- Dynamic Footer Container -->
+    <div id="dynamicFooter">
+        <footer class="app-footer">
+            <p>&copy; ২০২৬ Sera Product. সর্বস্বত্ব সংরক্ষিত।</p>
+        </footer>
+    </div>
+
+    <!-- Firebase App & Firestore Modular SDK via CDN -->
+    <script type="module" src="my-orders.js"></script>
+</body>
+</html>
