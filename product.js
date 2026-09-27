@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import { getFirestore, collection, query, where, getDocs, doc, setDoc, getDoc, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 // Firebase Configuration Placeholder
@@ -63,14 +63,14 @@ const signupForm = document.getElementById('signup-form');
 const loginError = document.getElementById('login-error');
 const signupError = document.getElementById('signup-error');
 
-// Initialize Application
-document.addEventListener('DOMContentLoaded', async () => {
+// Initialize Application Fast
+document.addEventListener('DOMContentLoaded', () => {
     loadFooter();
     if (!productSlug) {
         showError("প্রোডাক্ট খুঁজে পাওয়া যায়নি।");
         return;
     }
-    await fetchAndRenderProduct(productSlug);
+    fetchAndRenderProduct(productSlug);
 });
 
 // 2. Fetch Product from Firestore
@@ -88,7 +88,6 @@ async function fetchAndRenderProduct(slug) {
             return;
         }
 
-        // Get first valid active product
         const docSnap = querySnapshot.docs[0];
         currentProduct = { id: docSnap.id, ...docSnap.data() };
 
@@ -116,7 +115,6 @@ function renderProductDetails(product) {
     productTitle.textContent = product.productName || "";
     productDescription.textContent = product.productDescription || "";
 
-    // Pricing & Discounts
     const basePrice = Number(product.customerPrice) || 0;
     const oldPrice = Number(product.customerOldPrice) || 0;
 
@@ -134,7 +132,6 @@ function renderProductDetails(product) {
         }
     }
 
-    // Badges (Free Delivery & Warranty)
     badgesContainer.innerHTML = "";
     if (product.freeDelivery) {
         const deliveryBadge = document.createElement('div');
@@ -149,14 +146,11 @@ function renderProductDetails(product) {
         badgesContainer.appendChild(warrantyBadge);
     }
 
-    // Gallery Setup
     setupGallery(product.image, product.reviewVideo);
-
-    // Variants Setup
     setupVariants(product.variants);
 }
 
-// 4. Image & Video Gallery
+// 4. Image & Video Gallery (Direct Embed Link Iframe Support)
 function setupGallery(images, reviewVideo) {
     const mediaToggle = document.getElementById('media-toggle');
     const imageView = document.getElementById('image-view');
@@ -176,25 +170,26 @@ function setupGallery(images, reviewVideo) {
                 thumb.classList.add('active');
                 mainImage.src = imgUrl;
                 
-                // Switch back to image view if video was active
-                mediaToggle.querySelector('[data-target="image-view"]').click();
+                // Switch back to image view
+                const imgBtn = mediaToggle.querySelector('[data-target="image-view"]');
+                if (imgBtn) imgBtn.click();
             });
 
             thumbnailContainer.appendChild(thumb);
         });
     }
 
-    // Video Toggle Handling
+    // Video Handling - Direct Embed URL inside <iframe>
     if (reviewVideo && reviewVideo.trim() !== "") {
         mediaToggle.classList.remove('hidden');
         const toggleBtns = mediaToggle.querySelectorAll('.toggle-btn');
 
-        if (!videoView.innerHTML.trim()) {
-            videoView.innerHTML = `<iframe src="${reviewVideo}" allowfullscreen loading="lazy"></iframe>`;
-        }
+        // Clean & inject directly into video container
+        const cleanVideoUrl = reviewVideo.trim();
+        videoView.innerHTML = `<iframe src="${cleanVideoUrl}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>`;
 
         toggleBtns.forEach(btn => {
-            btn.addEventListener('click', (e) => {
+            btn.addEventListener('click', () => {
                 toggleBtns.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
 
@@ -211,7 +206,7 @@ function setupGallery(images, reviewVideo) {
     }
 }
 
-// 5. Variants Logic & Price Calculation
+// 5. Variants Logic
 function setupVariants(variants) {
     variantsContainer.innerHTML = "";
     selectedVariantsState = {};
@@ -293,7 +288,7 @@ function setupOfferCountdown(offerTimeStr) {
     }, 1000);
 }
 
-// 7. Dynamic SEO & JSON-LD
+// 7. Dynamic SEO
 function setupSEO(product) {
     const title = `${product.productName} | Sera Product`;
     const description = product.productDescription ? product.productDescription.substring(0, 150) : "Sera Product Details";
@@ -313,7 +308,6 @@ function setupSEO(product) {
     document.getElementById('twitter-description').setAttribute('content', description);
     document.getElementById('twitter-image').setAttribute('content', imageUrl);
 
-    // JSON-LD Schema
     const schemaData = {
         "@context": "https://schema.org/",
         "@type": "Product",
@@ -332,7 +326,7 @@ function setupSEO(product) {
     document.getElementById('structured-data').textContent = JSON.stringify(schemaData);
 }
 
-// 8. Authentication & Cart / Order Actions
+// 8. Auth Actions
 addToCartBtn.addEventListener('click', () => handleAction('cart'));
 buyNowBtn.addEventListener('click', () => handleAction('order'));
 
@@ -359,7 +353,6 @@ function handleAction(actionType) {
     }
 }
 
-// Auth Modal Controls
 closeModal.addEventListener('click', () => authModal.classList.add('hidden'));
 tabBtns.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -376,7 +369,6 @@ tabBtns.forEach(btn => {
     });
 });
 
-// Login Execution
 loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     loginError.textContent = "";
@@ -392,7 +384,6 @@ loginForm.addEventListener('submit', async (e) => {
     }
 });
 
-// Signup Execution & Buyer Document Creation
 signupForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     signupError.textContent = "";
@@ -411,7 +402,6 @@ signupForm.addEventListener('submit', async (e) => {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
 
-        // Save Buyer Document in buyers/{uid}
         await setDoc(doc(db, "buyers", user.uid), {
             name: name,
             phone: phone,
@@ -430,7 +420,7 @@ signupForm.addEventListener('submit', async (e) => {
     }
 });
 
-// 9. Cart Integration & Management
+// 9. Cart Integration
 async function executePendingAction(user) {
     if (!pendingAction) return;
 
@@ -506,7 +496,6 @@ async function loadFooter() {
             document.getElementById('footer-container').innerHTML = htmlText;
         }
     } catch (e) {
-        // Footer fail safe - does not block product page
         console.warn("Footer could not be loaded.");
     }
 }
