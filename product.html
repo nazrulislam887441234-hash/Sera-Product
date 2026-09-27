@@ -7,33 +7,29 @@
     <meta name="robots" content="index, follow">
     <link rel="icon" href="https://seraproduct.com/photo/logo.png">
 
-    <!-- Dynamic SEO Placeholders -->
+    <link rel="preload" href="https://seraproduct.com/loading.gif" as="image">
+
     <title id="meta-title">Sera Product</title>
     <meta name="description" id="meta-description" content="Sera Product Details">
     <link rel="canonical" id="meta-canonical" href="https://seraproduct.com/product">
 
-    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="product">
     <meta property="og:title" id="og-title" content="Sera Product">
     <meta property="og:description" id="og-description" content="Sera Product Details">
     <meta property="og:image" id="og-image" content="">
     <meta property="og:url" id="og-url" content="">
 
-    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" id="twitter-title" content="Sera Product">
     <meta name="twitter:description" id="twitter-description" content="Sera Product Details">
     <meta name="twitter:image" id="twitter-image" content="">
 
-    <!-- Structured Data JSON-LD -->
     <script type="application/ld+json" id="structured-data">{}</script>
 
-    <!-- Custom CSS -->
     <link rel="stylesheet" href="product.css">
 </head>
 <body>
 
-    <!-- Header Section -->
     <header class="sera-header">
         <div class="header-container">
             <a href="https://seraproduct.com" class="logo-link">
@@ -42,32 +38,26 @@
         </div>
     </header>
 
-    <!-- Main Container -->
     <main class="sera-main-container">
         
-        <!-- Loading Skeleton / Initial State -->
         <div id="loading-state" class="loading-state">
-            <div class="spinner"></div>
+            <img src="https://seraproduct.com/loading.gif" alt="Loading..." class="loading-gif">
             <p>প্রোডাক্ট লোড হচ্ছে...</p>
         </div>
 
-        <!-- Error / Not Found State -->
         <div id="error-state" class="error-state hidden">
             <h2 id="error-message">প্রোডাক্ট খুঁজে পাওয়া যায়নি।</h2>
             <a href="https://seraproduct.com" class="sera-btn">হোম পেজে ফিরে যান</a>
         </div>
 
-        <!-- Product Details Wrapper -->
         <div id="product-wrapper" class="product-wrapper hidden">
             
-            <!-- Offer Banner -->
             <div id="offer-banner" class="offer-banner hidden">
                 <div class="offer-text">এই প্রোডাক্টের অফার শেষ হবে</div>
                 <div id="countdown-timer" class="countdown-timer">০ দিন ১২ ঘণ্টা ৩৪ মিনিট ৫৬ সেকেন্ড</div>
             </div>
 
             <div class="product-grid">
-                <!-- Gallery Section -->
                 <div class="product-gallery-section">
                     <div id="media-toggle" class="media-toggle hidden">
                         <button type="button" class="toggle-btn active" data-target="image-view">ছবি</button>
@@ -78,16 +68,13 @@
                         <img id="main-product-image" src="" alt="Product Image" loading="eager" decoding="async">
                     </div>
 
-                    <div id="video-view" class="main-video-container hidden">
-                        <!-- Dynamic YouTube Iframe container -->
-                    </div>
+                    <div id="video-view" class="main-video-container aspect-16-9 hidden">
+                        </div>
 
                     <div id="thumbnail-container" class="thumbnail-container">
-                        <!-- Thumbnails will be injected here -->
-                    </div>
+                        </div>
                 </div>
 
-                <!-- Product Info Section -->
                 <div class="product-info-section">
                     <h1 id="product-title" class="product-title"></h1>
                     
@@ -98,21 +85,16 @@
                     </div>
 
                     <div id="badges-container" class="badges-container">
-                        <!-- Free delivery and warranty badges -->
-                    </div>
+                        </div>
 
-                    <!-- Variants Area -->
                     <div id="variants-container" class="variants-container">
-                        <!-- Dynamic variants will be injected here -->
-                    </div>
+                        </div>
 
-                    <!-- Action Buttons -->
                     <div class="action-buttons">
                         <button id="add-to-cart-btn" class="sera-btn cart-btn">কার্টে যোগ করুন</button>
                         <button id="buy-now-btn" class="sera-btn order-btn">এখনই অর্ডার করুন</button>
                     </div>
 
-                    <!-- Description Area -->
                     <div class="description-section">
                         <h3>প্রোডাক্ট বিবরণী</h3>
                         <div id="product-description" class="product-description"></div>
@@ -122,10 +104,8 @@
         </div>
     </main>
 
-    <!-- Footer Container -->
     <div id="footer-container"></div>
 
-    <!-- Auth Modal -->
     <div id="auth-modal" class="auth-modal hidden">
         <div class="modal-content">
             <button id="close-modal" class="close-modal">&times;</button>
@@ -134,7 +114,6 @@
                 <button type="button" class="tab-btn" data-tab="signup-tab">সাইনআপ</button>
             </div>
 
-            <!-- Login Form -->
             <form id="login-form" class="auth-form">
                 <div class="form-group">
                     <label>ইমেইল</label>
@@ -148,7 +127,6 @@
                 <button type="submit" class="sera-btn full-width">লগিন করুন</button>
             </form>
 
-            <!-- Signup Form -->
             <form id="signup-form" class="auth-form hidden">
                 <div class="form-group">
                     <label>নাম</label>
@@ -176,7 +154,6 @@
         </div>
     </div>
 
-    <!-- Application Script -->
     <script type="module" src="product.js"></script>
 </body>
 </html>
