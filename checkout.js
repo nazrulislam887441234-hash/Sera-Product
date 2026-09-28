@@ -14,6 +14,7 @@ import {
   writeBatch,
   runTransaction
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
 // ==========================================
 // FIREBASE CONFIGURATION
 // ==========================================
@@ -80,20 +81,17 @@ const toastNotification = document.getElementById('toast-notification');
 // HELPER FUNCTIONS
 // ==========================================
 
-// Convert Western digits to Bangla digits
 function toBanglaNum(num) {
   if (num === null || num === undefined) return '০';
   const banglaDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
   return num.toString().replace(/\d/g, (digit) => banglaDigits[digit]);
 }
 
-// Format Currency to Bangla ৳
 function formatCurrency(amount) {
   const formatted = new Intl.NumberFormat('en-IN').format(amount || 0);
   return `৳${toBanglaNum(formatted)}`;
 }
 
-// Show Custom Toast Message
 function showToast(msg) {
   toastNotification.textContent = msg;
   toastNotification.classList.remove('hidden');
@@ -102,7 +100,6 @@ function showToast(msg) {
   }, 3000);
 }
 
-// Loader Control
 function showLoader(text = "তথ্য লোড হচ্ছে...") {
   loadingText.textContent = text;
   loadingOverlay.classList.remove('hidden');
@@ -112,7 +109,6 @@ function hideLoader() {
   loadingOverlay.classList.add('hidden');
 }
 
-// Redirect Helper
 function redirectTo(url) {
   window.location.href = url;
 }
@@ -141,7 +137,6 @@ async function initializeCheckout() {
   showLoader("আপনার অ্যাকাউন্টের তথ্য যাচাই করা হচ্ছে...");
 
   try {
-    // 2. Buyer Account Check
     const buyerRef = doc(db, "buyers", currentUser.uid);
     const buyerSnap = await getDoc(buyerRef);
 
@@ -155,14 +150,12 @@ async function initializeCheckout() {
 
     const buyerData = buyerSnap.data();
 
-    // 3. Block Check
     if (buyerData.block === true) {
       hideLoader();
       lockedScreen.classList.remove('hidden');
       return;
     }
 
-    // 4. Cart Data Load
     showLoader("কার্টের তথ্য লোড করা হচ্ছে...");
     const cartRef = doc(db, "carts", currentUser.uid);
     const cartSnap = await getDoc(cartRef);
@@ -182,7 +175,6 @@ async function initializeCheckout() {
 
     cartProducts = cartData.productItem;
     
-    // Render UI
     renderProductCards();
     recalculateTotals();
     
@@ -198,7 +190,7 @@ async function initializeCheckout() {
 }
 
 // ==========================================
-// 6. PRODUCT CARDS RENDER
+// PRODUCT CARDS RENDER
 // ==========================================
 function renderProductCards() {
   productListContainer.innerHTML = '';
@@ -213,7 +205,6 @@ function renderProductCards() {
     const card = document.createElement('div');
     card.className = 'product-card';
 
-    // Variants HTML
     let variantsHTML = '';
     if (prod.variants && Array.isArray(prod.variants) && prod.variants.length > 0) {
       variantsHTML = prod.variants.map(v => 
@@ -221,12 +212,10 @@ function renderProductCards() {
       ).join(' ');
     }
 
-    // Free Delivery HTML
     const freeDeliveryHTML = prod.freeDelivery === true 
       ? `<span class="badge badge-free-delivery">ফ্রি ডেলিভারি</span>` 
       : '';
 
-    // Warranty HTML
     const warrantyHTML = prod.warranty 
       ? `<span>ওয়ারেন্টি: ${prod.warranty}</span>` 
       : '';
@@ -253,7 +242,6 @@ function renderProductCards() {
     productListContainer.appendChild(card);
   });
 
-  // Attach Delete Events
   document.querySelectorAll('.delete-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
       deleteIndexTarget = parseInt(e.currentTarget.getAttribute('data-index'));
@@ -263,7 +251,7 @@ function renderProductCards() {
 }
 
 // ==========================================
-// 7. PRODUCT DELETE FLOW
+// PRODUCT DELETE FLOW
 // ==========================================
 cancelDeleteBtn.addEventListener('click', () => {
   deleteIndexTarget = null;
@@ -292,7 +280,7 @@ confirmDeleteBtn.addEventListener('click', async () => {
       emptyCartScreen.classList.remove('hidden');
     } else {
       renderProductCards();
-      await validatePromoCode(true); // Re-validate active promo code against new subtotal
+      await validatePromoCode(true);
       recalculateTotals();
     }
 
@@ -304,7 +292,7 @@ confirmDeleteBtn.addEventListener('click', async () => {
 });
 
 // ==========================================
-// CALCULATION LOGIC (8, 9, 10, 11, 12, 13, 18)
+// CALCULATION LOGIC
 // ==========================================
 function calculateSubtotal() {
   return cartProducts.reduce((sum, item) => sum + (Number(item.productPrice) || 0), 0);
@@ -319,13 +307,14 @@ function calculateDeliveryCharge() {
     if (prod.freeDelivery !== true) {
       if (deliverySite === 'inside_dhaka') {
         totalDelivery += 60;
-      } else if (deliverySite === 'outside_dhaka') { // এখানে outside বানান ঠিক করো
+      } else if (deliverySite === 'outside_dhaka') {
         totalDelivery += 120;
       }
     }
   });
   return totalDelivery;
 }
+
 function recalculateTotals() {
   const subtotal = calculateSubtotal();
   const deliveryCharge = calculateDeliveryCharge();
@@ -337,13 +326,13 @@ function recalculateTotals() {
   summaryDiscountEl.textContent = discount > 0 ? `-${formatCurrency(discount)}` : '-৳০';
   summaryTotalEl.textContent = formatCurrency(total < 0 ? 0 : total);
 
-  return { subtotal, deliveryCharge, discount: appliedDiscount, total: total < 0 ? 0 : total };
+  return { subtotal, deliveryCharge, discount, total: total < 0 ? 0 : total };
 }
 
 deliverySiteSelect.addEventListener('change', recalculateTotals);
 
 // ==========================================
-// 14, 15, 16, 17. PROMO CODE VALIDATION
+// PROMO CODE VALIDATION
 // ==========================================
 applyPromoBtn.addEventListener('click', () => validatePromoCode(false));
 
@@ -374,7 +363,6 @@ async function validatePromoCode(silent = false) {
 
     const promoData = promoSnap.data();
 
-    // Shopping Limit Check
     if (promoData.shoppingLimit && subtotal < promoData.shoppingLimit) {
       appliedDiscount = null;
       showPromoMsg(`সর্বনিম্ন ৳${toBanglaNum(promoData.shoppingLimit)} এর কেনাকাটায় এই কোডটি প্রযোজ্য।`, "error");
@@ -383,7 +371,6 @@ async function validatePromoCode(silent = false) {
       return;
     }
 
-    // Expired Time Check
     if (promoData.expiredTime && Date.now() > promoData.expiredTime) {
       appliedDiscount = null;
       showPromoMsg("প্রোমো কোডের মেয়াদ শেষ হয়ে গেছে।", "error");
@@ -392,7 +379,6 @@ async function validatePromoCode(silent = false) {
       return;
     }
 
-    // Discount Applied
     if (promoData.discountPrice && Number(promoData.discountPrice) > 0) {
       appliedDiscount = Number(promoData.discountPrice);
       showPromoMsg(`প্রোমো কোড সফলভাবে প্রযোজ্য হয়েছে! ৳${toBanglaNum(appliedDiscount)} ডিসকাউন্ট।`, "success");
@@ -421,7 +407,7 @@ function showPromoMsg(text, type) {
 }
 
 // ==========================================
-// 21. ORDER ID GENERATOR
+// ORDER ID GENERATOR
 // ==========================================
 function generateOrderId() {
   const random7Digit = Math.floor(1000000 + Math.random() * 9000000);
@@ -429,7 +415,7 @@ function generateOrderId() {
 }
 
 // ==========================================
-// 19, 25, 27. SUBMIT ORDER LOGIC
+// SUBMIT ORDER LOGIC
 // ==========================================
 submitOrderBtn.addEventListener('click', submitOrderFlow);
 
@@ -440,7 +426,7 @@ async function submitOrderFlow() {
   const vibag = vibagInput.value.trim();
   const jela = jelaInput.value.trim();
   const thana = thanaInput.value.trim();
-  const note = noteInput.value.trim() || null;
+  const note = noteInput.value.trim() || "";
 
   if (!name) { showToast("আপনার নাম লিখুন।"); return; }
   if (!/^01\d{9}$/.test(phone)) { showToast("সঠিক ১১ সংখ্যার মোবাইল নাম্বার দিন।"); return; }
@@ -458,14 +444,13 @@ async function submitOrderFlow() {
     while (attempts < 10) {
       const tempId = generateOrderId();
       const idRef = doc(db, "id", tempId);
-      showLoader(`আইডি লক করা হচ্ছে... ${toBanglaNum(attempts+1)}`);
+      showLoader(`আইডি যাচাই করা হচ্ছে... (${toBanglaNum(attempts+1)})`);
 
       try {
-        // Transaction দিয়ে Atomic চেক
         await runTransaction(db, async (transaction) => {
           const idSnap = await transaction.get(idRef);
           if (idSnap.exists()) {
-            throw "exists"; // ID আছে, আবার চেষ্টা করো
+            throw "exists";
           }
           transaction.set(idRef, {
             use: true,
@@ -474,7 +459,7 @@ async function submitOrderFlow() {
           });
         });
         finalOrderId = tempId;
-        break; // Transaction সফল, লক হয়ে গেছে
+        break;
       } catch (e) {
         if (e === "exists") {
           attempts++;
@@ -488,22 +473,26 @@ async function submitOrderFlow() {
 
     showLoader("অর্ডার তৈরি হচ্ছে...");
     const orderRef = doc(db, "orders", finalOrderId);
+
+    // Security Rules Exact Schema Object Construction
     const orderPayload = {
       orderId: finalOrderId,
       createdAt: serverTimestamp(),
+      productItem: cartProducts,
+      status: "pending",
       uid: currentUser.uid,
       email: currentUser.email,
-      status: "pending",
-      productItem: cartProducts,
-      thana, jela, vibag,
+      thana: thana,
+      jela: jela,
+      vibag: vibag,
       deliverSite: deliverySite,
-      note,
+      note: note,
       deliveryCharge: Number(deliveryCharge),
-      phone,
+      phone: phone,
       subtotal: Number(subtotal),
-      discount: discount !== null ? Number(discount) : null,
       total: Number(total),
-      name
+      discount: Number(discount),
+      name: name
     };
 
     await setDoc(orderRef, orderPayload);
@@ -512,7 +501,9 @@ async function submitOrderFlow() {
     try {
       const cartRef = doc(db, "carts", currentUser.uid);
       await updateDoc(cartRef, { productItem: [] });
-    } catch (cartErr) {}
+    } catch (cartErr) {
+      console.warn("Cart clear error:", cartErr);
+    }
 
     hideLoader();
     successModal.classList.remove('hidden');
@@ -521,11 +512,12 @@ async function submitOrderFlow() {
     console.error("Order Creation Error:", err);
     hideLoader();
     submitOrderBtn.disabled = false;
-    showToast(err.message || err.code);
+    showToast(err.message || "অর্ডার প্রক্রিয়াকরণে সমস্যা দেখা দিয়েছে।");
   }
 }
+
 // ==========================================
-// 29. HIDDEN JSON COPY INTERACTION
+// HIDDEN JSON COPY INTERACTION
 // ==========================================
 successTitle.addEventListener('click', async () => {
   if (!createdOrderSnapshot) return;
@@ -540,7 +532,7 @@ successTitle.addEventListener('click', async () => {
 });
 
 // ==========================================
-// 33. LOAD FOOTER DYNAMICALLY
+// LOAD FOOTER DYNAMICALLY
 // ==========================================
 async function loadFooter() {
   try {
