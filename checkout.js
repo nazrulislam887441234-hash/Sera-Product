@@ -480,23 +480,18 @@ async function submitOrderFlow() {
       name
     };
 
-    // Step 1: আগে অর্ডার ক্রিয়েট হবে
-    const { setDoc, updateDoc } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
+    // FIXED: ভিতরের import বাদ দেওয়া হয়েছে, উপরের import ব্যবহার হবে
     await setDoc(orderRef, orderPayload);
-    
     console.log("Order Created:", finalOrderId);
 
-    // Snapshot for hidden copy
     createdOrderSnapshot = { ...orderPayload, createdAt: new Date().toISOString() };
 
-    // Step 2: অর্ডার সফল হলে তারপর কার্ট খালি হবে
     try {
       const cartRef = doc(db, "carts", currentUser.uid);
       await updateDoc(cartRef, { productItem: [] });
       console.log("Cart cleared");
     } catch (cartErr) {
       console.warn("Cart clear failed but order is success:", cartErr);
-      // কার্ট খালি না হলেও সমস্যা নেই, অর্ডার তো হয়েই গেছে
     }
 
     hideLoader();
@@ -506,7 +501,8 @@ async function submitOrderFlow() {
     console.error("Order Creation Error:", err);
     hideLoader();
     submitOrderBtn.disabled = false;
-    showToast("অর্ডার তৈরি করা যায়নি। অনুগ্রহ করে আবার চেষ্টা করুন।");
+    // FIXED: এখন আসল Error দেখাবে, "অর্ডার তৈরি করা যায়নি" লুকাবে না
+    showToast(err.code + " : " + err.message);
   }
 }
 
