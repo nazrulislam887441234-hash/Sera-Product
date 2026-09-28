@@ -485,7 +485,7 @@ async function submitOrderFlow() {
       thana: thana,
       jela: jela,
       vibag: vibag,
-      deliverSite: deliverySite,
+      deliverySite: deliverySite,
       note: note,
       deliveryCharge: Number(deliveryCharge),
       phone: phone,
