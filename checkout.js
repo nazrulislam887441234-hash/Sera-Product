@@ -7,12 +7,12 @@ import {
 import { 
   getFirestore, 
   doc, 
-  getDoc, 
-  writeBatch, 
-  serverTimestamp, 
-  deleteField 
+  getDoc,
+  setDoc,
+  updateDoc,
+  serverTimestamp,
+  writeBatch
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
 // ==========================================
 // FIREBASE CONFIGURATION
 // ==========================================
@@ -433,7 +433,6 @@ function generateOrderId() {
 submitOrderBtn.addEventListener('click', submitOrderFlow);
 
 async function submitOrderFlow() {
-  // Input Values
   const name = nameInput.value.trim();
   const phone = phoneInput.value.trim();
   const deliverySite = deliverySiteSelect.value;
@@ -442,92 +441,63 @@ async function submitOrderFlow() {
   const thana = thanaInput.value.trim();
   const note = noteInput.value.trim() || null;
 
-  // Validation Check
-  if (!name) {
-    showToast("আপনার নাম লিখুন।");
-    nameInput.focus();
-    return;
-  }
+  if (!name) { showToast("আপনার নাম লিখুন।"); return; }
+  if (!/^01\d{9}$/.test(phone)) { showToast("সঠিক ১১ সংখ্যার মোবাইল নাম্বার দিন।"); return; }
+  if (!deliverySite) { showToast("ডেলিভারি এরিয়া নির্বাচন করুন।"); return; }
+  if (!vibag || !jela || !thana) { showToast("বিভাগ, জেলা এবং থানা/উপজেলা লিখুন।"); return; }
+  if (!currentUser || cartProducts.length === 0) { showToast("অর্ডার তৈরি করা যায়নি।"); return; }
 
-  const phoneRegex = /^01\d{9}$/;
-  if (!phoneRegex.test(phone)) {
-    showToast("সঠিক ১১ সংখ্যার মোবাইল নাম্বার দিন।");
-    phoneInput.focus();
-    return;
-  }
-
-  if (!deliverySite) {
-    showToast("ডেলিভারি এরিয়া নির্বাচন করুন।");
-    deliverySiteSelect.focus();
-    return;
-  }
-
-  if (!vibag || !jela || !thana) {
-    showToast("বিভাগ, জেলা এবং থানা/উপজেলা নির্বাচন করুন।");
-    return;
-  }
-
-  // Double Check Security Pre-conditions
-  if (!currentUser || !currentUser.uid || cartProducts.length === 0) {
-    showToast("অর্ডার তৈরি করা যায়নি। অনুগ্রহ করে আবার চেষ্টা করুন।");
-    return;
-  }
-
-  // Recalculate Final Calculations
   const { subtotal, deliveryCharge, discount, total } = recalculateTotals();
 
-  // Prevent UI double click
   submitOrderBtn.disabled = true;
   showLoader("অর্ডার তৈরি হচ্ছে...");
 
   try {
-    // Unique Order ID Collision Check
     let finalOrderId = generateOrderId();
     let orderRef = doc(db, "orders", finalOrderId);
     let orderSnap = await getDoc(orderRef);
-
     while (orderSnap.exists()) {
       finalOrderId = generateOrderId();
       orderRef = doc(db, "orders", finalOrderId);
       orderSnap = await getDoc(orderRef);
     }
 
-  // 23. Final Order Document Payload
-const orderPayload = {
-  orderId: finalOrderId,
-  createdAt: serverTimestamp(),
-  uid: currentUser.uid,
-  email: currentUser.email,
-  status: "pending",
-  productItem: cartProducts,
-  thana: thana, // "thana/upojela" না, শুধু thana
-  jela: jela,
-  vibag: vibag,
-  deliverSite: deliverySite, // inside_dhaka / outside_dhaka
-  note: note,
-  deliveryCharge: Number(deliveryCharge),
-  phone: phone,
-  subtotal: Number(subtotal),
-  discount: discount !== null ? Number(discount) : null,
-  total: Number(total),
-  name: name
-};
+    const orderPayload = {
+      orderId: finalOrderId,
+      createdAt: serverTimestamp(),
+      uid: currentUser.uid,
+      email: currentUser.email,
+      status: "pending",
+      productItem: cartProducts,
+      thana, jela, vibag,
+      deliverSite: deliverySite,
+      note,
+      deliveryCharge: Number(deliveryCharge),
+      phone,
+      subtotal: Number(subtotal),
+      discount: discount !== null ? Number(discount) : null,
+      total: Number(total),
+      name
+    };
 
-    // 26, 27. Atomic Firestore Batch Write
-    const cartRef = doc(db, "carts", currentUser.uid);
-    const batch = writeBatch(db);
+    // Step 1: আগে অর্ডার ক্রিয়েট হবে
+    const { setDoc, updateDoc } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
+    await setDoc(orderRef, orderPayload);
+    
+    console.log("Order Created:", finalOrderId);
 
-    // 1. Create Order Document
-    batch.set(orderRef, orderPayload);
-
-    // 2. Delete productItem field from Cart Document
-    batch.update(cartRef, { productItem: deleteField() });
-
-    // Execute Batch Write
-    await batch.commit();
-
-    // Snapshot copy for hidden JSON interaction
+    // Snapshot for hidden copy
     createdOrderSnapshot = { ...orderPayload, createdAt: new Date().toISOString() };
+
+    // Step 2: অর্ডার সফল হলে তারপর কার্ট খালি হবে
+    try {
+      const cartRef = doc(db, "carts", currentUser.uid);
+      await updateDoc(cartRef, { productItem: [] });
+      console.log("Cart cleared");
+    } catch (cartErr) {
+      console.warn("Cart clear failed but order is success:", cartErr);
+      // কার্ট খালি না হলেও সমস্যা নেই, অর্ডার তো হয়েই গেছে
+    }
 
     hideLoader();
     successModal.classList.remove('hidden');
