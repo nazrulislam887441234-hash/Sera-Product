@@ -11,7 +11,8 @@ import {
   setDoc,
   updateDoc,
   serverTimestamp,
-  writeBatch
+  writeBatch,
+  runTransaction
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 // ==========================================
 // FIREBASE CONFIGURATION
@@ -448,20 +449,45 @@ async function submitOrderFlow() {
   if (!currentUser || cartProducts.length === 0) { showToast("অর্ডার তৈরি করা যায়নি।"); return; }
 
   const { subtotal, deliveryCharge, discount, total } = recalculateTotals();
-
   submitOrderBtn.disabled = true;
-  showLoader("অর্ডার তৈরি হচ্ছে...");
 
   try {
-    let finalOrderId = generateOrderId();
-    let orderRef = doc(db, "orders", finalOrderId);
-    let orderSnap = await getDoc(orderRef);
-    while (orderSnap.exists()) {
-      finalOrderId = generateOrderId();
-      orderRef = doc(db, "orders", finalOrderId);
-      orderSnap = await getDoc(orderRef);
+    let finalOrderId = null;
+    let attempts = 0;
+
+    while (attempts < 10) {
+      const tempId = generateOrderId();
+      const idRef = doc(db, "id", tempId);
+      showLoader(`আইডি লক করা হচ্ছে... ${toBanglaNum(attempts+1)}`);
+
+      try {
+        // Transaction দিয়ে Atomic চেক
+        await runTransaction(db, async (transaction) => {
+          const idSnap = await transaction.get(idRef);
+          if (idSnap.exists()) {
+            throw "exists"; // ID আছে, আবার চেষ্টা করো
+          }
+          transaction.set(idRef, {
+            use: true,
+            createdAt: serverTimestamp(),
+            uid: currentUser.uid
+          });
+        });
+        finalOrderId = tempId;
+        break; // Transaction সফল, লক হয়ে গেছে
+      } catch (e) {
+        if (e === "exists") {
+          attempts++;
+          continue;
+        }
+        throw e;
+      }
     }
 
+    if (!finalOrderId) throw new Error("অর্ডার আইডি তৈরি করা যায়নি।");
+
+    showLoader("অর্ডার তৈরি হচ্ছে...");
+    const orderRef = doc(db, "orders", finalOrderId);
     const orderPayload = {
       orderId: finalOrderId,
       createdAt: serverTimestamp(),
@@ -480,19 +506,13 @@ async function submitOrderFlow() {
       name
     };
 
-    // FIXED: ভিতরের import বাদ দেওয়া হয়েছে, উপরের import ব্যবহার হবে
     await setDoc(orderRef, orderPayload);
-    console.log("Order Created:", finalOrderId);
-
     createdOrderSnapshot = { ...orderPayload, createdAt: new Date().toISOString() };
 
     try {
       const cartRef = doc(db, "carts", currentUser.uid);
       await updateDoc(cartRef, { productItem: [] });
-      console.log("Cart cleared");
-    } catch (cartErr) {
-      console.warn("Cart clear failed but order is success:", cartErr);
-    }
+    } catch (cartErr) {}
 
     hideLoader();
     successModal.classList.remove('hidden');
@@ -501,11 +521,9 @@ async function submitOrderFlow() {
     console.error("Order Creation Error:", err);
     hideLoader();
     submitOrderBtn.disabled = false;
-    // FIXED: এখন আসল Error দেখাবে, "অর্ডার তৈরি করা যায়নি" লুকাবে না
-    showToast(err.code + " : " + err.message);
+    showToast(err.message || err.code);
   }
 }
-
 // ==========================================
 // 29. HIDDEN JSON COPY INTERACTION
 // ==========================================
