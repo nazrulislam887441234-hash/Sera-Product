@@ -556,7 +556,8 @@ async function executeAddToCart(product, selectedVariants, actionType) {
             productImage: firstImage,
             productPrice: finalPrice,
             freeDelivery: product.freeDelivery === true,
-            variants: selectedVariants
+            variants: selectedVariants,
+            quantity: 1   
         };
 
         // Add warranty field conditionally
