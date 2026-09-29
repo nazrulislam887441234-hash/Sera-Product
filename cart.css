@@ -216,6 +216,52 @@ body {
     margin-bottom: 10px;
 }
 
+/* Quantity Controller Styles */
+.quantity-controller {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    background-color: #f5f5f5;
+    padding: 4px 8px;
+    border-radius: 8px;
+    width: fit-content;
+}
+
+.btn-qty {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    width: 28px;
+    height: 28px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--text-color);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.btn-qty:hover:not(:disabled) {
+    background-color: var(--primary-color);
+    color: #ffffff;
+    border-color: var(--primary-color);
+}
+
+.btn-qty:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.qty-value {
+    font-size: 1rem;
+    font-weight: 600;
+    min-width: 20px;
+    text-align: center;
+}
+
 .meta-details {
     font-size: 0.85rem;
     color: var(--text-muted);
