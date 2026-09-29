@@ -32,7 +32,7 @@ function toBengaliNumerals(num) {
 // Helper: Format price with Bengali numerals and commas
 function formatPrice(amount) {
     if (amount === undefined || amount === null) return '০';
-    const formattedNum = amount.toLocaleString('en-US');
+    const formattedNum = Math.round(amount).toLocaleString('en-US');
     return toBengaliNumerals(formattedNum);
 }
 
@@ -89,6 +89,43 @@ async function loadFooter() {
     }
 }
 
+// Update Quantity Function (Firestore & UI)
+async function updateQuantity(index, change) {
+    if (!currentCartRef) return;
+
+    const item = cartItems[index];
+    const currentQty = item.quantity || 1;
+    const currentTotalPrice = item.productPrice;
+
+    // ১ ভাগ হিসাব করার সূত্র
+    const unitPrice = currentTotalPrice / currentQty;
+    const newQty = currentQty + change;
+
+    if (newQty < 1) return; // ১ এর নিচে নামবে না
+
+    const newTotalPrice = unitPrice * newQty;
+
+    // লোকাল অবজেক্ট আপডেট
+    cartItems[index] = {
+        ...item,
+        quantity: newQty,
+        productPrice: newTotalPrice
+    };
+
+    // তাত্ক্ষণিক UI রেন্ডার
+    renderCartUI();
+
+    // Firestore-এ ডাটা আপডেট
+    try {
+        await updateDoc(currentCartRef, {
+            productItem: cartItems
+        });
+    } catch (error) {
+        console.error("Quantity update failed:", error);
+        showCustomModal("পরিমাণ আপডেট করা সম্ভব হয়নি। আবার চেষ্টা করুন।", false);
+    }
+}
+
 // Render UI Components
 function renderCartUI() {
     const productContainer = document.getElementById("product-list-container");
@@ -116,6 +153,8 @@ function renderCartUI() {
     cartItems.forEach((product, index) => {
         const card = document.createElement("div");
         card.className = "product-card";
+
+        const currentQty = product.quantity || 1;
 
         // Free Delivery Badge HTML
         const freeDeliveryHTML = product.freeDelivery === true 
@@ -154,6 +193,14 @@ function renderCartUI() {
                 ${freeDeliveryHTML}
                 <h3 class="product-name">${product.productName || 'অজ্ঞাত পণ্য'}</h3>
                 <div class="product-price">৳ ${formatPrice(product.productPrice)}</div>
+                
+                <!-- Quantity Controller Container -->
+                <div class="quantity-controller">
+                    <button class="btn-qty btn-minus" data-index="${index}" ${currentQty <= 1 ? 'disabled' : ''}>-</button>
+                    <span class="qty-value">${toBengaliNumerals(currentQty)}</span>
+                    <button class="btn-qty btn-plus" data-index="${index}">+</button>
+                </div>
+
                 ${metaSectionHTML}
             </div>
             <button class="btn-remove" data-index="${index}" aria-label="পণ্য সরিয়ে দিন">
@@ -166,6 +213,21 @@ function renderCartUI() {
         `;
 
         productContainer.appendChild(card);
+    });
+
+    // Attach Event Listeners to Quantity Buttons
+    document.querySelectorAll(".btn-minus").forEach(button => {
+        button.addEventListener("click", (e) => {
+            const idx = parseInt(e.currentTarget.getAttribute("data-index"), 10);
+            updateQuantity(idx, -1);
+        });
+    });
+
+    document.querySelectorAll(".btn-plus").forEach(button => {
+        button.addEventListener("click", (e) => {
+            const idx = parseInt(e.currentTarget.getAttribute("data-index"), 10);
+            updateQuantity(idx, 1);
+        });
     });
 
     // Attach Event Listeners to Remove Buttons
