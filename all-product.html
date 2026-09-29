@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Title and Meta Tags -->
+    <title>সব পণ্য | SERA PRODUCT - বাংলাদেশের বিশ্বস্ত অনলাইন শপিং</title>
+    <meta name="description" content="SERA PRODUCT-এ সেরা মূল্যে সব ধরনের কোয়ালিটি পণ্য কিনুন। বাংলাদেশের যেকোনো প্রান্ত থেকে নিরাপদ অনলাইন শপিং, দ্রুত হোম ডেলিভারি এবং সাশ্রয়ী দাম।">
+    <meta name="keywords" content="অনলাইন শপিং, সেরা পণ্য, SERA PRODUCT, কেনাকাটা, ইলেকট্রনিক্স, ফ্যাশন, বাংলাদেশ অনলাইন শপ">
+    <meta name="author" content="SERA PRODUCT">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://seraproduct.com/all-product">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://seraproduct.com/all-product">
+    <meta property="og:title" content="সব পণ্য | SERA PRODUCT - বাংলাদেশের বিশ্বস্ত অনলাইন শপিং">
+    <meta property="og:description" content="SERA PRODUCT-এ সেরা মূল্যে সব ধরনের কোয়ালিটি পণ্য কিনুন। অনলাইন শপিং এবং দ্রুত হোম ডেলিভারি।">
+    <meta property="og:image" content="https://seraproduct.com/photo/facebook-preview.png">
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://seraproduct.com/all-product">
+    <meta name="twitter:title" content="সব পণ্য | SERA PRODUCT - বাংলাদেশের বিশ্বস্ত অনলাইন শপিং">
+    <meta name="twitter:description" content="SERA PRODUCT-এ সেরা মূল্যে সব ধরনের কোয়ালিটি পণ্য কিনুন। অনলাইন শপিং এবং দ্রুত হোম ডেলিভারি।">
+    <meta name="twitter:image" content="https://seraproduct.com/photo/twitter.png">
+
+    <!-- Favicon & Theme -->
+    <link rel="icon" type="image/png" href="https://seraproduct.com/photo/logo.png">
+    <meta name="theme-color" content="#ff6a00">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="all-product.css">
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "সব পণ্য | SERA PRODUCT",
+      "url": "https://seraproduct.com/all-product",
+      "description": "SERA PRODUCT-এর সমস্ত সক্রিয় পণ্যের তালিকা। সেরা দামে কেনাকাটা করুন।",
+      "publisher": {
+        "@type": "Organization",
+        "name": "SERA PRODUCT",
+        "logo": "https://seraproduct.com/photo/logo.png"
+      }
+    }
+    </script>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header class="site-header">
+        <div class="header-container">
+            <a href="https://seraproduct.com" class="logo-link" aria-label="SERA PRODUCT Home">
+                <img src="https://seraproduct.com/photo/header.png" alt="SERA PRODUCT Logo" class="header-logo" loading="eager">
+            </a>
+            
+            <a href="#" id="cart-icon-btn" class="cart-btn" aria-label="Shopping Cart">
+                <!-- SVG Cart Icon -->
+                <svg class="cart-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="9" cy="21" r="1"></circle>
+                    <circle cx="20" cy="21" r="1"></circle>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                </svg>
+                <span id="cart-badge" class="cart-badge">0</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content Section -->
+    <main class="main-content">
+        <div class="page-title-container">
+            <h1 class="page-title">আমাদের সকল পণ্য</h1>
+            <div class="title-underline"></div>
+        </div>
+
+        <!-- Products Grid Container -->
+        <div id="products-grid" class="products-grid"></div>
+
+        <!-- Empty State Container -->
+        <div id="empty-state" class="empty-state hidden">
+            <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
+            </svg>
+            <p class="empty-text">বর্তমানে কোনো পণ্য পাওয়া যায়নি।</p>
+        </div>
+
+        <!-- Load More Section -->
+        <div class="load-more-container">
+            <button id="load-more-btn" class="load-more-btn hidden">
+                <span class="btn-text">আরোও দেখুন</span>
+                <span class="btn-spinner hidden"></span>
+            </button>
+            <p id="no-more-msg" class="no-more-msg hidden">আর কোনো পণ্য নেই</p>
+        </div>
+    </main>
+<nav class="sp-mobile-nav" aria-label="Mobile Navigation">
+
+  <a href="https://seraproduct.com/" class="sp-nav-item" data-page="home">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M3 10.5 12 3l9 7.5v9a1.5 1.5 0 0 1-1.5 1.5H4.5A1.5 1.5 0 0 1 3 19.5v-9Z"/>
+      <path d="M9 21v-6h6v6"/>
+    </svg>
+    <span>Home</span>
+  </a>
+
+
+  <a href="https://seraproduct.com/reseller" class="sp-nav-item" data-page="reseller">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M20 12a8 8 0 1 1-2.34-5.66"/>
+      <path d="M20 4v6h-6"/>
+      <path d="M8 16.5a4.5 4.5 0 0 0 8 0"/>
+      <path d="M9.5 9.5h.01M14.5 9.5h.01"/>
+    </svg>
+    <span>Reseller</span>
+  </a>
+
+
+  <a href="https://seraproduct.com/categories" class="sp-nav-item" data-page="categories">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <rect x="3" y="3" width="7" height="7" rx="1"/>
+      <rect x="14" y="3" width="7" height="7" rx="1"/>
+      <rect x="3" y="14" width="7" height="7" rx="1"/>
+      <rect x="14" y="14" width="7" height="7" rx="1"/>
+    </svg>
+    <span>Categories</span>
+  </a>
+
+
+  <a href="https://seraproduct.com/all-product" class="sp-nav-item" data-page="products">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M6 3h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/>
+      <path d="M8 7h8M8 11h8M8 15h5"/>
+    </svg>
+    <span>All Product</span>
+  </a>
+
+
+  <a href="https://seraproduct.com/profile" class="sp-nav-item" data-page="profile">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="12" cy="8" r="4"/>
+      <path d="M4 21a8 8 0 0 1 16 0"/>
+    </svg>
+    <span>Profile</span>
+  </a>
+
+
+  <style>
+
+    /* =====================================================
+       SERA PRODUCT — MOBILE BUTTON NAV
+       ===================================================== */
+
+    .sp-mobile-nav {
+
+      /* Hidden on desktop */
+      display: none;
+
+      position: fixed;
+
+      left: 12px;
+      right: 12px;
+      bottom: 12px;
+
+      z-index: 99999;
+
+      height: 66px;
+
+      padding: 6px;
+
+      align-items: stretch;
+
+      justify-content: space-between;
+
+      gap: 3px;
+
+      background:
+        rgba(255,255,255,.96);
+
+      border:
+        1px solid
+        rgba(0,0,0,.07);
+
+      border-radius: 20px;
+
+      box-shadow:
+        0 10px 35px
+        rgba(0,0,0,.16),
+        0 2px 8px
+        rgba(0,0,0,.06);
+
+      backdrop-filter:
+        blur(18px);
+
+      -webkit-backdrop-filter:
+        blur(18px);
+
+      font-family:
+        "Hind Siliguri",
+        "Noto Sans Bengali",
+        Arial,
+        sans-serif;
+
+      box-sizing: border-box;
+    }
+
+
+    .sp-mobile-nav *,
+    .sp-mobile-nav *::before,
+    .sp-mobile-nav *::after {
+      box-sizing: border-box;
+    }
+
+
+    /* =====================================================
+       NAV ITEM
+       ===================================================== */
+
+    .sp-mobile-nav .sp-nav-item {
+
+      position: relative;
+
+      flex: 1 1 0;
+
+      min-width: 0;
+
+      height: 54px;
+
+      display: flex;
+
+      flex-direction: column;
+
+      align-items: center;
+
+      justify-content: center;
+
+      gap: 3px;
+
+      padding: 4px 2px;
+
+      border-radius: 15px;
+
+      color: #777;
+
+      background: transparent;
+
+      text-decoration: none;
+
+      -webkit-tap-highlight-color: transparent;
+
+      transition:
+        color .25s ease,
+        background .25s ease,
+        transform .2s ease;
+    }
+
+
+    /* =====================================================
+       SVG ICON
+       ===================================================== */
+
+    .sp-mobile-nav .sp-nav-item svg {
+
+      width: 21px;
+      height: 21px;
+
+      flex-shrink: 0;
+
+      fill: none;
+
+      stroke: currentColor;
+
+      stroke-width: 1.8;
+
+      stroke-linecap: round;
+
+      stroke-linejoin: round;
+
+      transition:
+        transform .25s ease,
+        stroke-width .25s ease;
+    }
+
+
+    /* =====================================================
+       TEXT
+       ===================================================== */
+
+    .sp-mobile-nav .sp-nav-item span {
+
+      display: block;
+
+      max-width: 100%;
+
+      overflow: hidden;
+
+      text-overflow: ellipsis;
+
+      white-space: nowrap;
+
+      font-size: 10px;
+
+      font-weight: 600;
+
+      line-height: 1.2;
+
+      letter-spacing: -.1px;
+    }
+
+
+    /* =====================================================
+       ACTIVE ITEM
+       ===================================================== */
+
+    .sp-mobile-nav .sp-nav-item.active {
+
+      color: #ff6b35;
+
+      background:
+        rgba(255,107,53,.10);
+
+      box-shadow:
+        inset 0 0 0 1px
+        rgba(255,107,53,.08);
+    }
+
+
+    .sp-mobile-nav .sp-nav-item.active svg {
+
+      stroke-width: 2.2;
+
+      transform:
+        translateY(-1px);
+    }
+
+
+    /* Orange active indicator */
+    .sp-mobile-nav .sp-nav-item.active::before {
+
+      content: "";
+
+      position: absolute;
+
+      top: 3px;
+
+      left: 50%;
+
+      width: 22px;
+
+      height: 3px;
+
+      transform:
+        translateX(-50%);
+
+      border-radius: 0 0 10px 10px;
+
+      background:
+        linear-gradient(
+          90deg,
+          #ff6b35,
+          #ff9b70
+        );
+
+      box-shadow:
+        0 2px 8px
+        rgba(255,107,53,.28);
+    }
+
+
+    /* =====================================================
+       TOUCH EFFECT
+       ===================================================== */
+
+    .sp-mobile-nav .sp-nav-item:active {
+
+      transform:
+        scale(.94);
+    }
+
+
+    /* =====================================================
+       MOBILE ONLY
+       ===================================================== */
+
+    @media (max-width: 767px) {
+
+      .sp-mobile-nav {
+        display: flex;
+      }
+
+      /*
+       * Prevent fixed navigation from covering
+       * the last content of the page.
+       */
+      body {
+        padding-bottom: 88px;
+      }
+
+    }
+
+
+    /* =====================================================
+       VERY SMALL MOBILE
+       ===================================================== */
+
+    @media (max-width: 360px) {
+
+      .sp-mobile-nav {
+
+        left: 8px;
+        right: 8px;
+        bottom: 8px;
+
+        height: 62px;
+
+        border-radius: 18px;
+
+        padding: 5px;
+      }
+
+
+      .sp-mobile-nav .sp-nav-item {
+
+        height: 52px;
+
+        border-radius: 14px;
+      }
+
+
+      .sp-mobile-nav .sp-nav-item svg {
+
+        width: 20px;
+        height: 20px;
+      }
+
+
+      .sp-mobile-nav .sp-nav-item span {
+
+        font-size: 9px;
+      }
+
+    }
+
+
+    /* =====================================================
+       REDUCED MOTION
+       ===================================================== */
+
+    @media (prefers-reduced-motion: reduce) {
+
+      .sp-mobile-nav *,
+      .sp-mobile-nav *::before,
+      .sp-mobile-nav *::after {
+
+        transition: none !important;
+
+        animation: none !important;
+      }
+
+    }
+
+  </style>
+
+
+  <!-- =========================
+       AUTO ACTIVE PAGE
+       ========================= -->
+  <script>
+    (function () {
+
+      const currentPath =
+        window.location.pathname
+          .replace(/\/+$/, "")
+          .toLowerCase();
+
+      const navItems =
+        document.querySelectorAll(
+          ".sp-mobile-nav .sp-nav-item"
+        );
+
+
+      navItems.forEach(function (item) {
+
+        const page =
+          item.getAttribute("data-page");
+
+
+        let isActive = false;
+
+
+        /* HOME */
+        if (
+          page === "home" &&
+          (
+            currentPath === "" ||
+            currentPath === "/" ||
+            currentPath === "/index.html"
+          )
+        ) {
+          isActive = true;
+        }
+
+
+        /* RESELLER */
+        if (
+          page === "reseller" &&
+          (
+            currentPath === "/reseller" ||
+            currentPath === "/reseller.html"
+          )
+        ) {
+          isActive = true;
+        }
+
+
+        /* CATEGORIES */
+        if (
+          page === "categories" &&
+          (
+            currentPath === "/categories" ||
+            currentPath === "/categories.html"
+          )
+        ) {
+          isActive = true;
+        }
+
+
+        /* ALL PRODUCTS */
+        if (
+          page === "products" &&
+          (
+            currentPath === "/all-product" ||
+            currentPath === "/all-product.html"
+          )
+        ) {
+          isActive = true;
+        }
+
+
+        /* PROFILE */
+        if (
+          page === "profile" &&
+          (
+            currentPath === "/profile" ||
+            currentPath === "/profile.html"
+          )
+        ) {
+          isActive = true;
+        }
+
+
+        if (isActive) {
+          item.classList.add("active");
+          item.setAttribute(
+            "aria-current",
+            "page"
+          );
+        }
+
+      });
+
+    })();
+  </script>
+
+</nav>
+
+    <!-- Dynamic Footer Container -->
+    <footer id="footer-container" class="site-footer"></footer>
+
+    <!-- Global Fullscreen Loading Overlay -->
+    <div id="global-loading" class="global-loading hidden">
+        <div class="loading-content">
+            <img src="https://seraproduct.com/loading.gif" alt="লোডিং হচ্ছে..." class="loading-gif">
+        </div>
+    </div>
+
+    <!-- Reusable Dynamic Custom Modal -->
+    <div id="custom-modal" class="modal-backdrop hidden" aria-hidden="true" role="dialog">
+        <div class="modal-box">
+            <button id="modal-close-btn" class="modal-close-btn" aria-label="Close Modal">
+                <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            <div id="modal-body" class="modal-body"></div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Main JavaScript Logic (Modular App script) -->
+    <script type="module" src="all-product.js"></script>
+</body>
+</html>
