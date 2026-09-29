@@ -205,6 +205,8 @@ function renderProductCards() {
     const card = document.createElement('div');
     card.className = 'product-card';
 
+    const currentQty = prod.quantity || 1;
+
     let variantsHTML = '';
     if (prod.variants && Array.isArray(prod.variants) && prod.variants.length > 0) {
       variantsHTML = prod.variants.map(v => 
@@ -225,6 +227,13 @@ function renderProductCards() {
       <div class="product-details">
         <h3 class="product-title">${prod.productName}</h3>
         <div class="product-price">${formatCurrency(prod.productPrice)}</div>
+        
+        <div class="quantity-controller">
+          <button type="button" class="btn-qty btn-minus" data-index="${index}" ${currentQty <= 1 ? 'disabled' : ''}>-</button>
+          <span class="qty-value">${toBanglaNum(currentQty)}</span>
+          <button type="button" class="btn-qty btn-plus" data-index="${index}">+</button>
+        </div>
+
         <div class="product-meta">
           ${freeDeliveryHTML}
           ${variantsHTML}
@@ -242,12 +251,67 @@ function renderProductCards() {
     productListContainer.appendChild(card);
   });
 
+  // Attach Event Listeners for Quantity Controls
+  document.querySelectorAll('.btn-minus').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const idx = parseInt(e.currentTarget.getAttribute('data-index'));
+      updateCheckoutQuantity(idx, -1);
+    });
+  });
+
+  document.querySelectorAll('.btn-plus').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const idx = parseInt(e.currentTarget.getAttribute('data-index'));
+      updateCheckoutQuantity(idx, 1);
+    });
+  });
+
+  // Attach Event Listeners for Delete
   document.querySelectorAll('.delete-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
       deleteIndexTarget = parseInt(e.currentTarget.getAttribute('data-index'));
       deleteModal.classList.remove('hidden');
     });
   });
+}
+
+// ==========================================
+// QUANTITY UPDATE LOGIC
+// ==========================================
+async function updateCheckoutQuantity(index, change) {
+  if (index < 0 || index >= cartProducts.length) return;
+
+  const item = cartProducts[index];
+  const currentQty = item.quantity || 1;
+  const currentTotalPrice = Number(item.productPrice) || 0;
+
+  // সূত্র: unitPrice = productPrice / quantity
+  const unitPrice = currentTotalPrice / currentQty;
+  const newQty = currentQty + change;
+
+  if (newQty < 1) return; // 1 এর নিচে নামবে না
+
+  const newTotalPrice = unitPrice * newQty;
+
+  cartProducts[index] = {
+    ...item,
+    quantity: newQty,
+    productPrice: newTotalPrice
+  };
+
+  renderProductCards();
+  await validatePromoCode(true);
+  recalculateTotals();
+
+  try {
+    const cartRef = doc(db, "carts", currentUser.uid);
+    await updateDoc(cartRef, {
+      productItem: cartProducts
+    });
+  } catch (err) {
+    console.error("Cart quantity update failed in Firestore:", err);
+    showToast("পরিমাণ আপডেট করতে সমস্যা হয়েছে।");
+  }
 }
 
 // ==========================================
@@ -494,6 +558,17 @@ async function submitOrderFlow() {
       discount: Number(discount),
       name: name
     };
+
+    console.log("========== ORDER DEBUG ==========");
+    console.log("Auth UID:", auth.currentUser?.uid);
+    console.log("Current UID:", currentUser?.uid);
+    console.log("Current Email:", currentUser?.email);
+    console.log("Auth Email:", auth.currentUser?.email);
+    console.log("Delivery Site:", deliverySite);
+    console.log("Phone:", phone);
+    console.log("Order ID:", finalOrderId);
+    console.log("Order Payload:", orderPayload);
+    console.log("================================");
 
     await setDoc(orderRef, orderPayload);
     createdOrderSnapshot = { ...orderPayload, createdAt: new Date().toISOString() };
