@@ -40,11 +40,50 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .sera-logo {
     height: 36px;
     object-fit: contain;
+}
+
+.header-cart-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--dark-text);
+    text-decoration: none;
+    padding: 6px;
+    transition: color 0.2s;
+}
+
+.header-cart-icon:hover {
+    color: var(--primary-orange);
+}
+
+.header-cart-icon svg {
+    width: 26px;
+    height: 26px;
+}
+
+.cart-badge {
+    position: absolute;
+    top: -2px;
+    right: -4px;
+    background: #d93025;
+    color: var(--white);
+    font-size: 11px;
+    font-weight: 700;
+    border-radius: 50%;
+    padding: 2px 6px;
+    min-width: 18px;
+    text-align: center;
+    line-height: 1;
+    border: 2px solid var(--white);
 }
 
 /* Main Container */
@@ -296,12 +335,24 @@ body {
     grid-template-columns: 1fr 1fr;
     gap: 15px;
     margin: 25px 0;
+    align-items: center;
 }
 
 @media (max-width: 480px) {
     .action-buttons {
         grid-template-columns: 1fr;
     }
+}
+
+.already-in-cart-msg {
+    background: #e6f4ea;
+    color: #137333;
+    padding: 14px 20px;
+    border-radius: var(--radius);
+    font-size: 15px;
+    font-weight: 600;
+    text-align: center;
+    border: 1px solid #ceead6;
 }
 
 .sera-btn {
@@ -453,4 +504,40 @@ body {
     color: #d93025;
     font-size: 13px;
     margin-bottom: 12px;
+}
+
+/* Custom Toast Popup Styling */
+.custom-toast {
+    position: fixed;
+    top: 25px;
+    right: 25px;
+    z-index: 2000;
+    background: #222;
+    color: #fff;
+    padding: 14px 20px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.25);
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.toast-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+#toast-close-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+    line-height: 1;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
