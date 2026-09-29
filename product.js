@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import { getFirestore, collection, query, where, getDocs, doc, setDoc, getDoc, updateDoc, arrayUnion, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 // Firebase Configuration Placeholder
@@ -21,6 +21,7 @@ const db = getFirestore(app);
 let currentProduct = null;
 let selectedVariantsState = {};
 let pendingAction = null; // 'cart' or 'order'
+let isAlreadyInCart = false;
 
 // 1. URL Parsing & Slug Extraction
 function getProductSlugFromURL() {
@@ -52,7 +53,14 @@ const productDescription = document.getElementById('product-description');
 const offerBanner = document.getElementById('offer-banner');
 const countdownTimer = document.getElementById('countdown-timer');
 const addToCartBtn = document.getElementById('add-to-cart-btn');
+const alreadyInCartMsg = document.getElementById('already-in-cart-msg');
 const buyNowBtn = document.getElementById('buy-now-btn');
+const cartBadge = document.getElementById('cart-badge');
+
+// Custom Toast Elements
+const customToast = document.getElementById('custom-toast');
+const toastMessage = document.getElementById('toast-message');
+const toastCloseBtn = document.getElementById('toast-close-btn');
 
 // Auth Modal Elements
 const authModal = document.getElementById('auth-modal');
@@ -63,6 +71,23 @@ const signupForm = document.getElementById('signup-form');
 const loginError = document.getElementById('login-error');
 const signupError = document.getElementById('signup-error');
 
+// Custom Toast Function ( Replaces browser alert )
+function showToast(message) {
+    if (!customToast || !toastMessage) return;
+    toastMessage.textContent = message;
+    customToast.classList.remove('hidden');
+
+    setTimeout(() => {
+        customToast.classList.add('hidden');
+    }, 3500);
+}
+
+if (toastCloseBtn) {
+    toastCloseBtn.addEventListener('click', () => {
+        customToast.classList.add('hidden');
+    });
+}
+
 // Initialize Application Fast
 document.addEventListener('DOMContentLoaded', () => {
     loadFooter();
@@ -72,6 +97,65 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     fetchAndRenderProduct(productSlug);
 });
+
+// Watch Auth state to check cart & badge count
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        checkCartStatus(user.uid);
+    } else {
+        cartBadge.classList.add('hidden');
+        resetCartUIState();
+    }
+});
+
+// Check if current product exists in User's Cart
+async function checkCartStatus(uid) {
+    try {
+        const cartRef = doc(db, "carts", uid);
+        const cartSnap = await getDoc(cartRef);
+
+        if (cartSnap.exists()) {
+            const data = cartSnap.data();
+            const items = data.productItem || [];
+
+            // Update Badge Count
+            if (items.length > 0) {
+                cartBadge.textContent = items.length;
+                cartBadge.classList.remove('hidden');
+            } else {
+                cartBadge.classList.add('hidden');
+            }
+
+            // Check if current product is present
+            if (currentProduct) {
+                const found = items.some(item => item.productId === currentProduct.id);
+                if (found) {
+                    isAlreadyInCart = true;
+                    showAlreadyInCartUI();
+                } else {
+                    isAlreadyInCart = false;
+                    resetCartUIState();
+                }
+            }
+        } else {
+            cartBadge.classList.add('hidden');
+            isAlreadyInCart = false;
+            resetCartUIState();
+        }
+    } catch (err) {
+        console.error("Cart check error:", err);
+    }
+}
+
+function showAlreadyInCartUI() {
+    addToCartBtn.classList.add('hidden');
+    alreadyInCartMsg.classList.remove('hidden');
+}
+
+function resetCartUIState() {
+    addToCartBtn.classList.remove('hidden');
+    alreadyInCartMsg.classList.add('hidden');
+}
 
 // 2. Fetch Product from Firestore
 async function fetchAndRenderProduct(slug) {
@@ -97,6 +181,10 @@ async function fetchAndRenderProduct(slug) {
 
         loadingState.classList.add('hidden');
         productWrapper.classList.remove('hidden');
+
+        if (auth.currentUser) {
+            checkCartStatus(auth.currentUser.uid);
+        }
     } catch (error) {
         console.error("Error fetching product:", error);
         showError("প্রোডাক্ট লোড করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।");
@@ -150,7 +238,7 @@ function renderProductDetails(product) {
     setupVariants(product.variants);
 }
 
-// 4. Image & Video Gallery (Direct Embed Link Iframe Support)
+// 4. Image & Video Gallery
 function setupGallery(images, reviewVideo) {
     const mediaToggle = document.getElementById('media-toggle');
     const imageView = document.getElementById('image-view');
@@ -170,7 +258,6 @@ function setupGallery(images, reviewVideo) {
                 thumb.classList.add('active');
                 mainImage.src = imgUrl;
                 
-                // Switch back to image view
                 const imgBtn = mediaToggle.querySelector('[data-target="image-view"]');
                 if (imgBtn) imgBtn.click();
             });
@@ -179,12 +266,10 @@ function setupGallery(images, reviewVideo) {
         });
     }
 
-    // Video Handling - Direct Embed URL inside <iframe>
     if (reviewVideo && reviewVideo.trim() !== "") {
         mediaToggle.classList.remove('hidden');
         const toggleBtns = mediaToggle.querySelectorAll('.toggle-btn');
 
-        // Clean & inject directly into video container
         const cleanVideoUrl = reviewVideo.trim();
         videoView.innerHTML = `<iframe src="${cleanVideoUrl}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>`;
 
@@ -338,8 +423,14 @@ function validateVariantsSelection() {
 }
 
 function handleAction(actionType) {
+    // If order button is clicked and item is ALREADY saved in cart -> Go straight to checkout!
+    if (actionType === 'order' && isAlreadyInCart) {
+        window.location.href = "/checkout";
+        return;
+    }
+
     if (!validateVariantsSelection()) {
-        alert("দয়া করে সব অপশন নির্বাচন করুন।");
+        showToast("দয়া করে সব অপশন নির্বাচন করুন।");
         return;
     }
 
@@ -421,9 +512,16 @@ signupForm.addEventListener('submit', async (e) => {
     }
 });
 
-// 9. Cart Integration
+// 9. Cart Integration & Actions
 async function executePendingAction(user) {
     if (!pendingAction) return;
+
+    // Check again if already saved and user clicked 'order'
+    if (pendingAction === 'order' && isAlreadyInCart) {
+        window.location.href = "/checkout";
+        pendingAction = null;
+        return;
+    }
 
     let finalPrice = Number(currentProduct.customerPrice) || 0;
     const formattedVariants = Object.values(selectedVariantsState).map(v => {
@@ -432,6 +530,7 @@ async function executePendingAction(user) {
     });
 
     const cartItem = {
+        productId: currentProduct.id, // Save Product ID
         productName: currentProduct.productName,
         productImage: currentProduct.image && currentProduct.image.length > 0 ? currentProduct.image[0] : "",
         productPrice: finalPrice,
@@ -441,12 +540,12 @@ async function executePendingAction(user) {
     };
 
     try {
+        const cartRef = doc(db, "carts", user.uid);
+        const cartSnap = await getDoc(cartRef);
+
         if (pendingAction === 'cart') {
             addToCartBtn.disabled = true;
             addToCartBtn.textContent = "কার্টে যোগ হচ্ছে...";
-
-            const cartRef = doc(db, "carts", user.uid);
-            const cartSnap = await getDoc(cartRef);
 
             if (cartSnap.exists()) {
                 await updateDoc(cartRef, {
@@ -458,13 +557,14 @@ async function executePendingAction(user) {
                 });
             }
 
-            alert("প্রোডাক্টটি কার্টে যোগ হয়েছে।");
+            showToast("প্রোডাক্টটি সফলভাবে কার্টে যোগ করা হয়েছে।");
             addToCartBtn.disabled = false;
             addToCartBtn.textContent = "কার্টে যোগ করুন";
-        } else if (pendingAction === 'order') {
-            const cartRef = doc(db, "carts", user.uid);
-            const cartSnap = await getDoc(cartRef);
 
+            // Update UI & badge
+            await checkCartStatus(user.uid);
+
+        } else if (pendingAction === 'order') {
             if (cartSnap.exists()) {
                 await updateDoc(cartRef, {
                     productItem: arrayUnion(cartItem)
@@ -479,7 +579,7 @@ async function executePendingAction(user) {
         }
     } catch (error) {
         console.error("Cart action error:", error);
-        alert("কার্টে প্রোডাক্ট যোগ করা যায়নি। আবার চেষ্টা করুন।");
+        showToast("কার্টে প্রোডাক্ট যোগ করা যায়নি। আবার চেষ্টা করুন।");
         if (pendingAction === 'cart') {
             addToCartBtn.disabled = false;
             addToCartBtn.textContent = "কার্টে যোগ করুন";
