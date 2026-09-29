@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>আমার কার্ট - SERA PRODUCT</title>
+    <link rel="icon" type="image/png" href="https://seraproduct.com/photo/logo.png">
+    <link rel="stylesheet" href="carts.css">
+</head>
+<body>
+
+    <!-- Full-screen Loading Overlay -->
+    <div id="full-screen-loader" class="loader-overlay">
+        <img src="https://seraproduct.com/loading.gif" alt="লোডিং..." class="loader-gif">
+    </div>
+
+    <!-- Header Section -->
+    <header class="main-header">
+        <div class="header-container">
+            <a href="https://seraproduct.com" class="home-btn" aria-label="হোম পেজ">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+            </a>
+            <a href="https://seraproduct.com" class="logo-link">
+                <img src="https://seraproduct.com/photo/header.png" alt="SERA PRODUCT" class="header-logo">
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="main-container">
+        
+        <!-- Cart Page Title & Subtitle -->
+        <section class="page-title-section">
+            <div class="title-heading">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ff6a00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="9" cy="21" r="1"></circle>
+                    <circle cx="20" cy="21" r="1"></circle>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                </svg>
+                <h1>আমার কার্ট</h1>
+            </div>
+            <p class="title-subtext">আপনার পছন্দের পণ্যগুলো এখানে দেখতে ও অর্ডার করতে পারবেন।</p>
+            <p id="cart-count-text" class="cart-count"></p>
+        </section>
+
+        <!-- Product Cards Container -->
+        <section id="product-list-container" class="product-grid">
+            <!-- Dynamic Product Cards will be rendered here -->
+        </section>
+
+        <!-- Empty Cart View -->
+        <section id="empty-cart-container" class="empty-cart hidden">
+            <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="9" cy="21" r="1"></circle>
+                <circle cx="20" cy="21" r="1"></circle>
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
+            <h2>আপনার কার্ট খালি</h2>
+            <p>আপনার কার্টে এখনো কোনো পণ্য যোগ করা হয়নি।</p>
+            <a href="https://seraproduct.com" class="btn-primary">কেনাকাটা শুরু করুন</a>
+        </section>
+
+        <!-- Checkout Section -->
+        <section id="checkout-section" class="checkout-container hidden">
+            <a href="https://seraproduct.com/checkout" class="btn-checkout">
+                <span>চেকআউট করুন</span>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+            </a>
+        </section>
+
+    </main>
+
+    <!-- Custom Modal Popup for Remove Confirmation & Errors -->
+    <div id="custom-modal" class="modal-overlay hidden">
+        <div class="modal-card">
+            <p id="modal-message">আপনি কি এই পণ্যটি কার্ট থেকে সরিয়ে দিতে চান?</p>
+            <div class="modal-actions">
+                <button id="modal-cancel-btn" class="btn-secondary">বাতিল</button>
+                <button id="modal-confirm-btn" class="btn-danger">সরিয়ে দিন</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Container -->
+    <div id="footer-container"></div>
+
+    <!-- Application Script (Modular Firebase) -->
+    <script type="module" src="carts.js"></script>
+</body>
+</html>
