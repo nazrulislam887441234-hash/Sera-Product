@@ -446,3 +446,37 @@ input:focus, select:focus, textarea:focus {
   z-index: 1001;
   pointer-events: none;
 }
+/* Quantity Controller - Final Polish */
+.quantity-controller {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 10px 0;
+  background: #fff;
+}
+
+.btn-qty {
+  width: 34px;
+  height: 32px;
+  border: none;
+  background: #f9fafb;
+  font-weight: 700;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.btn-qty:hover:not(:disabled) {
+  background: var(--primary-color);
+  color: #fff;
+}
+
+.qty-value {
+  width: 40px;
+  text-align: center;
+  font-weight: 700;
+  border-left: 1px solid var(--border-color);
+  border-right: 1px solid var(--border-color);
+  line-height: 32px;
+}
