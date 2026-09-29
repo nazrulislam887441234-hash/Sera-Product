@@ -536,7 +536,8 @@ async function executePendingAction(user) {
         productPrice: finalPrice,
         freeDelivery: !!currentProduct.freeDelivery,
         warranty: currentProduct.warranty || "",
-        variants: formattedVariants
+        variants: formattedVariants,
+        quantity: 1
     };
 
     try {
