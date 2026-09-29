@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ক্যাটাগরি পণ্যসমূহ | Sera Product</title>
+  
+  <!-- Favicon & Theme Color -->
+  <link rel="icon" type="image/png" href="https://seraproduct.com/photo/logo.png">
+  <meta name="theme-color" content="#ff6a00">
+  
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="category.css">
+</head>
+<body>
+
+  <!-- Header Section -->
+  <header class="main-header">
+    <div class="header-container">
+      <a href="https://seraproduct.com" class="logo-link">
+        <img src="https://seraproduct.com/photo/header.png" alt="Sera Product Logo" class="header-logo">
+      </a>
+      
+      <div class="cart-icon-wrapper" id="cartIconButton" role="button" aria-label="শপিং কার্ট">
+        <svg class="cart-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="9" cy="21" r="1"></circle>
+          <circle cx="20" cy="21" r="1"></circle>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+        <span class="cart-badge hidden" id="cartBadge">০</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Category Banner / Header Area -->
+  <section class="category-banner-section hidden" id="categoryBannerSection">
+    <div class="category-banner-container">
+      <div class="category-banner-img-wrap" id="categoryBannerImgWrap">
+        <!-- Dynamic Image loaded via JS -->
+      </div>
+      <div class="category-title-wrap">
+        <h1 class="category-title" id="categoryTitleText">লোড হচ্ছে...</h1>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content Container -->
+  <main class="main-container">
+    
+    <!-- Initial Loading State -->
+    <div class="global-loading" id="mainLoading">
+      <img src="https://seraproduct.com/loading.gif" alt="লোড হচ্ছে..." class="loading-gif">
+      <p>অপেক্ষা করুন, তথ্য লোড হচ্ছে...</p>
+    </div>
+
+    <!-- Error / Empty State Display -->
+    <div class="state-message-card hidden" id="stateMessageCard">
+      <div class="state-icon" id="stateIcon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+      </div>
+      <h2 id="stateTitleText">ক্যাটাগরিটি পাওয়া যায়নি!</h2>
+      <p id="stateSubtitleText"></p>
+    </div>
+
+    <!-- Products Grid Container -->
+    <div class="products-grid hidden" id="productsGrid"></div>
+
+    <!-- Load More Section -->
+    <div class="load-more-container hidden" id="loadMoreContainer">
+      <button type="button" class="btn-load-more" id="btnLoadMore">
+        <span id="loadMoreText">আরোও দেখুন</span>
+        <img src="https://seraproduct.com/loading.gif" alt="loading" class="btn-spinner hidden" id="btnLoadSpinner">
+      </button>
+      <div class="no-more-products hidden" id="noMoreProductsText">আর কোনো পণ্য নেই</div>
+    </div>
+
+  </main>
+
+  <!-- Footer Container -->
+  <div id="footer-container"></div>
+
+  <!-- Custom Reusable Modal / Popup System -->
+  <div class="modal-overlay hidden" id="customModalOverlay">
+    <div class="modal-card" id="modalCard">
+      <button type="button" class="modal-close-btn" id="modalCloseBtn" aria-label="বন্ধ করুন">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+      <div class="modal-header">
+        <h3 class="modal-title" id="modalTitle">নোটিফিকেশন</h3>
+      </div>
+      <div class="modal-body" id="modalBody">
+        <!-- Content injected dynamically -->
+      </div>
+      <div class="modal-footer" id="modalFooter">
+        <button type="button" class="btn-primary-modal" id="modalPrimaryBtn">ঠিক আছে</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom Toast Notification -->
+  <div class="toast-container hidden" id="toastContainer">
+    <div class="toast-content" id="toastContent">
+      <svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+      </svg>
+      <span id="toastMessage">সফলভাবে সম্পন্ন হয়েছে</span>
+    </div>
+  </div>
+
+  <!-- Application Logic -->
+  <script type="module" src="category.js"></script>
+</body>
+</html>
