@@ -35,6 +35,15 @@
             <a href="https://seraproduct.com" class="logo-link">
                 <img src="https://seraproduct.com/photo/header.png" alt="Sera Product Logo" class="sera-logo">
             </a>
+            
+            <a href="/cart" class="header-cart-icon" title="কার্ট দেখুন">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="9" cy="21" r="1"></circle>
+                    <circle cx="20" cy="21" r="1"></circle>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                </svg>
+                <span id="cart-badge" class="cart-badge hidden">0</span>
+            </a>
         </div>
     </header>
 
@@ -69,10 +78,10 @@
                     </div>
 
                     <div id="video-view" class="main-video-container aspect-16-9 hidden">
-                        </div>
+                    </div>
 
                     <div id="thumbnail-container" class="thumbnail-container">
-                        </div>
+                    </div>
                 </div>
 
                 <div class="product-info-section">
@@ -85,13 +94,14 @@
                     </div>
 
                     <div id="badges-container" class="badges-container">
-                        </div>
+                    </div>
 
                     <div id="variants-container" class="variants-container">
-                        </div>
+                    </div>
 
                     <div class="action-buttons">
                         <button id="add-to-cart-btn" class="sera-btn cart-btn">কার্টে যোগ করুন</button>
+                        <div id="already-in-cart-msg" class="already-in-cart-msg hidden">এই পণ্যটা কার্টে যোগ করা হয়েছে!</div>
                         <button id="buy-now-btn" class="sera-btn order-btn">এখনই অর্ডার করুন</button>
                     </div>
 
@@ -151,6 +161,14 @@
                 <div id="signup-error" class="form-error"></div>
                 <button type="submit" class="sera-btn full-width">সাইনআপ সম্পন্ন করুন</button>
             </form>
+        </div>
+    </div>
+
+    <!-- Custom Popup Modal -->
+    <div id="custom-toast" class="custom-toast hidden">
+        <div class="toast-content">
+            <span id="toast-message"></span>
+            <button id="toast-close-btn">&times;</button>
         </div>
     </div>
 
