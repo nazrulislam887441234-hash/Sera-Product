@@ -87,7 +87,8 @@ ul {
     transition: var(--transition);
 }
 
-.desktop-nav a:hover, .desktop-nav a.active {
+.desktop-nav a:hover,
+.desktop-nav a.active {
     color: var(--primary-orange);
 }
 
@@ -214,7 +215,8 @@ ul {
     flex-shrink: 0;
 }
 
-.drawer-list li a:hover, .drawer-list li a.active {
+.drawer-list li a:hover,
+.drawer-list li a.active {
     background: var(--orange-light);
     color: var(--primary-orange);
 }
@@ -351,7 +353,7 @@ ul {
    ========================================== */
 .category-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 10px;
 }
 
@@ -702,12 +704,23 @@ ul {
    SKELETON LOADERS
    ========================================== */
 @keyframes shimmer {
-    0% { background-position: -200% 0; }
-    100% { background-position: 200% 0; }
+    0% {
+        background-position: -200% 0;
+    }
+
+    100% {
+        background-position: 200% 0;
+    }
 }
 
-.skeleton-card, .skeleton-product {
-    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+.skeleton-card,
+.skeleton-product {
+    background: linear-gradient(
+        90deg,
+        #f0f0f0 25%,
+        #e0e0e0 50%,
+        #f0f0f0 75%
+    );
     background-size: 200% 100%;
     animation: shimmer 1.5s infinite;
     border-radius: 6px;
@@ -738,54 +751,69 @@ ul {
 }
 
 @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 /* ==========================================
    DESKTOP MEDIA QUERY (Responsive)
    ========================================== */
 @media (min-width: 768px) {
+
     .mobile-menu-toggle {
         display: none;
     }
+
     .desktop-nav {
         display: flex;
     }
+
     .main-container {
         padding: 24px;
     }
+
     .card-box {
         padding: 24px;
         margin-bottom: 24px;
     }
+
     .category-grid {
         grid-template-columns: repeat(6, 1fr);
         gap: 16px;
     }
+
     .category-img-wrap {
         width: 70px;
         height: 70px;
     }
+
     .category-name {
         font-size: 13px;
     }
+
     .product-grid {
         grid-template-columns: repeat(5, 1fr);
         gap: 16px;
     }
+
     .product-title {
         font-size: 13px;
     }
+
     .current-price {
         font-size: 14px;
     }
+
     .old-price {
         font-size: 12px;
     }
+
     .btn-order {
         padding: 7px 0;
         font-size: 12px;
     }
+
     .yt-videos-grid {
         grid-template-columns: repeat(3, 1fr);
         gap: 16px;
