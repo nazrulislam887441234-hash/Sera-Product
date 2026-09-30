@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#ff6a00">
+    <title>আমার অর্ডারসমূহ - Sera Product</title>
+    <link rel="icon" type="image/png" href="https://seraproduct.com/photo/logo.png">
+    <link rel="stylesheet" href="my-orders.css">
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header class="site-header">
+        <div class="header-container">
+            <a href="/" class="brand-logo">
+                <img src="https://seraproduct.com/photo/header.png" alt="Sera Product Logo">
+            </a>
+            <h1 class="page-title">অর্ডার ম্যানেজমেন্ট</h1>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="main-wrapper">
+        <div class="container">
+
+            <!-- Filter and Search Controls -->
+            <section class="controls-card">
+                <div class="search-grid">
+                    
+                    <!-- Search by Order ID -->
+                    <div class="form-group">
+                        <label for="orderIdSearch">অর্ডার আইডি দিয়ে খুঁজুন</label>
+                        <div class="input-with-icon">
+                            <svg class="input-svg" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                            <input type="text" id="orderIdSearch" placeholder="যেমন: S-P-9904093-SP-ORDER" autocomplete="off">
+                        </div>
+                    </div>
+
+                    <!-- Search by UID -->
+                    <div class="form-group">
+                        <label for="uidSearch">ইউ আই ডি দিয়ে অর্ডার খুঁজুন</label>
+                        <div class="input-with-icon">
+                            <svg class="input-svg" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                            <input type="text" id="uidSearch" placeholder="ইউ আই ডি পেস্ট করুন..." autocomplete="off">
+                        </div>
+                    </div>
+
+                    <!-- Filter by Status -->
+                    <div class="form-group">
+                        <label for="statusFilter">স্ট্যাটাস ফিল্টার</label>
+                        <select id="statusFilter">
+                            <option value="all">সব অর্ডার</option>
+                            <option value="pending">নতুন অর্ডার</option>
+                            <option value="confirm">অর্ডার গ্রহণ করা হয়েছে</option>
+                            <option value="processing">কোরিয়ারে পাঠানো হয়েছে</option>
+                            <option value="delivery">অর্ডার সফল ভাবে ডেলিভারি করা হয়েছে</option>
+                            <option value="return">অর্ডার রিটার্ন করা হয়েছে</option>
+                            <option value="cancel">অর্ডার বাতিল করা হয়েছে</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="action-bar">
+                    <button id="clearSearchBtn" class="btn btn-secondary" style="display: none;">
+                        <svg class="btn-svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                        ফিল্টার রিমুভ করুন
+                    </button>
+                </div>
+            </section>
+
+            <!-- Active Filter Banner -->
+            <div id="filterStatusBanner" class="filter-banner" style="display: none;"></div>
+
+            <!-- Orders Container List -->
+            <section id="ordersContainer" class="orders-list-wrapper"></section>
+
+            <!-- Custom Loading Indicator -->
+            <div id="loadingIndicator" class="loading-box" style="display: none;">
+                <img src="https://seraproduct.com/loading.gif" alt="লোড হচ্ছে..." class="loading-gif">
+                <p>লোড হচ্ছে...</p>
+            </div>
+
+            <!-- Load More Button Area -->
+            <div id="paginationArea" class="pagination-wrapper" style="display: none;">
+                <button id="loadMoreBtn" class="btn btn-primary">
+                    <svg class="btn-svg" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                    আরোও দেখুন
+                </button>
+            </div>
+
+            <!-- No Results Found State -->
+            <div id="noOrdersBox" class="empty-state-box" style="display: none;">
+                <svg class="empty-svg" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                <h3>কোনো অর্ডার পাওয়া যায়নি!</h3>
+                <p>আপনার অনুসন্ধান করা তথ্য অনুযায়ী কোনো রেকর্ড পাওয়া যায়নি।</p>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer Dynamic Container -->
+    <div id="footer-container"></div>
+
+    <!-- Custom Toast Notification System -->
+    <div id="toastNotification" class="toast-popup" style="display: none;">
+        <svg class="toast-svg" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+        <span id="toastMessage">কপি হয়েছে!</span>
+    </div>
+
+    <!-- Firebase App and Main JS Application -->
+    <script type="module" src="my-orders.js"></script>
+</body>
+</html>
