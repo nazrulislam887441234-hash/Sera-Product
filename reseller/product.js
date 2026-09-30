@@ -151,15 +151,14 @@ async function loadResellerAndProduct() {
             currentProductData = { id: docSnap.id, ...docSnap.data() };
         });
 
-        // reseller_orders কালেকশন থেকে uid এবং createdAt ফিল্ডের উপস্থিতি চেক করে সর্বোচ্চ ২ টি ডকুমেন্ট ফ্লেচ
+        // reseller_orders কালেকশন থেকে uid ফিল্ডের উপস্থিতি চেক করে সর্বোচ্চ ২ টি ডকুমেন্ট ফ্লেচ
         let resellerOrdersCount = 0;
         try {
             const ordersQuery = query(
-                collection(db, "reseller_orders"),
-                where("uid", "==", currentUser.uid),
-                where("createdAt", "!=", null),
-                limit(2)
-            );
+  collection(db, "reseller_orders"),
+  where("uid", "==", currentUser.uid),
+  limit(2)
+);
             const ordersSnap = await getDocs(ordersQuery);
             resellerOrdersCount = ordersSnap.size;
         } catch (e) {
