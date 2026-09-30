@@ -44,6 +44,11 @@
             </div>
         </div>
 
+        <!-- Top Mandatory Delivery Banner -->
+        <div id="mandatoryAdvanceBanner" class="top-advance-banner" style="display: none;">
+            প্রথম ২ টা অর্ডারের জন্য ডেলিভারি চার্জ অগ্রিম দিতে হবে!
+        </div>
+
         <!-- Product Content Section -->
         <div id="productContent" class="product-layout" style="display: none;">
             
@@ -157,10 +162,10 @@
 
                         <!-- Delivery Charge Advance System -->
                         <div class="form-group">
-                            <label>ডেলিভারি চার্জ অগ্রিম নিয়েছেন? *</label>
+                            <label id="deliveryAdvanceLabel">ডেলিভারি চার্জ অগ্রিম নিয়েছেন? *</label>
                             <div class="radio-group">
-                                <label><input type="radio" name="deliveryChargeStatus" value="no" checked> না</label>
-                                <label><input type="radio" name="deliveryChargeStatus" value="yes"> হ্যাঁ</label>
+                                <label><input type="radio" name="deliveryChargeStatus" id="delivStatusNo" value="no" checked> না</label>
+                                <label><input type="radio" name="deliveryChargeStatus" id="delivStatusYes" value="yes"> হ্যাঁ</label>
                             </div>
                         </div>
 
@@ -231,7 +236,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, doc, getDoc, collection, query, where, limit, getDocs, addDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, collection, query, where, limit, orderBy, getDocs, addDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBRSt2aoSJ-lumYAWGAXE6ncui7__TqJ4E",
@@ -247,7 +252,7 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        window.firebaseAppModules = { auth, db, doc, getDoc, collection, query, where, limit, getDocs, addDoc, deleteDoc, serverTimestamp, signOut, onAuthStateChanged };
+        window.firebaseAppModules = { auth, db, doc, getDoc, collection, query, where, limit, orderBy, getDocs, addDoc, deleteDoc, serverTimestamp, signOut, onAuthStateChanged };
     </script>
     <script src="product.js"></script>
 </body>
