@@ -23,6 +23,19 @@ body {
     line-height: 1.6;
 }
 
+/* Top Mandatory Advance Banner */
+.top-advance-banner {
+    background: #fff3bf;
+    color: #d9480f;
+    border: 1px solid #fcc419;
+    padding: 12px 20px;
+    border-radius: var(--radius);
+    text-align: center;
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 20px;
+}
+
 /* Header */
 .site-header {
     background: #ffffff;
@@ -390,6 +403,12 @@ body {
     gap: 6px;
     cursor: pointer;
     font-weight: normal;
+}
+
+.radio-group input[type="radio"]:disabled + label,
+.radio-group input[type="radio"]:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
 }
 
 .advance-box {
