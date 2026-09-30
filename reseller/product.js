@@ -110,7 +110,7 @@ function getProductSlugFromURL() {
 }
 
 async function loadResellerAndProduct() {
-    const { db, doc, getDoc, collection, query, where, limit, getDocs } = window.firebaseAppModules;
+    const { db, doc, getDoc, collection, query, where, limit, orderBy, getDocs } = window.firebaseAppModules;
     
     try {
         const resellerRef = doc(db, "reseller", currentUser.uid);
@@ -151,7 +151,22 @@ async function loadResellerAndProduct() {
             currentProductData = { id: docSnap.id, ...docSnap.data() };
         });
 
-        renderProduct();
+        // reseller_orders কালেকশন থেকে uid এবং createdAt ফিল্ডের উপস্থিতি চেক করে সর্বোচ্চ ২ টি ডকুমেন্ট ফ্লেচ
+        let resellerOrdersCount = 0;
+        try {
+            const ordersQuery = query(
+                collection(db, "reseller_orders"),
+                where("uid", "==", currentUser.uid),
+                where("createdAt", "!=", null),
+                limit(2)
+            );
+            const ordersSnap = await getDocs(ordersQuery);
+            resellerOrdersCount = ordersSnap.size;
+        } catch (e) {
+            console.error("Orders check error:", e);
+        }
+
+        renderProduct(resellerOrdersCount);
         loadFavoriteState();
 
     } catch (error) {
@@ -159,7 +174,7 @@ async function loadResellerAndProduct() {
     }
 }
 
-function renderProduct() {
+function renderProduct(resellerOrdersCount) {
     document.getElementById("loadingState").style.display = "none";
     document.getElementById("productContent").style.display = "grid";
 
@@ -179,6 +194,37 @@ function renderProduct() {
         document.getElementById("oldPriceDisplay").innerHTML = `আগের দাম <span style="text-decoration: line-through;">৳${resellerOldPrice}</span> ছাড় ৳${discountAmount} প্রায় ${discountPercentage}% ছাড়`;
     } else {
         document.getElementById("oldPriceDisplay").innerHTML = "";
+    }
+
+    // ডেলিভারি চার্জ অগ্রিম ফিল্ড লজিক
+    const deliveryAdvanceLabel = document.getElementById("deliveryAdvanceLabel");
+    const delivStatusYes = document.getElementById("delivStatusYes");
+    const delivStatusNo = document.getElementById("delivStatusNo");
+    const advancePaymentBox = document.getElementById("advancePaymentBox");
+    const mandatoryAdvanceBanner = document.getElementById("mandatoryAdvanceBanner");
+
+    if (resellerOrdersCount < 2) {
+        // ১টি বা ০টি অর্ডার পাওয়া গেলে
+        mandatoryAdvanceBanner.style.display = "block";
+        deliveryAdvanceLabel.innerText = "ডেলিভারি চার্জ অগ্রিম করুন। আপনি ২ টা ডেলিভারি চার্জ অগ্রিম দিয়ে অর্ডার করতে হবে!";
+        delivStatusYes.checked = true;
+        delivStatusNo.disabled = true;
+        advancePaymentBox.style.display = "block";
+    } else {
+        // ২ টি বা তার বেশি অর্ডার থাকলে
+        mandatoryAdvanceBanner.style.display = "none";
+        
+        if (currentProductData.advance === true) {
+            deliveryAdvanceLabel.innerText = "এই পণ্যটার জন্য ডেলিভারি চার্জ অগ্রিম করতে হবে!";
+            delivStatusYes.checked = true;
+            delivStatusNo.disabled = true;
+            advancePaymentBox.style.display = "block";
+        } else {
+            deliveryAdvanceLabel.innerText = "ডেলিভারি চার্জ অগ্রিম নিয়েছেন? *";
+            delivStatusNo.disabled = false;
+            delivStatusNo.checked = true;
+            advancePaymentBox.style.display = "none";
+        }
     }
 
     renderGallery();
@@ -530,7 +576,6 @@ async function handleOrderSubmit(e) {
 
     const deliveryChargeValue = deliverySite === "inside_dhaka" ? 60 : 120;
     
-    // ফায়ারবেস সিকিউরিটি রুলস অনুযায়ী deliveryChargeStatus == true হলে deliveryCharge ও ProductdeliveryCharge অবশ্যই null হতে হবে।
     let deliveryCharge = deliveryChargeStatus ? null : deliveryChargeValue;
     let productDeliveryCharge = deliveryChargeStatus ? null : deliveryChargeValue;
     let total = deliveryChargeStatus ? fullProductPriceInputVal : fullProductPriceInputVal + deliveryChargeValue;
@@ -539,7 +584,6 @@ async function handleOrderSubmit(e) {
     const productImage = images.length > 0 ? images[0] : "";
     const sellPriceValue = fullProductPriceInputVal;
 
-    // ফায়ারবেস রুলসের সাথে ১০০% মিল রেখে তৈরি করা অর্ডার অবজেক্ট
     const orderData = {
         customerName: customerName,
         customerPhone: customerPhone,
