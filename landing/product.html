@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#ff6a00">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Dynamic Title & Descriptions (Fallback values) -->
+    <title>Sera Product - অনলাইন শপিং</title>
+    <meta name="description" content="সেরা দামে সেরা পণ্য কেনাকাটা করুন SERA PRODUCT-এ।">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="https://seraproduct.com/photo/logo.png" type="image/png">
+    <link rel="canonical" id="canonical-url" href="https://seraproduct.com/landing/product">
+    
+    <!-- Open Graph Metas -->
+    <meta property="og:type" content="product">
+    <meta property="og:site_name" content="SERA PRODUCT">
+    <meta property="og:title" id="og-title" content="SERA PRODUCT">
+    <meta property="og:description" id="og-desc" content="সেরা দামে সেরা পণ্য কেনাকাটা করুন।">
+    <meta property="og:image" id="og-image" content="https://seraproduct.com/photo/facebook-preview.png">
+    <meta property="og:url" id="og-url" content="https://seraproduct.com/landing/product">
+    
+    <!-- Twitter Metas -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" id="tw-title" content="SERA PRODUCT">
+    <meta name="twitter:description" id="tw-desc" content="সেরা দামে সেরা পণ্য কেনাকাটা করুন।">
+    <meta name="twitter:image" id="tw-image" content="https://seraproduct.com/photo/twitter.png">
+    
+    <!-- Structured Data JSON-LD -->
+    <script type="application/ld+json" id="product-json-ld">
+    {
+      "@context": "https://schema.org/",
+      "@type": "Product",
+      "name": "Loading Product...",
+      "image": ["https://seraproduct.com/photo/facebook-preview.png"],
+      "description": "Loading product details..."
+    }
+    </script>
+    
+    <link rel="stylesheet" href="product.css">
+</head>
+<body>
+
+    <!-- Fullscreen Initial Loader -->
+    <div id="loading-overlay" class="loading-overlay">
+        <img src="https://seraproduct.com/loading.gif" alt="লোডিং..." class="loading-gif">
+    </div>
+
+    <!-- Header Section -->
+    <header class="header">
+        <div class="container header-container">
+            <a href="https://seraproduct.com" class="logo-link">
+                <img src="https://seraproduct.com/photo/header.png" alt="SERA PRODUCT Logo" class="site-logo">
+            </a>
+        </div>
+    </header>
+
+    <!-- Moving Description Headline -->
+    <div id="marquee-container" class="marquee-container hidden">
+        <div class="marquee-content" id="marquee-text"></div>
+    </div>
+
+    <main class="main-content container">
+        
+        <!-- Hero Product Headline -->
+        <h1 id="product-hero-title" class="hero-product-title"></h1>
+
+        <!-- Product Details Section -->
+        <div id="product-wrapper" class="product-wrapper hidden">
+            
+            <!-- Left Side: Product Media Gallery -->
+            <div class="product-gallery">
+                <!-- Media Switcher (If Video Available) -->
+                <div id="media-tabs" class="media-tabs hidden">
+                    <button id="btn-tab-image" class="media-tab active">
+                        <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+                        ছবি
+                    </button>
+                    <button id="btn-tab-video" class="media-tab">
+                        <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/></svg>
+                        ভিডিও
+                    </button>
+                </div>
+
+                <!-- Main View Container -->
+                <div class="gallery-viewport">
+                    <div id="image-view" class="gallery-view active">
+                        <img id="main-image" src="" alt="Product Image" loading="lazy">
+                        <button id="prev-img" class="slider-btn prev-btn" aria-label="পূর্ববর্তী ছবি">❮</button>
+                        <button id="next-img" class="slider-btn next-btn" aria-label="পরবর্তী ছবি">❯</button>
+                    </div>
+                    <div id="video-view" class="gallery-view hidden">
+                        <iframe id="video-iframe" src="" title="Product Review Video" allowfullscreen></iframe>
+                    </div>
+                </div>
+
+                <!-- Thumbnails -->
+                <div id="thumbnails-wrapper" class="thumbnails-wrapper"></div>
+            </div>
+
+            <!-- Right Side: Product Meta & Purchase Option -->
+            <div class="product-info">
+                <h2 id="product-name" class="product-title"></h2>
+
+                <!-- Price Section -->
+                <div class="price-container">
+                    <span id="current-price" class="current-price"></span>
+                    <span id="old-price" class="old-price hidden"></span>
+                </div>
+
+                <!-- Discount Badges -->
+                <div id="discount-badges" class="discount-badges hidden">
+                    <span id="discount-amount-badge" class="badge discount-badge"></span>
+                    <span id="discount-percent-badge" class="badge percent-badge"></span>
+                </div>
+
+                <!-- Free Delivery Badge -->
+                <div id="free-delivery-badge" class="free-delivery-box hidden">
+                    <svg class="icon-truck" viewBox="0 0 24 24"><path fill="currentColor" d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9l1.96 2.5H17V9.5h2.5zm-1.5 9c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                    <span>এই পণ্যটার জন্য ফ্রি ডেলিভারি!</span>
+                </div>
+
+                <!-- Warranty -->
+                <div id="warranty-box" class="warranty-box hidden">
+                    <strong>ওয়ারেন্টি:</strong> <span id="warranty-text"></span>
+                </div>
+
+                <!-- Offer Countdown Banner -->
+                <div id="offer-banner" class="offer-banner hidden">
+                    <div class="offer-title">অফার শেষ হতে বাকি</div>
+                    <div id="countdown-timer" class="countdown-timer">
+                        <div class="timer-unit"><span id="days">00</span><small>দিন</small></div>
+                        <div class="timer-unit"><span id="hours">00</span><small>ঘণ্টা</small></div>
+                        <div class="timer-unit"><span id="minutes">00</span><small>মিনিট</small></div>
+                        <div class="timer-unit"><span id="seconds">00</span><small>সেকেন্ড</small></div>
+                    </div>
+                </div>
+
+                <!-- Dynamic Variants Section -->
+                <div id="variants-container" class="variants-container"></div>
+
+                <!-- Scroll to Order Form Button -->
+                <button id="btn-buy-now" class="btn-buy-now">
+                    <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M17 18c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2zM7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm0-3l1.1-2h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1.003 1.003 0 0 0 20 4H5.21l-.94-2H1v2h2l3.6 7.59-1.35 2.44C4.52 15.37 5.48 17 7 17h12v-2H7l1.1-2z"/></svg>
+                    এখনই কিনুন
+                </button>
+            </div>
+        </div>
+
+        <!-- Product Description -->
+        <div id="description-wrapper" class="description-wrapper hidden">
+            <h3 class="section-title">পণ্যের বিস্তারিত</h3>
+            <div id="product-description" class="product-description-content"></div>
+        </div>
+
+        <!-- Checkout / Order Form Section -->
+        <div id="order-form-section" class="order-form-section hidden">
+            <h3 class="form-title">অর্ডার নিশ্চিত করতে নিচের ফর্মটি পূরণ করুন</h3>
+            
+            <form id="order-form" novalidate>
+                <div class="form-grid">
+                    
+                    <div class="form-group">
+                        <label for="input-name">নাম <span class="req">*</span></label>
+                        <input type="text" id="input-name" placeholder="আপনার পুরো নাম লিখুন" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="input-phone">ফোন <span class="req">*</span></label>
+                        <input type="tel" id="input-phone" placeholder="01XXXXXXXXX" maxlength="11" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="input-vibag">বিভাগ <span class="req">*</span></label>
+                        <input type="text" id="input-vibag" placeholder="আপনার বিভাগ লিখুন" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="input-jela">জেলা <span class="req">*</span></label>
+                        <input type="text" id="input-jela" placeholder="আপনার জেলা লিখুন" required>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="input-upojela">উপজেলা/থানা <span class="req">*</span></label>
+                        <input type="text" id="input-upojela" placeholder="আপনার উপজেলা বা থানা লিখুন" required>
+                    </div>
+
+                    <!-- Delivery Site Radio Options -->
+                    <div class="form-group full-width">
+                        <label>ডেলিভারি এলাকা নির্বাচন করুন <span class="req">*</span></label>
+                        <div class="radio-group">
+                            <label class="radio-card">
+                                <input type="radio" name="deliverySite" value="inside_dhaka" checked>
+                                <span>ঢাকার ভেতরে</span>
+                            </label>
+                            <label class="radio-card">
+                                <input type="radio" name="deliverySite" value="outside_dhaka">
+                                <span>ঢাকার বাইরে</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Quantity Counter -->
+                    <div class="form-group full-width">
+                        <label>পরিমাণ</label>
+                        <div class="quantity-control">
+                            <button type="button" id="btn-qty-minus" aria-label="পরিমাণ কমান">−</button>
+                            <span id="qty-display">1</span>
+                            <button type="button" id="btn-qty-plus" aria-label="পরিমাণ বাড়ান">+</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="input-note">নোট (ঐচ্ছিক)</label>
+                        <textarea id="input-note" rows="2" placeholder="বিশেষ কোনো নির্দেশনা থাকলে লিখুন..."></textarea>
+                    </div>
+
+                </div>
+
+                <!-- Order Summary Box -->
+                <div class="order-summary-box">
+                    <div class="summary-row">
+                        <span>পণ্যের দাম:</span>
+                        <span id="summary-product-price">৳0</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>ডেলিভারি চার্জ:</span>
+                        <span id="summary-delivery-charge">৳0</span>
+                    </div>
+                    <hr>
+                    <div class="summary-row total-row">
+                        <span>সর্বমোট:</span>
+                        <span id="summary-total-price">৳0</span>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" id="btn-submit-order" class="btn-submit-order">
+                    অর্ডার কনফার্ম করুন
+                </button>
+            </form>
+        </div>
+
+        <!-- Dynamic Product Not Found View -->
+        <div id="not-found-view" class="not-found-container hidden">
+            <div class="not-found-card">
+                <svg class="not-found-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                <h2>পণ্যটি খুঁজে পাওয়া যায়নি!</h2>
+                <a href="https://seraproduct.com/all-product" class="btn-all-products">সব পণ্য দেখুন</a>
+            </div>
+        </div>
+
+    </main>
+<nav class="sp-mobile-nav" aria-label="Mobile Navigation">
+
+  <a href="https://seraproduct.com/" class="sp-nav-item" data-page="home">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M3 10.5 12 3l9 7.5v9a1.5 1.5 0 0 1-1.5 1.5H4.5A1.5 1.5 0 0 1 3 19.5v-9Z"/>
+      <path d="M9 21v-6h6v6"/>
+    </svg>
+    <span>Home</span>
+  </a>
+
+
+  <a href="https://seraproduct.com/reseller" class="sp-nav-item" data-page="reseller">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M20 12a8 8 0 1 1-2.34-5.66"/>
+      <path d="M20 4v6h-6"/>
+      <path d="M8 16.5a4.5 4.5 0 0 0 8 0"/>
+      <path d="M9.5 9.5h.01M14.5 9.5h.01"/>
+    </svg>
+    <span>Reseller</span>
+  </a>
+
+
+  <a href="https://seraproduct.com/categories" class="sp-nav-item" data-page="categories">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <rect x="3" y="3" width="7" height="7" rx="1"/>
+      <rect x="14" y="3" width="7" height="7" rx="1"/>
+      <rect x="3" y="14" width="7" height="7" rx="1"/>
+      <rect x="14" y="14" width="7" height="7" rx="1"/>
+    </svg>
+    <span>Categories</span>
+  </a>
+
+
+  <a href="https://seraproduct.com/all-product" class="sp-nav-item" data-page="products">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M6 3h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/>
+      <path d="M8 7h8M8 11h8M8 15h5"/>
+    </svg>
+    <span>All Product</span>
+  </a>
+
+
+  <a href="https://seraproduct.com/profile" class="sp-nav-item" data-page="profile">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="12" cy="8" r="4"/>
+      <path d="M4 21a8 8 0 0 1 16 0"/>
+    </svg>
+    <span>Profile</span>
+  </a>
+
+
+  <style>
+
+    /* =====================================================
+       SERA PRODUCT — MOBILE BUTTON NAV
+       ===================================================== */
+
+    .sp-mobile-nav {
+
+      /* Hidden on desktop */
+      display: none;
+
+      position: fixed;
+
+      left: 12px;
+      right: 12px;
+      bottom: 12px;
+
+      z-index: 99999;
+
+      height: 66px;
+
+      padding: 6px;
+
+      align-items: stretch;
+
+      justify-content: space-between;
+
+      gap: 3px;
+
+      background:
+        rgba(255,255,255,.96);
+
+      border:
+        1px solid
+        rgba(0,0,0,.07);
+
+      border-radius: 20px;
+
+      box-shadow:
+        0 10px 35px
+        rgba(0,0,0,.16),
+        0 2px 8px
+        rgba(0,0,0,.06);
+
+      backdrop-filter:
+        blur(18px);
+
+      -webkit-backdrop-filter:
+        blur(18px);
+
+      font-family:
+        "Hind Siliguri",
+        "Noto Sans Bengali",
+        Arial,
+        sans-serif;
+
+      box-sizing: border-box;
+    }
+
+
+    .sp-mobile-nav *,
+    .sp-mobile-nav *::before,
+    .sp-mobile-nav *::after {
+      box-sizing: border-box;
+    }
+
+
+    /* =====================================================
+       NAV ITEM
+       ===================================================== */
+
+    .sp-mobile-nav .sp-nav-item {
+
+      position: relative;
+
+      flex: 1 1 0;
+
+      min-width: 0;
+
+      height: 54px;
+
+      display: flex;
+
+      flex-direction: column;
+
+      align-items: center;
+
+      justify-content: center;
+
+      gap: 3px;
+
+      padding: 4px 2px;
+
+      border-radius: 15px;
+
+      color: #777;
+
+      background: transparent;
+
+      text-decoration: none;
+
+      -webkit-tap-highlight-color: transparent;
+
+      transition:
+        color .25s ease,
+        background .25s ease,
+        transform .2s ease;
+    }
+
+
+    /* =====================================================
+       SVG ICON
+       ===================================================== */
+
+    .sp-mobile-nav .sp-nav-item svg {
+
+      width: 21px;
+      height: 21px;
+
+      flex-shrink: 0;
+
+      fill: none;
+
+      stroke: currentColor;
+
+      stroke-width: 1.8;
+
+      stroke-linecap: round;
+
+      stroke-linejoin: round;
+
+      transition:
+        transform .25s ease,
+        stroke-width .25s ease;
+    }
+
+
+    /* =====================================================
+       TEXT
+       ===================================================== */
+
+    .sp-mobile-nav .sp-nav-item span {
+
+      display: block;
+
+      max-width: 100%;
+
+      overflow: hidden;
+
+      text-overflow: ellipsis;
+
+      white-space: nowrap;
+
+      font-size: 10px;
+
+      font-weight: 600;
+
+      line-height: 1.2;
+
+      letter-spacing: -.1px;
+    }
+
+
+    /* =====================================================
+       ACTIVE ITEM
+       ===================================================== */
+
+    .sp-mobile-nav .sp-nav-item.active {
+
+      color: #ff6b35;
+
+      background:
+        rgba(255,107,53,.10);
+
+      box-shadow:
+        inset 0 0 0 1px
+        rgba(255,107,53,.08);
+    }
+
+
+    .sp-mobile-nav .sp-nav-item.active svg {
+
+      stroke-width: 2.2;
+
+      transform:
+        translateY(-1px);
+    }
+
+
+    /* Orange active indicator */
+    .sp-mobile-nav .sp-nav-item.active::before {
+
+      content: "";
+
+      position: absolute;
+
+      top: 3px;
+
+      left: 50%;
+
+      width: 22px;
+
+      height: 3px;
+
+      transform:
+        translateX(-50%);
+
+      border-radius: 0 0 10px 10px;
+
+      background:
+        linear-gradient(
+          90deg,
+          #ff6b35,
+          #ff9b70
+        );
+
+      box-shadow:
+        0 2px 8px
+        rgba(255,107,53,.28);
+    }
+
+
+    /* =====================================================
+       TOUCH EFFECT
+       ===================================================== */
+
+    .sp-mobile-nav .sp-nav-item:active {
+
+      transform:
+        scale(.94);
+    }
+
+
+    /* =====================================================
+       MOBILE ONLY
+       ===================================================== */
+
+    @media (max-width: 767px) {
+
+      .sp-mobile-nav {
+        display: flex;
+      }
+
+      /*
+       * Prevent fixed navigation from covering
+       * the last content of the page.
+       */
+      body {
+        padding-bottom: 88px;
+      }
+
+    }
+
+
+    /* =====================================================
+       VERY SMALL MOBILE
+       ===================================================== */
+
+    @media (max-width: 360px) {
+
+      .sp-mobile-nav {
+
+        left: 8px;
+        right: 8px;
+        bottom: 8px;
+
+        height: 62px;
+
+        border-radius: 18px;
+
+        padding: 5px;
+      }
+
+
+      .sp-mobile-nav .sp-nav-item {
+
+        height: 52px;
+
+        border-radius: 14px;
+      }
+
+
+      .sp-mobile-nav .sp-nav-item svg {
+
+        width: 20px;
+        height: 20px;
+      }
+
+
+      .sp-mobile-nav .sp-nav-item span {
+
+        font-size: 9px;
+      }
+
+    }
+
+
+    /* =====================================================
+       REDUCED MOTION
+       ===================================================== */
+
+    @media (prefers-reduced-motion: reduce) {
+
+      .sp-mobile-nav *,
+      .sp-mobile-nav *::before,
+      .sp-mobile-nav *::after {
+
+        transition: none !important;
+
+        animation: none !important;
+      }
+
+    }
+
+  </style>
+
+
+  <!-- =========================
+       AUTO ACTIVE PAGE
+       ========================= -->
+  <script>
+    (function () {
+
+      const currentPath =
+        window.location.pathname
+          .replace(/\/+$/, "")
+          .toLowerCase();
+
+      const navItems =
+        document.querySelectorAll(
+          ".sp-mobile-nav .sp-nav-item"
+        );
+
+
+      navItems.forEach(function (item) {
+
+        const page =
+          item.getAttribute("data-page");
+
+
+        let isActive = false;
+
+
+        /* HOME */
+        if (
+          page === "home" &&
+          (
+            currentPath === "" ||
+            currentPath === "/" ||
+            currentPath === "/index.html"
+          )
+        ) {
+          isActive = true;
+        }
+
+
+        /* RESELLER */
+        if (
+          page === "reseller" &&
+          (
+            currentPath === "/reseller" ||
+            currentPath === "/reseller.html"
+          )
+        ) {
+          isActive = true;
+        }
+
+
+        /* CATEGORIES */
+        if (
+          page === "categories" &&
+          (
+            currentPath === "/categories" ||
+            currentPath === "/categories.html"
+          )
+        ) {
+          isActive = true;
+        }
+
+
+        /* ALL PRODUCTS */
+        if (
+          page === "products" &&
+          (
+            currentPath === "/all-product" ||
+            currentPath === "/all-product.html"
+          )
+        ) {
+          isActive = true;
+        }
+
+
+        /* PROFILE */
+        if (
+          page === "profile" &&
+          (
+            currentPath === "/profile" ||
+            currentPath === "/profile.html"
+          )
+        ) {
+          isActive = true;
+        }
+
+
+        if (isActive) {
+          item.classList.add("active");
+          item.setAttribute(
+            "aria-current",
+            "page"
+          );
+        }
+
+      });
+
+    })();
+  </script>
+
+</nav>
+    <!-- Footer Container (Fetched External HTML) -->
+    <footer id="site-footer" class="site-footer">
+        <div id="footer-loader" class="footer-loader">
+            <img src="https://seraproduct.com/loading.gif" alt="লোডিং..." width="40">
+        </div>
+    </footer>
+
+    <!-- Universal Custom Modal / Popup -->
+    <div id="custom-modal" class="modal-overlay hidden">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 id="modal-title" class="modal-title">বিজ্ঞপ্তি</h3>
+            </div>
+            <div class="modal-body">
+                <p id="modal-message"></p>
+                <div id="modal-redirect-text" class="redirect-text hidden"></div>
+            </div>
+            <div class="modal-footer" id="modal-footer">
+                <button type="button" id="btn-modal-close" class="btn-modal-close">ঠিক আছে</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Toast Notification -->
+    <div id="custom-toast" class="toast hidden">
+        <span id="toast-message"></span>
+    </div>
+
+    <script type="module" src="product.js"></script>
+</body>
+</html>
