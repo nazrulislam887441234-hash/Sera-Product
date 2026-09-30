@@ -149,8 +149,8 @@ body {
 .categories-grid {
     display: grid;
 
-    /* Mobile: 3 columns */
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    /* Mobile: 4 columns */
+    grid-template-columns: repeat(4, minmax(0, 1fr));
 
     gap: 10px;
 }
@@ -620,7 +620,6 @@ body {
 
     .category-name {
         padding: 9px 5px;
-
         font-size: 12px;
     }
 
@@ -630,7 +629,6 @@ body {
 
     .load-more-btn {
         padding: 11px 22px;
-
         font-size: 14px;
     }
 }
@@ -643,12 +641,13 @@ body {
 @media (max-width: 380px) {
 
     .categories-grid {
+        /* Small mobile: still 4 columns */
+        grid-template-columns: repeat(4, minmax(0, 1fr));
         gap: 8px;
     }
 
     .category-name {
         font-size: 11px;
-
         padding: 8px 4px;
     }
 }
