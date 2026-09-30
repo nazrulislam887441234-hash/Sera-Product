@@ -20,6 +20,13 @@
     padding: 0;
 }
 
+html,
+body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
 body {
     font-family: 'SolaimanLipi', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     background-color: var(--background);
@@ -47,15 +54,19 @@ ul {
     top: 0;
     z-index: 1000;
     box-shadow: var(--shadow);
+    width: 100%;
+    max-width: 100%;
 }
 
 .header-container {
+    width: 100%;
     max-width: 1200px;
     margin: 0 auto;
     padding: 12px 16px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    min-width: 0;
 }
 
 .mobile-menu-toggle {
@@ -66,17 +77,24 @@ ul {
     align-items: center;
     justify-content: center;
     padding: 4px;
+    flex-shrink: 0;
+}
+
+.header-logo {
+    min-width: 0;
 }
 
 .header-logo img {
     height: 34px;
     width: auto;
+    max-width: 100%;
     object-fit: contain;
     display: block;
 }
 
 .desktop-nav {
     display: none;
+    min-width: 0;
 }
 
 .desktop-nav a {
@@ -96,6 +114,7 @@ ul {
     position: relative;
     display: flex;
     align-items: center;
+    flex-shrink: 0;
 }
 
 .header-cart a {
@@ -147,6 +166,7 @@ ul {
     top: 0;
     left: -300px;
     width: 280px;
+    max-width: 85vw;
     height: 100%;
     background: var(--white);
     z-index: 1200;
@@ -166,10 +186,12 @@ ul {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    min-width: 0;
 }
 
 .drawer-header img {
     height: 28px;
+    max-width: 100%;
     object-fit: contain;
 }
 
@@ -178,16 +200,19 @@ ul {
     border: none;
     cursor: pointer;
     padding: 4px;
+    flex-shrink: 0;
 }
 
 .drawer-body {
     flex: 1;
     overflow-y: auto;
     padding: 16px;
+    min-width: 0;
 }
 
 .drawer-section {
     margin-bottom: 20px;
+    min-width: 0;
 }
 
 .drawer-title {
@@ -208,6 +233,7 @@ ul {
     color: var(--text-dark);
     border-radius: 6px;
     transition: var(--transition);
+    min-width: 0;
 }
 
 .drawer-list li a svg {
@@ -225,12 +251,18 @@ ul {
    MAIN CONTAINER & CARD BOXES
    ========================================== */
 .main-container {
+    width: 100%;
     max-width: 1200px;
     margin: 0 auto;
     padding: 16px;
+    min-width: 0;
 }
 
 .card-box {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow: hidden;
     background: var(--white);
     border: 1px solid var(--border);
     border-radius: 8px;
@@ -244,12 +276,15 @@ ul {
     align-items: center;
     justify-content: space-between;
     margin-bottom: 14px;
+    min-width: 0;
+    gap: 10px;
 }
 
 .section-title {
     font-size: 17px;
     font-weight: 700;
     color: var(--text-dark);
+    min-width: 0;
 }
 
 .section-action {
@@ -257,6 +292,7 @@ ul {
     font-weight: 600;
     color: var(--primary-orange);
     transition: var(--transition);
+    flex-shrink: 0;
 }
 
 .section-action:hover {
@@ -267,12 +303,16 @@ ul {
    BANNER CAROUSEL
    ========================================== */
 .banner-section {
+    width: 100%;
+    max-width: 100%;
     margin-bottom: 16px;
+    min-width: 0;
 }
 
 .banner-carousel {
     position: relative;
     width: 100%;
+    max-width: 100%;
     aspect-ratio: 981 / 363;
     border-radius: 8px;
     overflow: hidden;
@@ -283,16 +323,20 @@ ul {
 .banner-track {
     display: flex;
     height: 100%;
+    width: 100%;
     transition: transform 0.4s ease-in-out;
 }
 
 .banner-slide {
     min-width: 100%;
+    max-width: 100%;
     height: 100%;
+    flex-shrink: 0;
 }
 
 .banner-slide img {
     width: 100%;
+    max-width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
@@ -326,12 +370,17 @@ ul {
    OUR COMMUNITY SECTION
    ========================================== */
 .community-grid {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 10px;
 }
 
 .community-card {
+    width: 100%;
+    min-width: 0;
     aspect-ratio: 1 / 1;
     background: var(--white);
     border: 1px solid var(--border);
@@ -340,6 +389,7 @@ ul {
     align-items: center;
     justify-content: center;
     transition: var(--transition);
+    overflow: hidden;
 }
 
 .community-card:hover {
@@ -352,12 +402,18 @@ ul {
    POPULAR CATEGORIES
    ========================================== */
 .category-grid {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 10px;
 }
 
 .category-card {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
     background: var(--white);
     border: 1px solid var(--border);
     border-radius: 6px;
@@ -368,6 +424,7 @@ ul {
     text-align: center;
     cursor: pointer;
     transition: var(--transition);
+    overflow: hidden;
 }
 
 .category-card:hover {
@@ -378,6 +435,8 @@ ul {
 .category-img-wrap {
     width: 50px;
     height: 50px;
+    max-width: 100%;
+    flex-shrink: 0;
     border-radius: 50%;
     overflow: hidden;
     margin-bottom: 8px;
@@ -391,10 +450,14 @@ ul {
 .category-img-wrap img {
     width: 100%;
     height: 100%;
+    max-width: 100%;
     object-fit: cover;
 }
 
 .category-name {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
     font-size: 12px;
     font-weight: 600;
     color: var(--text-dark);
@@ -402,9 +465,13 @@ ul {
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    overflow-wrap: anywhere;
+    word-break: break-word;
 }
 
 .load-more-container {
+    width: 100%;
+    max-width: 100%;
     text-align: center;
     margin-top: 16px;
 }
@@ -419,6 +486,7 @@ ul {
     border-radius: 6px;
     cursor: pointer;
     transition: var(--transition);
+    max-width: 100%;
 }
 
 .btn-load-more:hover {
@@ -430,12 +498,18 @@ ul {
    POPULAR PRODUCTS (MOBILE 3-COLUMN)
    ========================================== */
 .product-grid {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 8px;
 }
 
 .product-card {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
     background: var(--white);
     border: 1px solid var(--border);
     border-radius: 6px;
@@ -455,6 +529,7 @@ ul {
 .product-img-wrap {
     position: relative;
     width: 100%;
+    max-width: 100%;
     aspect-ratio: 1 / 1;
     background: var(--background);
     overflow: hidden;
@@ -463,6 +538,7 @@ ul {
 .product-img-wrap img {
     width: 100%;
     height: 100%;
+    max-width: 100%;
     object-fit: cover;
     display: block;
     transition: opacity 0.3s ease;
@@ -479,6 +555,7 @@ ul {
     padding: 2px 5px;
     border-radius: 3px;
     z-index: 2;
+    max-width: calc(100% - 8px);
 }
 
 .badge-discount {
@@ -492,9 +569,13 @@ ul {
     padding: 2px 5px;
     border-radius: 3px;
     z-index: 2;
+    max-width: calc(100% - 8px);
 }
 
 .product-info {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
     padding: 8px;
     display: flex;
     flex-direction: column;
@@ -503,6 +584,8 @@ ul {
 }
 
 .product-title {
+    width: 100%;
+    min-width: 0;
     font-size: 11px;
     font-weight: 600;
     color: var(--text-dark);
@@ -511,10 +594,14 @@ ul {
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    overflow-wrap: anywhere;
+    word-break: break-word;
     line-height: 1.3;
 }
 
 .product-price-box {
+    width: 100%;
+    min-width: 0;
     margin-bottom: 6px;
 }
 
@@ -543,6 +630,7 @@ ul {
     color: var(--primary-orange);
     border: 1px solid var(--primary-orange);
     width: 100%;
+    max-width: 100%;
     padding: 5px 0;
     font-size: 11px;
     font-weight: 700;
@@ -562,6 +650,7 @@ ul {
    ========================================== */
 .yt-channel-banner-wrap {
     width: 100%;
+    max-width: 100%;
     aspect-ratio: 981 / 363;
     border-radius: 8px;
     overflow: hidden;
@@ -571,6 +660,7 @@ ul {
 
 .yt-banner-img {
     width: 100%;
+    max-width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
@@ -583,17 +673,20 @@ ul {
     margin-bottom: 20px;
     flex-wrap: wrap;
     gap: 12px;
+    min-width: 0;
 }
 
 .yt-channel-info-left {
     display: flex;
     align-items: center;
     gap: 12px;
+    min-width: 0;
 }
 
 .yt-channel-logo {
     width: 50px;
     height: 50px;
+    flex-shrink: 0;
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid var(--border);
@@ -603,12 +696,15 @@ ul {
     font-size: 18px;
     font-weight: 700;
     color: var(--text-dark);
+    min-width: 0;
+    overflow-wrap: anywhere;
 }
 
 .yt-channel-username {
     font-size: 13px;
     color: var(--text-muted);
     font-weight: 500;
+    overflow-wrap: anywhere;
 }
 
 .yt-subscribe-btn {
@@ -620,6 +716,7 @@ ul {
     border-radius: 20px;
     transition: var(--transition);
     display: inline-block;
+    flex-shrink: 0;
 }
 
 .yt-subscribe-btn:hover {
@@ -631,12 +728,18 @@ ul {
 }
 
 .yt-videos-grid {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
     display: grid;
-    grid-template-columns: repeat(1, 1fr);
+    grid-template-columns: repeat(1, minmax(0, 1fr));
     gap: 16px;
 }
 
 .yt-video-card {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
     background: var(--white);
     border: 1px solid var(--border);
     border-radius: 8px;
@@ -652,6 +755,7 @@ ul {
 .yt-video-embed-wrap {
     position: relative;
     width: 100%;
+    max-width: 100%;
     aspect-ratio: 16 / 9;
     background: #000;
     cursor: pointer;
@@ -660,6 +764,7 @@ ul {
 
 .yt-thumb {
     width: 100%;
+    max-width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
@@ -687,10 +792,15 @@ ul {
 }
 
 .yt-video-info {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
     padding: 10px 12px;
 }
 
 .yt-video-title {
+    width: 100%;
+    min-width: 0;
     font-size: 14px;
     font-weight: 600;
     color: var(--text-dark);
@@ -698,6 +808,8 @@ ul {
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    overflow-wrap: anywhere;
+    word-break: break-word;
 }
 
 /* ==========================================
@@ -715,6 +827,9 @@ ul {
 
 .skeleton-card,
 .skeleton-product {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
     background: linear-gradient(
         90deg,
         #f0f0f0 25%,
@@ -725,6 +840,7 @@ ul {
     animation: shimmer 1.5s infinite;
     border-radius: 6px;
     aspect-ratio: 1 / 1.2;
+    overflow: hidden;
 }
 
 .skeleton-card {
@@ -732,6 +848,8 @@ ul {
 }
 
 .infinite-loader {
+    width: 100%;
+    max-width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -744,6 +862,7 @@ ul {
 .spinner {
     width: 20px;
     height: 20px;
+    flex-shrink: 0;
     border: 2px solid var(--border);
     border-top-color: var(--primary-orange);
     border-radius: 50%;
@@ -779,8 +898,12 @@ ul {
     }
 
     .category-grid {
-        grid-template-columns: repeat(6, 1fr);
+        grid-template-columns: repeat(6, minmax(0, 1fr));
         gap: 16px;
+    }
+
+    .category-card {
+        min-width: 0;
     }
 
     .category-img-wrap {
@@ -793,8 +916,12 @@ ul {
     }
 
     .product-grid {
-        grid-template-columns: repeat(5, 1fr);
+        grid-template-columns: repeat(5, minmax(0, 1fr));
         gap: 16px;
+    }
+
+    .product-card {
+        min-width: 0;
     }
 
     .product-title {
@@ -815,7 +942,7 @@ ul {
     }
 
     .yt-videos-grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 16px;
     }
 }
