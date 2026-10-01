@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SERA PRODUCT Return & Refund Policy - রিটার্ন ও রিফান্ড নীতিমালা</title>
+    <meta name="description" content="SERA PRODUCT-এর পণ্য রিটার্ন, রিফান্ড, পণ্য গ্রহণের সময় যাচাই এবং ডেলিভারি সম্পর্কিত গুরুত্বপূর্ণ নীতিমালা।">
+    <meta name="theme-color" content="#ff6a00">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://seraproduct.com/return">
+    <link rel="icon" href="https://seraproduct.com/photo/logo.png" type="image/png">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="SERA PRODUCT Return & Refund Policy - রিটার্ন ও রিফান্ড নীতিমালা">
+    <meta property="og:description" content="SERA PRODUCT-এর পণ্য রিটার্ন, রিফান্ড ও ডেলিভারি সম্পর্কিত নীতিমালা।">
+    <meta property="og:url" content="https://seraproduct.com/return">
+    <meta property="og:image" content="https://seraproduct.com/photo/facebook-preview.png">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="SERA PRODUCT Return & Refund Policy - রিটার্ন ও রিফান্ড নীতিমালা">
+    <meta name="twitter:description" content="SERA PRODUCT-এর পণ্য রিটার্ন, রিফান্ড এবং ডেলিভারি নীতিমালা।">
+    <meta name="twitter:image" content="https://seraproduct.com/photo/twitter.png">
+
+    <!-- Style CSS -->
+    <link rel="stylesheet" href="return.css">
+
+    <!-- FAQ Structured Data Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "কোন কারণে পণ্য Return করা যেতে পারে?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "পণ্যে সমস্যা, damage, ভুল পণ্য বা প্রযোজ্য ক্ষেত্রে পছন্দ না হলে return করার প্রয়োজন হতে পারে।"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Return করার জন্য কতদিন সময় আছে?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "এই নীতিমালায় নির্দিষ্ট fixed return-day window রাখা হয়নি। তবে পণ্য গ্রহণের সময় কুরিয়ার প্রতিনিধির সামনে পরীক্ষা করা অত্যন্ত গুরুত্বপূর্ণ।"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "কুরিয়ার প্রতিনিধির সামনে Return না করলে কী হবে?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "পরবর্তীতে সেই return গ্রহণ করা নাও হতে পারে।"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Online payment করলে Refund পাওয়া যাবে?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Eligible return গ্রহণ ও প্রয়োজনীয় যাচাই সম্পন্ন হলে online payment-এর ক্ষেত্রে refund করা হতে পারে।"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Refund পেতে কত সময় লাগে?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "সাধারণভাবে return processing-এর পরে ২৪–৪৮ ঘণ্টার মধ্যে refund করার চেষ্টা করা হবে।"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Refund দেরি হলে কী করব?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "২৪–৪৮ ঘণ্টার বেশি সময় লাগলে SERA PRODUCT support-এর সঙ্গে যোগাযোগ করুন।"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "ঢাকা শহরে Delivery কতদিন লাগে?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "সাধারণত ১–২ দিন।"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "ঢাকার বাইরে Delivery কতদিন লাগে?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "সাধারণত প্রায় ৩ দিন।"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Delivery দেরি হলে কতদিন অপেক্ষা করব?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "কোনো সমস্যার কারণে delivery দেরি হলে ৪–৫ দিন পর্যন্ত অপেক্ষা করতে পারেন।"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "পণ্য পাওয়ার সময় কী করা উচিত?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "কুরিয়ার প্রতিনিধির সামনে পণ্য পরীক্ষা করুন এবং কোনো সমস্যা থাকলে তখনই জানিয়ে প্রয়োজনীয় return ব্যবস্থা নিন।"
+          }
+        }
+      ]
+    }
+    </script>
+</head>
+<body>
+
+    <!-- Custom Loading Overlay -->
+    <div id="loading-screen" aria-hidden="true">
+        <img src="https://seraproduct.com/loading.gif" alt="লোডিং হচ্ছে..." width="80" height="80" loading="eager">
+    </div>
+
+    <!-- Header Section -->
+    <header class="site-header">
+        <div class="container header-container">
+            <a href="https://seraproduct.com/" class="logo-link" aria-label="SERA PRODUCT হোমপেজ">
+                <img src="https://seraproduct.com/photo/header.png" alt="SERA PRODUCT Logo" class="header-logo">
+            </a>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="container">
+                <h1 class="hero-title">SERA PRODUCT-এর রিটার্ন ও রিফান্ড নীতিমালা</h1>
+                <p class="hero-subtitle">পণ্য রিটার্ন, রিফান্ড এবং ডেলিভারি সম্পর্কে গুরুত্বপূর্ণ তথ্য জেনে নিন।</p>
+                <div class="date-badge-card">
+                    <svg class="icon-svg" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>
+                    <span>সর্বশেষ আপডেট: <strong class="badge-date">01/10/2026</strong></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Notice Section -->
+        <section class="container section-space reveal-on-scroll">
+            <div class="alert-card border-orange-thick">
+                <div class="alert-header">
+                    <svg class="icon-svg color-primary" viewBox="0 0 24 24" width="32" height="32" aria-hidden="true"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                    <h2>সবচেয়ে গুরুত্বপূর্ণ বিষয়</h2>
+                </div>
+                <p class="alert-text">
+                    পণ্য হাতে পাওয়ার সময় কুরিয়ার প্রতিনিধির সামনে পণ্যটি ভালোভাবে পরীক্ষা করুন। কোনো সমস্যা, ক্ষতি বা ভুল থাকলে সম্ভব হলে তখনই কুরিয়ার প্রতিনিধিকে জানিয়ে রিটার্ন করার ব্যবস্থা করুন।
+                </p>
+                <div class="badge-group">
+                    <div class="highlight-badge">
+                        <svg class="icon-svg" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                        <span>কুরিয়ার প্রতিনিধির সামনে পণ্য পরীক্ষা করা অত্যন্ত গুরুত্বপূর্ণ।</span>
+                    </div>
+                    <div class="highlight-badge warning-badge">
+                        <svg class="icon-svg" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+                        <span>কুরিয়ার প্রতিনিধির সামনে রিটার্ন না করলে পরবর্তীতে সেই রিটার্ন গ্রহণ করা নাও হতে পারে।</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Table of Contents -->
+        <nav class="container section-space reveal-on-scroll" aria-label="সূচিপত্র নেভিগেশন">
+            <div class="toc-card">
+                <h2 class="toc-title">
+                    <svg class="icon-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg>
+                    সূচিপত্র
+                </h2>
+                <div class="toc-grid">
+                    <a href="#section-return-why" class="toc-link">১. রিটার্ন কেন করবেন?</a>
+                    <a href="#section-return-time" class="toc-link">২. রিটার্নের সময়সীমা</a>
+                    <a href="#section-refund-policy" class="toc-link">৩. রিফান্ড নীতি</a>
+                    <a href="#section-refund-rules" class="toc-link">৪. রিফান্ড পাওয়ার নিয়ম</a>
+                    <a href="#section-delivery-policy" class="toc-link">৫. ডেলিভারি পলিসি</a>
+                    <a href="#section-customer-steps" class="toc-link">৬. গুরুত্বপূর্ণ নির্দেশনা</a>
+                    <a href="#section-faq" class="toc-link">৭. FAQ</a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Accordion Section Policies -->
+        <section class="container section-space">
+            
+            <!-- 1. Return Why -->
+            <article id="section-return-why" class="accordion-item reveal-on-scroll">
+                <button class="accordion-header" aria-expanded="false" aria-controls="content-return-why">
+                    <div class="accordion-header-left">
+                        <svg class="icon-svg header-icon" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="currentColor" d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"/></svg>
+                        <span class="step-num">০১</span>
+                        <div class="title-wrap">
+                            <h3>রিটার্ন কেন করবেন?</h3>
+                            <p class="accordion-summary">পণ্য ভাঙা, ক্ষতিগ্রস্ত বা ভুল পণ্য পাওয়ার কারণসমূহ।</p>
+                        </div>
+                    </div>
+                    <div class="accordion-trigger-wrap">
+                        <span class="trigger-text">বিস্তারিত দেখুন</span>
+                        <svg class="icon-svg arrow-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/></svg>
+                    </div>
+                </button>
+                <div id="content-return-why" class="accordion-content" hidden>
+                    <div class="accordion-inner">
+                        <p>SERA PRODUCT থেকে কেনা কোনো পণ্যে সমস্যা থাকলে, পণ্য ভাঙা/ক্ষতিগ্রস্ত অবস্থায় পৌঁছালে, ভুল পণ্য পাওয়া গেলে অথবা প্রযোজ্য ক্ষেত্রে পণ্যটি আপনার প্রত্যাশা অনুযায়ী না হলে রিটার্নের প্রয়োজন হতে পারে।</p>
+                        <p>তবে পণ্য রিটার্ন করার আগে পণ্যের অবস্থা এবং প্রযোজ্য Return Policy অনুসরণ করতে হবে।</p>
+                        <div class="inline-badge-card">
+                            <svg class="icon-svg" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
+                            <span>পণ্য গ্রহণের সময়ই পণ্য পরীক্ষা করুন।</span>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- 2. Return Time -->
+            <article id="section-return-time" class="accordion-item reveal-on-scroll">
+                <button class="accordion-header" aria-expanded="false" aria-controls="content-return-time">
+                    <div class="accordion-header-left">
+                        <svg class="icon-svg header-icon" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="currentColor" d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+                        <span class="step-num">০২</span>
+                        <div class="title-wrap">
+                            <h3>রিটার্নের সময়সীমা</h3>
+                            <p class="accordion-summary">রিটার্ন প্রক্রিয়ার নির্দিষ্ট সময় এবং নিয়মাবলী।</p>
+                        </div>
+                    </div>
+                    <div class="accordion-trigger-wrap">
+                        <span class="trigger-text">বিস্তারিত দেখুন</span>
+                        <svg class="icon-svg arrow-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/></svg>
+                    </div>
+                </button>
+                <div id="content-return-time" class="accordion-content" hidden>
+                    <div class="accordion-inner">
+                        <p>SERA PRODUCT-এর এই নীতিমালা অনুযায়ী রিটার্নের জন্য নির্দিষ্ট একটি fixed দিনের সীমা নির্ধারণ করা হয়নি।</p>
+                        <p>তবে রিটার্ন করতে চাইলে পণ্য গ্রহণের সময় কুরিয়ার প্রতিনিধির সামনে পণ্য পরীক্ষা করা অত্যন্ত গুরুত্বপূর্ণ। যদি পণ্যে সমস্যা থাকে এবং তখনই রিটার্ন করতে চান, তাহলে কুরিয়ার প্রতিনিধির উপস্থিতিতে রিটার্ন করার ব্যবস্থা করতে হবে।</p>
+                        <div class="alert-card bg-orange-light">
+                            <p class="highlight-large-text">
+                                কুরিয়ার প্রতিনিধির সামনে রিটার্ন না করলে পরবর্তীতে রিটার্ন গ্রহণ করা নাও হতে পারে।
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- 3. Refund Policy -->
+            <article id="section-refund-policy" class="accordion-item reveal-on-scroll">
+                <button class="accordion-header" aria-expanded="false" aria-controls="content-refund-policy">
+                    <div class="accordion-header-left">
+                        <svg class="icon-svg header-icon" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="currentColor" d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                        <span class="step-num">০৩</span>
+                        <div class="title-wrap">
+                            <h3>রিফান্ড নীতি</h3>
+                            <p class="accordion-summary">অনলাইন পেমেন্টের ক্ষেত্রে রিফান্ড পাওয়ার নিয়ম।</p>
+                        </div>
+                    </div>
+                    <div class="accordion-trigger-wrap">
+                        <span class="trigger-text">বিস্তারিত দেখুন</span>
+                        <svg class="icon-svg arrow-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/></svg>
+                    </div>
+                </button>
+                <div id="content-refund-policy" class="accordion-content" hidden>
+                    <div class="accordion-inner">
+                        <p>যদি customer আগে online payment করে থাকেন এবং প্রযোজ্য শর্ত অনুযায়ী return গ্রহণ করা হয়, তাহলে refund করা হতে পারে।</p>
+                        <p>সাধারণভাবে return গ্রহণ ও প্রয়োজনীয় যাচাই সম্পন্ন হওয়ার পর:</p>
+                        <div class="inline-badge-card highlight-time-badge">
+                            <svg class="icon-svg" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+                            <span>Online payment করা হলে eligible return-এর ক্ষেত্রে <strong>২৪–৪৮ ঘণ্টার</strong> মধ্যে refund করার চেষ্টা করা হবে।</span>
+                        </div>
+                        <p class="note-text">যদি এর চেয়ে বেশি সময় লাগে, তাহলে SERA PRODUCT support-এর সঙ্গে যোগাযোগ করার পরামর্শ দিন।</p>
+                        <p class="note-text"><em>বিশেষ দ্রষ্টব্য: Refund-এর সময় payment method, verification, return confirmation বা অন্যান্য প্রয়োজনীয় processing-এর কারণে সময় পরিবর্তিত হতে পারে।</em></p>
+                    </div>
+                </div>
+            </article>
+
+            <!-- 4. Refund Requirements -->
+            <article id="section-refund-rules" class="accordion-item reveal-on-scroll">
+                <button class="accordion-header" aria-expanded="false" aria-controls="content-refund-rules">
+                    <div class="accordion-header-left">
+                        <svg class="icon-svg header-icon" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="currentColor" d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                        <span class="step-num">০৪</span>
+                        <div class="title-wrap">
+                            <h3>রিফান্ড পাওয়ার নিয়ম</h3>
+                            <p class="accordion-summary">সফল রিফান্ড নিশ্চিত করতে প্রয়োজনীয় শর্তাবলী।</p>
+                        </div>
+                    </div>
+                    <div class="accordion-trigger-wrap">
+                        <span class="trigger-text">বিস্তারিত দেখুন</span>
+                        <svg class="icon-svg arrow-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/></svg>
+                    </div>
+                </button>
+                <div id="content-refund-rules" class="accordion-content" hidden>
+                    <div class="accordion-inner">
+                        <p>Refund পাওয়ার জন্য নিচের বিষয়গুলো অনুসরণ করা আবশ্যক:</p>
+                        <ul class="styled-list">
+                            <li>পণ্যটি কেন return করা হচ্ছে তার কারণ সঠিকভাবে জানাতে হবে।</li>
+                            <li>Return সত্যিই করা হয়েছে কিনা তা প্রয়োজন অনুযায়ী যাচাই করা হতে পারে।</li>
+                            <li>পণ্যের অবস্থা policy অনুযায়ী থাকতে হবে।</li>
+                            <li>কুরিয়ার প্রতিনিধির সামনে পণ্য পরীক্ষা ও প্রয়োজন হলে return করার নিয়ম অনুসরণ করতে হবে।</li>
+                            <li>Online payment করা হয়ে থাকলে refund প্রযোজ্য ক্ষেত্রে সেই payment-এর ভিত্তিতে processing করা হবে।</li>
+                        </ul>
+                        <div class="info-card-box">
+                            <p><strong>গুরুত্বপূর্ণ:</strong> Return গ্রহণযোগ্য হলে refund পাওয়ার সুযোগ থাকবে। Refund automatically guaranteed নয়—প্রযোজ্য return condition ও verification-এর ওপর নির্ভর করবে।</p>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- 5. Delivery Policy -->
+            <article id="section-delivery-policy" class="accordion-item reveal-on-scroll">
+                <button class="accordion-header" aria-expanded="false" aria-controls="content-delivery-policy">
+                    <div class="accordion-header-left">
+                        <svg class="icon-svg header-icon" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="currentColor" d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9l1.96 2.5H17V9.5h2.5zm-1 9c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                        <span class="step-num">০৫</span>
+                        <div class="title-wrap">
+                            <h3>ডেলিভারি পলিসি</h3>
+                            <p class="accordion-summary">ঢাকা শহর ও ঢাকার বাইরের ডেলিভারি সময়সীমা।</p>
+                        </div>
+                    </div>
+                    <div class="accordion-trigger-wrap">
+                        <span class="trigger-text">বিস্তারিত দেখুন</span>
+                        <svg class="icon-svg arrow-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/></svg>
+                    </div>
+                </button>
+                <div id="content-delivery-policy" class="accordion-content" hidden>
+                    <div class="accordion-inner">
+                        <div class="delivery-grid">
+                            <div class="delivery-card">
+                                <h4>ঢাকা শহর</h4>
+                                <div class="time-badge">সাধারণ ডেলিভারি সময়: <strong>১–২ দিন</strong></div>
+                            </div>
+                            <div class="delivery-card">
+                                <h4>ঢাকার বাইরে</h4>
+                                <div class="time-badge">সাধারণ ডেলিভারি সময়: <strong>প্রায় ৩ দিন</strong></div>
+                            </div>
+                        </div>
+                        <div class="delay-notice-box">
+                            <p>কখনো courier, আবহাওয়া, যোগাযোগ ব্যবস্থা, operational সমস্যা বা অন্য কোনো কারণে delivery দেরি হতে পারে। এমন পরিস্থিতিতে:</p>
+                            <div class="highlight-badge-pill">
+                                <span>সমস্যার কারণে delivery দেরি হলে <strong>৪–৫ দিন পর্যন্ত</strong> অপেক্ষা করুন।</span>
+                            </div>
+                        </div>
+                        <p class="disclaimer-text">
+                            <em>ডেলিভারি ডিসক্লেইমার: উল্লেখিত delivery time আনুমানিক সময়। Courier operation, location, weather, public holiday, যোগাযোগ ব্যবস্থা অথবা অনাকাঙ্ক্ষিত পরিস্থিতির কারণে প্রকৃত delivery time পরিবর্তিত হতে পারে।</em>
+                        </p>
+                    </div>
+                </div>
+            </article>
+
+            <!-- 6. Important Customer Instruction -->
+            <article id="section-customer-steps" class="accordion-item reveal-on-scroll">
+                <button class="accordion-header" aria-expanded="false" aria-controls="content-customer-steps">
+                    <div class="accordion-header-left">
+                        <svg class="icon-svg header-icon" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="currentColor" d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
+                        <span class="step-num">০৬</span>
+                        <div class="title-wrap">
+                            <h3>পণ্য হাতে পাওয়ার সময় কী করবেন?</h3>
+                            <p class="accordion-summary">ধাপ অনুসারে গ্রাহকের জন্য প্রয়োজনীয় দিকনির্দেশনা।</p>
+                        </div>
+                    </div>
+                    <div class="accordion-trigger-wrap">
+                        <span class="trigger-text">বিস্তারিত দেখুন</span>
+                        <svg class="icon-svg arrow-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/></svg>
+                    </div>
+                </button>
+                <div id="content-customer-steps" class="accordion-content" hidden>
+                    <div class="accordion-inner">
+                        <div class="steps-wrapper">
+                            <div class="step-card">
+                                <div class="step-circle">১</div>
+                                <div class="step-body">
+                                    <strong>ধাপ ১</strong>
+                                    <p>কুরিয়ার প্রতিনিধির সামনে প্যাকেট গ্রহণ করুন।</p>
+                                </div>
+                            </div>
+                            <div class="step-card">
+                                <div class="step-circle">২</div>
+                                <div class="step-body">
+                                    <strong>ধাপ ২</strong>
+                                    <p>সম্ভব হলে পণ্যটি পরীক্ষা করুন।</p>
+                                </div>
+                            </div>
+                            <div class="step-card">
+                                <div class="step-circle">৩</div>
+                                <div class="step-body">
+                                    <strong>ধাপ ৩</strong>
+                                    <p>পণ্যে দৃশ্যমান সমস্যা, damage বা ভুল পণ্য থাকলে সঙ্গে সঙ্গে জানিয়ে দিন।</p>
+                                </div>
+                            </div>
+                            <div class="step-card">
+                                <div class="step-circle">৪</div>
+                                <div class="step-body">
+                                    <strong>ধাপ ৪</strong>
+                                    <p>প্রয়োজন হলে কুরিয়ার প্রতিনিধির উপস্থিতিতেই return করার ব্যবস্থা করুন।</p>
+                                </div>
+                            </div>
+                            <div class="step-card">
+                                <div class="step-circle">৫</div>
+                                <div class="step-body">
+                                    <strong>ধাপ ৫</strong>
+                                    <p>পরবর্তীতে সমস্যা হলে support-এর সঙ্গে যোগাযোগ করুন।</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="alert-card warning-bg">
+                            <p class="highlight-large-text">
+                                কুরিয়ার প্রতিনিধির সামনে প্রয়োজনীয় যাচাই না করলে পরবর্তীতে return গ্রহণ করা নাও হতে পারে।
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Policy Update Info -->
+            <div class="policy-update-box reveal-on-scroll">
+                <p>SERA PRODUCT প্রয়োজন অনুযায়ী Return, Refund বা Delivery Policy পরিবর্তন বা আপডেট করতে পারে। Policy পরিবর্তন হলে এই page-এ নতুন তথ্য প্রকাশ করা হবে।</p>
+                <p>সর্বশেষ আপডেট: <strong>01/10/2026</strong></p>
+            </div>
+
+        </section>
+
+        <!-- FAQ Section -->
+        <section id="section-faq" class="container section-space reveal-on-scroll">
+            <div class="section-title-wrap">
+                <h2>সচরাচর জিজ্ঞাসিত প্রশ্নাবলী (FAQ)</h2>
+            </div>
+            
+            <div class="faq-accordion-group">
+                
+                <div class="accordion-item faq-item">
+                    <button class="accordion-header" aria-expanded="false" aria-controls="faq-ans-1">
+                        <div class="accordion-header-left">
+                            <span class="faq-q-prefix">প্রশ্ন ১.</span>
+                            <h3>কোন কারণে পণ্য Return করা যেতে পারে?</h3>
+                        </div>
+                        <div class="accordion-trigger-wrap">
+                            <svg class="icon-svg arrow-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/></svg>
+                        </div>
+                    </button>
+                    <div id="faq-ans-1" class="accordion-content" hidden>
+                        <div class="accordion-inner">
+                            <p>পণ্যে সমস্যা, damage, ভুল পণ্য বা প্রযোজ্য ক্ষেত্রে পছন্দ না হলে return করার প্রয়োজন হতে পারে।</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item faq-item">
+                    <button class="accordion-header" aria-expanded="false" aria-controls="faq-ans-2">
+                        <div class="accordion-header-left">
+                            <span class="faq-q-prefix">প্রশ্ন ২.</span>
+                            <h3>Return করার জন্য কতদিন সময় আছে?</h3>
+                        </div>
+                        <div class="accordion-trigger-wrap">
+                            <svg class="icon-svg arrow-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/></svg>
+                        </div>
+                    </button>
+                    <div id="faq-ans-2" class="accordion-content" hidden>
+                        <div class="accordion-inner">
+                            <p>এই নীতিমালায় নির্দিষ্ট fixed return-day window রাখা হয়নি। তবে পণ্য গ্রহণের সময় কুরিয়ার প্রতিনিধির সামনে পরীক্ষা করা অত্যন্ত গুরুত্বপূর্ণ।</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item faq-item">
+                    <button class="accordion-header" aria-expanded="false" aria-controls="faq-ans-3">
+                        <div class="accordion-header-left">
+                            <span class="faq-q-prefix">প্রশ্ন ৩.</span>
+                            <h3>কুরিয়ার প্রতিনিধির সামনে Return না করলে কী হবে?</h3>
+                        </div>
+                        <div class="accordion-trigger-wrap">
+                            <svg class="icon-svg arrow-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/></svg>
+                        </div>
+                    </button>
+                    <div id="faq-ans-3" class="accordion-content" hidden>
+                        <div class="accordion-inner">
+                            <p>পরবর্তীতে সেই return গ্রহণ করা নাও হতে পারে।</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item faq-item">
+                    <button class="accordion-header" aria-expanded="false" aria-controls="faq-ans-4">
+                        <div class="accordion-header-left">
+                            <span class="faq-q-prefix">প্রশ্ন ৪.</span>
+                            <h3>Online payment করলে Refund পাওয়া যাবে?</h3>
+                        </div>
+                        <div class="accordion-trigger-wrap">
+                            <svg class="icon-svg arrow-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/></svg>
+                        </div>
+                    </button>
+                    <div id="faq-ans-4" class="accordion-content" hidden>
+                        <div class="accordion-inner">
+                            <p>Eligible return গ্রহণ ও প্রয়োজনীয় যাচাই সম্পন্ন হলে online payment-এর ক্ষেত্রে refund করা হতে পারে।</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item faq-item">
+                    <button class="accordion-header" aria-expanded="false" aria-controls="faq-ans-5">
+                        <div class="accordion-header-left">
+                            <span class="faq-q-prefix">প্রশ্ন ৫.</span>
+                            <h3>Refund পেতে কত সময় লাগে?</h3>
+                        </div>
+                        <div class="accordion-trigger-wrap">
+                            <svg class="icon-svg arrow-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/></svg>
+                        </div>
+                    </button>
+                    <div id="faq-ans-5" class="accordion-content" hidden>
+                        <div class="accordion-inner">
+                            <p>সাধারণভাবে return processing-এর পরে ২৪–৪৮ ঘণ্টার মধ্যে refund করার চেষ্টা করা হবে।</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item faq-item">
+                    <button class="accordion-header" aria-expanded="false" aria-controls="faq-ans-6">
+                        <div class="accordion-header-left">
+                            <span class="faq-q-prefix">প্রশ্ন ৬.</span>
+                            <h3>Refund দেরি হলে কী করব?</h3>
+                        </div>
+                        <div class="accordion-trigger-wrap">
+                            <svg class="icon-svg arrow-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/></svg>
+                        </div>
+                    </button>
+                    <div id="faq-ans-6" class="accordion-content" hidden>
+                        <div class="accordion-inner">
+                            <p>২৪–৪৮ ঘণ্টার বেশি সময় লাগলে SERA PRODUCT support-এর সঙ্গে যোগাযোগ করুন।</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item faq-item">
+                    <button class="accordion-header" aria-expanded="false" aria-controls="faq-ans-7">
+                        <div class="accordion-header-left">
+                            <span class="faq-q-prefix">প্রশ্ন ৭.</span>
+                            <h3>ঢাকা শহরে Delivery কতদিন লাগে?</h3>
+                        </div>
+                        <div class="accordion-trigger-wrap">
+                            <svg class="icon-svg arrow-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/></svg>
+                        </div>
+                    </button>
+                    <div id="faq-ans-7" class="accordion-content" hidden>
+                        <div class="accordion-inner">
+                            <p>সাধারণত ১–২ দিন।</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item faq-item">
+                    <button class="accordion-header" aria-expanded="false" aria-controls="faq-ans-8">
+                        <div class="accordion-header-left">
+                            <span class="faq-q-prefix">প্রশ্ন ৮.</span>
+                            <h3>ঢাকার বাইরে Delivery কতদিন লাগে?</h3>
+                        </div>
+                        <div class="accordion-trigger-wrap">
+                            <svg class="icon-svg arrow-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/></svg>
+                        </div>
+                    </button>
+                    <div id="faq-ans-8" class="accordion-content" hidden>
+                        <div class="accordion-inner">
+                            <p>সাধারণত প্রায় ৩ দিন।</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item faq-item">
+                    <button class="accordion-header" aria-expanded="false" aria-controls="faq-ans-9">
+                        <div class="accordion-header-left">
+                            <span class="faq-q-prefix">প্রশ্ন ৯.</span>
+                            <h3>Delivery দেরি হলে কতদিন অপেক্ষা করব?</h3>
+                        </div>
+                        <div class="accordion-trigger-wrap">
+                            <svg class="icon-svg arrow-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/></svg>
+                        </div>
+                    </button>
+                    <div id="faq-ans-9" class="accordion-content" hidden>
+                        <div class="accordion-inner">
+                            <p>কোনো সমস্যার কারণে delivery দেরি হলে ৪–৫ দিন পর্যন্ত অপেক্ষা করতে পারেন।</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item faq-item">
+                    <button class="accordion-header" aria-expanded="false" aria-controls="faq-ans-10">
+                        <div class="accordion-header-left">
+                            <span class="faq-q-prefix">প্রশ্ন ১০.</span>
+                            <h3>পণ্য পাওয়ার সময় কী করা উচিত?</h3>
+                        </div>
+                        <div class="accordion-trigger-wrap">
+                            <svg class="icon-svg arrow-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/></svg>
+                        </div>
+                    </button>
+                    <div id="faq-ans-10" class="accordion-content" hidden>
+                        <div class="accordion-inner">
+                            <p>কুরিয়ার প্রতিনিধির সামনে পণ্য পরীক্ষা করুন এবং কোনো সমস্যা থাকলে তখনই জানিয়ে প্রয়োজনীয় return ব্যবস্থা নিন।</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Final CTA Section -->
+        <section class="container section-space reveal-on-scroll">
+            <div class="cta-card">
+                <h2>অর্ডার করার আগে Return Policy জেনে নিন</h2>
+                <p>পণ্য অর্ডার করার আগে Return, Refund এবং Delivery Policy ভালোভাবে পড়ে নিন।</p>
+                <a href="https://seraproduct.com/" class="btn-primary">
+                    <span>SERA PRODUCT-এ ফিরে যান</span>
+                    <svg class="icon-svg" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Async Footer Placeholder -->
+    <div id="footer-placeholder"></div>
+
+    <!-- App JavaScript -->
+    <script src="return.js"></script>
+</body>
+</html>
