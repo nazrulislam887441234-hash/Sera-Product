@@ -734,8 +734,7 @@ async function submitOrderFlow(event) {
           // Login UID এখানে আর ব্যবহার হচ্ছে না
           transaction.set(idRef, {
             use: true,
-            createdAt: serverTimestamp(),
-            guestOrder: true
+            createdAt: serverTimestamp()
           });
         });
 
@@ -765,9 +764,6 @@ async function submitOrderFlow(event) {
       createdAt: serverTimestamp(),
       productItem: cartProducts,
       status: "pending",
-
-      // Guest checkout: uid ও email নেই
-      guestOrder: true,
 
       thana,
       jela,
