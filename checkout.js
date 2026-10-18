@@ -1,23 +1,17 @@
-// Firebase Modular SDK CDN Imports
+// ==========================================
+// FIREBASE: শুধু PROMO CODE ও ORDER-এর জন্য
+// ==========================================
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { 
-  getAuth, 
-  onAuthStateChanged 
-} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-import { 
-  getFirestore, 
-  doc, 
+
+import {
+  getFirestore,
+  doc,
   getDoc,
   setDoc,
-  updateDoc,
   serverTimestamp,
-  writeBatch,
   runTransaction
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-// ==========================================
-// FIREBASE CONFIGURATION
-// ==========================================
 const firebaseConfig = {
   apiKey: "AIzaSyBRSt2aoSJ-lumYAWGAXE6ncui7__TqJ4E",
   authDomain: "sera-product.firebaseapp.com",
@@ -29,209 +23,303 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
 const db = getFirestore(app);
 
-// State Management
-let currentUser = null;
+// ==========================================
+// LOCAL STORAGE CONFIGURATION
+// Product page ও Cart page-এ একই Key ব্যবহার করবেন
+// ==========================================
+const CART_STORAGE_KEY = "sera_product_cart";
+
 let cartProducts = [];
 let deleteIndexTarget = null;
 let appliedDiscount = null;
 let createdOrderSnapshot = null;
+let isSubmittingOrder = false;
 
-// DOM Elements
-const loadingOverlay = document.getElementById('loading-overlay');
-const loadingText = document.getElementById('loading-text');
-const lockedScreen = document.getElementById('locked-screen');
-const emptyCartScreen = document.getElementById('empty-cart-screen');
-const errorScreen = document.getElementById('error-screen');
-const errorMessageEl = document.getElementById('error-message');
-const checkoutSection = document.getElementById('checkout-section');
-const productListContainer = document.getElementById('product-list');
+// ==========================================
+// DOM ELEMENTS
+// ==========================================
+const loadingOverlay = document.getElementById("loading-overlay");
+const loadingText = document.getElementById("loading-text");
 
-// Form & Inputs
-const checkoutForm = document.getElementById('checkout-form');
-const nameInput = document.getElementById('name');
-const phoneInput = document.getElementById('phone');
-const deliverySiteSelect = document.getElementById('delivery-site');
-const vibagInput = document.getElementById('vibag');
-const jelaInput = document.getElementById('jela');
-const thanaInput = document.getElementById('thana');
-const noteInput = document.getElementById('note');
+const lockedScreen = document.getElementById("locked-screen");
+const emptyCartScreen = document.getElementById("empty-cart-screen");
+const errorScreen = document.getElementById("error-screen");
+const errorMessageEl = document.getElementById("error-message");
 
-// Promo & Summary
-const promoInput = document.getElementById('promo-code');
-const applyPromoBtn = document.getElementById('apply-promo-btn');
-const promoMessageEl = document.getElementById('promo-message');
-const summarySubtotalEl = document.getElementById('summary-subtotal');
-const summaryDeliveryEl = document.getElementById('summary-delivery');
-const summaryDiscountEl = document.getElementById('summary-discount');
-const summaryTotalEl = document.getElementById('summary-total');
-const submitOrderBtn = document.getElementById('submit-order-btn');
+const checkoutSection = document.getElementById("checkout-section");
+const productListContainer = document.getElementById("product-list");
 
-// Modals
-const deleteModal = document.getElementById('delete-modal');
-const cancelDeleteBtn = document.getElementById('cancel-delete-btn');
-const confirmDeleteBtn = document.getElementById('confirm-delete-btn');
-const successModal = document.getElementById('success-modal');
-const successTitle = document.getElementById('success-message-title');
-const toastNotification = document.getElementById('toast-notification');
+const checkoutForm = document.getElementById("checkout-form");
+const nameInput = document.getElementById("name");
+const phoneInput = document.getElementById("phone");
+const deliverySiteSelect = document.getElementById("delivery-site");
+const vibagInput = document.getElementById("vibag");
+const jelaInput = document.getElementById("jela");
+const thanaInput = document.getElementById("thana");
+const noteInput = document.getElementById("note");
+
+const promoInput = document.getElementById("promo-code");
+const applyPromoBtn = document.getElementById("apply-promo-btn");
+const promoMessageEl = document.getElementById("promo-message");
+
+const summarySubtotalEl = document.getElementById("summary-subtotal");
+const summaryDeliveryEl = document.getElementById("summary-delivery");
+const summaryDiscountEl = document.getElementById("summary-discount");
+const summaryTotalEl = document.getElementById("summary-total");
+
+const submitOrderBtn = document.getElementById("submit-order-btn");
+
+const deleteModal = document.getElementById("delete-modal");
+const cancelDeleteBtn = document.getElementById("cancel-delete-btn");
+const confirmDeleteBtn = document.getElementById("confirm-delete-btn");
+
+const successModal = document.getElementById("success-modal");
+const successTitle = document.getElementById("success-message-title");
+const toastNotification = document.getElementById("toast-notification");
 
 // ==========================================
 // HELPER FUNCTIONS
 // ==========================================
+function toBanglaNum(value) {
+  if (value === null || value === undefined) return "০";
 
-function toBanglaNum(num) {
-  if (num === null || num === undefined) return '০';
-  const banglaDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
-  return num.toString().replace(/\d/g, (digit) => banglaDigits[digit]);
+  const digits = ["০", "১", "২", "৩", "৪", "৫", "৬", "৭", "৮", "৯"];
+
+  return String(value).replace(/\d/g, digit => digits[Number(digit)]);
 }
 
 function formatCurrency(amount) {
-  const formatted = new Intl.NumberFormat('en-IN').format(amount || 0);
+  const number = Number(amount) || 0;
+  const formatted = new Intl.NumberFormat("en-IN", {
+    maximumFractionDigits: 2
+  }).format(number);
+
   return `৳${toBanglaNum(formatted)}`;
 }
 
-function showToast(msg) {
-  toastNotification.textContent = msg;
-  toastNotification.classList.remove('hidden');
-  setTimeout(() => {
-    toastNotification.classList.add('hidden');
-  }, 3000);
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, character => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  })[character]);
 }
 
-function showLoader(text = "তথ্য লোড হচ্ছে...") {
-  loadingText.textContent = text;
-  loadingOverlay.classList.remove('hidden');
-}
-
-function hideLoader() {
-  loadingOverlay.classList.add('hidden');
-}
-
-function redirectTo(url) {
-  window.location.href = url;
-}
-
-// ==========================================
-// 1. AUTHENTICATION CHECK
-// ==========================================
-onAuthStateChanged(auth, async (user) => {
-  if (!user) {
-    redirectTo('https://seraproduct.com/login');
+function showToast(message) {
+  if (!toastNotification) {
+    alert(message);
     return;
   }
 
-  currentUser = {
-    uid: user.uid,
-    email: user.email
-  };
+  toastNotification.textContent = message;
+  toastNotification.classList.remove("hidden");
 
-  await initializeCheckout();
-});
+  setTimeout(() => {
+    toastNotification.classList.add("hidden");
+  }, 3000);
+}
+
+function showLoader(message = "তথ্য লোড হচ্ছে...") {
+  if (loadingText) loadingText.textContent = message;
+  if (loadingOverlay) loadingOverlay.classList.remove("hidden");
+}
+
+function hideLoader() {
+  if (loadingOverlay) loadingOverlay.classList.add("hidden");
+}
+
+function showError(message) {
+  if (errorMessageEl) errorMessageEl.textContent = message;
+  if (errorScreen) errorScreen.classList.remove("hidden");
+}
+
+function getProductUnitPrice(product) {
+  const quantity = Math.max(1, Number(product.quantity) || 1);
+  const totalPrice = Number(product.productPrice) || 0;
+
+  // কার্টে productPrice-এ পণ্যের মোট দাম সংরক্ষিত থাকে
+  return totalPrice / quantity;
+}
 
 // ==========================================
-// INITIALIZATION FLOW
+// LOCAL STORAGE CART
+// Expected format:
+// {
+//   "productItem": [
+//     {
+//       "productId": "...",
+//       "productName": "...",
+//       "productImage": "...",
+//       "productPrice": 100,
+//       "quantity": 1,
+//       "freeDelivery": false,
+//       "variants": [],
+//       "warranty": ""
+//     }
+//   ]
+// }
 // ==========================================
-async function initializeCheckout() {
-  showLoader("আপনার অ্যাকাউন্টের তথ্য যাচাই করা হচ্ছে...");
-
+function readCartFromLocalStorage() {
   try {
-    const buyerRef = doc(db, "buyers", currentUser.uid);
-    const buyerSnap = await getDoc(buyerRef);
+    const rawData = localStorage.getItem(CART_STORAGE_KEY);
 
-    if (!buyerSnap.exists()) {
-      hideLoader();
-      errorMessageEl.textContent = "আপনার কাস্টমার অ্যাকাউন্টের তথ্য পাওয়া যায়নি।";
-      errorScreen.classList.remove('hidden');
-      setTimeout(() => redirectTo('https://seraproduct.com/login'), 3000);
-      return;
+    if (!rawData) return [];
+
+    const parsedData = JSON.parse(rawData);
+
+    // আগের নির্ধারিত object format
+    if (parsedData && Array.isArray(parsedData.productItem)) {
+      return parsedData.productItem;
     }
 
-    const buyerData = buyerSnap.data();
-
-    if (buyerData.block === true) {
-      hideLoader();
-      lockedScreen.classList.remove('hidden');
-      return;
+    // যদি LocalStorage-এ সরাসরি array রাখা থাকে
+    if (Array.isArray(parsedData)) {
+      return parsedData;
     }
 
-    showLoader("কার্টের তথ্য লোড করা হচ্ছে...");
-    const cartRef = doc(db, "carts", currentUser.uid);
-    const cartSnap = await getDoc(cartRef);
-
-    if (!cartSnap.exists()) {
-      hideLoader();
-      emptyCartScreen.classList.remove('hidden');
-      return;
-    }
-
-    const cartData = cartSnap.data();
-    if (!cartData.productItem || !Array.isArray(cartData.productItem) || cartData.productItem.length === 0) {
-      hideLoader();
-      emptyCartScreen.classList.remove('hidden');
-      return;
-    }
-
-    cartProducts = cartData.productItem;
-    
-    renderProductCards();
-    recalculateTotals();
-    
-    checkoutSection.classList.remove('hidden');
-    hideLoader();
-
-  } catch (err) {
-    console.error("Initialization Error:", err);
-    hideLoader();
-    errorMessageEl.textContent = "অর্ডার তৈরি করা যায়নি। অনুগ্রহ করে আবার চেষ্টা করুন।";
-    errorScreen.classList.remove('hidden');
+    return [];
+  } catch (error) {
+    console.error("LocalStorage cart read error:", error);
+    showToast("কার্টের তথ্য পড়া যায়নি।");
+    return [];
   }
 }
+
+function saveCartToLocalStorage() {
+  try {
+    localStorage.setItem(
+      CART_STORAGE_KEY,
+      JSON.stringify({
+        productItem: cartProducts
+      })
+    );
+
+    // একই সাইটের অন্য পেজে কার্ট আপডেটের সংকেত
+    window.dispatchEvent(
+      new CustomEvent("sera-cart-updated", {
+        detail: { productItem: cartProducts }
+      })
+    );
+
+    return true;
+  } catch (error) {
+    console.error("LocalStorage cart save error:", error);
+    showToast("কার্ট আপডেট করা যায়নি।");
+    return false;
+  }
+}
+
+// ==========================================
+// INITIALIZATION
+// কোনো Login / Auth / Buyer Profile দরকার নেই
+// ==========================================
+function initializeCheckout() {
+  hideLoader();
+
+  if (lockedScreen) lockedScreen.classList.add("hidden");
+  if (errorScreen) errorScreen.classList.add("hidden");
+
+  cartProducts = readCartFromLocalStorage()
+    .filter(product =>
+      product &&
+      typeof product === "object" &&
+      Number(product.productPrice) >= 0
+    )
+    .map(product => ({
+      ...product,
+      quantity: Math.max(1, Math.floor(Number(product.quantity) || 1)),
+      productPrice: Number(product.productPrice) || 0
+    }));
+
+  renderProductCards();
+  recalculateTotals();
+
+  loadFooter();
+}
+
+document.addEventListener("DOMContentLoaded", initializeCheckout);
 
 // ==========================================
 // PRODUCT CARDS RENDER
 // ==========================================
 function renderProductCards() {
-  productListContainer.innerHTML = '';
+  if (!productListContainer) return;
+
+  productListContainer.innerHTML = "";
 
   if (cartProducts.length === 0) {
-    checkoutSection.classList.add('hidden');
-    emptyCartScreen.classList.remove('hidden');
+    if (checkoutSection) checkoutSection.classList.add("hidden");
+    if (emptyCartScreen) emptyCartScreen.classList.remove("hidden");
+    recalculateTotals();
     return;
   }
 
-  cartProducts.forEach((prod, index) => {
-    const card = document.createElement('div');
-    card.className = 'product-card';
+  if (emptyCartScreen) emptyCartScreen.classList.add("hidden");
+  if (checkoutSection) checkoutSection.classList.remove("hidden");
 
-    const currentQty = prod.quantity || 1;
+  // DOM fragment ব্যবহার করে একসঙ্গে কার্ড যোগ করা হচ্ছে
+  const fragment = document.createDocumentFragment();
 
-    let variantsHTML = '';
-    if (prod.variants && Array.isArray(prod.variants) && prod.variants.length > 0) {
-      variantsHTML = prod.variants.map(v => 
-        `<span class="badge badge-variant">${v.name}: ${v.value}</span>`
-      ).join(' ');
-    }
+  cartProducts.forEach((product, index) => {
+    const card = document.createElement("div");
+    card.className = "product-card";
 
-    const freeDeliveryHTML = prod.freeDelivery === true 
-      ? `<span class="badge badge-free-delivery">ফ্রি ডেলিভারি</span>` 
-      : '';
+    const quantity = Math.max(1, Number(product.quantity) || 1);
+    const productName = escapeHTML(product.productName || "পণ্য");
+    const productImage = escapeHTML(
+      product.productImage || "https://seraproduct.com/photo/logo.png"
+    );
 
-    const warrantyHTML = prod.warranty 
-      ? `<span>ওয়ারেন্টি: ${prod.warranty}</span>` 
-      : '';
+    const variantsHTML = Array.isArray(product.variants)
+      ? product.variants.map(variant => `
+          <span class="badge badge-variant">
+            ${escapeHTML(variant.name || "")}: ${escapeHTML(variant.value || "")}
+          </span>
+        `).join(" ")
+      : "";
+
+    const freeDeliveryHTML = product.freeDelivery === true
+      ? '<span class="badge badge-free-delivery">ফ্রি ডেলিভারি</span>'
+      : "";
+
+    const warrantyHTML = product.warranty
+      ? `<span>ওয়ারেন্টি: ${escapeHTML(product.warranty)}</span>`
+      : "";
 
     card.innerHTML = `
-      <img src="${prod.productImage}" alt="${prod.productName}" class="product-img" onerror="this.src='https://seraproduct.com/photo/logo.png'">
+      <img
+        src="${productImage}"
+        alt="${productName}"
+        class="product-img"
+        onerror="this.onerror=null;this.src='https://seraproduct.com/photo/logo.png'"
+      >
+
       <div class="product-details">
-        <h3 class="product-title">${prod.productName}</h3>
-        <div class="product-price">${formatCurrency(prod.productPrice)}</div>
-        
+        <h3 class="product-title">${productName}</h3>
+
+        <div class="product-price">
+          ${formatCurrency(product.productPrice)}
+        </div>
+
         <div class="quantity-controller">
-          <button type="button" class="btn-qty btn-minus" data-index="${index}" ${currentQty <= 1 ? 'disabled' : ''}>-</button>
-          <span class="qty-value">${toBanglaNum(currentQty)}</span>
-          <button type="button" class="btn-qty btn-plus" data-index="${index}">+</button>
+          <button
+            type="button"
+            class="btn-qty btn-minus"
+            data-index="${index}"
+            ${quantity <= 1 ? "disabled" : ""}
+          >-</button>
+
+          <span class="qty-value">${toBanglaNum(quantity)}</span>
+
+          <button
+            type="button"
+            class="btn-qty btn-plus"
+            data-index="${index}"
+          >+</button>
         </div>
 
         <div class="product-meta">
@@ -240,171 +328,212 @@ function renderProductCards() {
           ${warrantyHTML}
         </div>
       </div>
-      <button type="button" class="delete-btn" data-index="${index}" title="পণ্যটি সরিয়ে ফেলুন">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+
+      <button
+        type="button"
+        class="delete-btn"
+        data-index="${index}"
+        title="পণ্যটি সরিয়ে ফেলুন"
+        aria-label="পণ্যটি সরিয়ে ফেলুন"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
           <polyline points="3 6 5 6 21 6"></polyline>
           <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
         </svg>
       </button>
     `;
 
-    productListContainer.appendChild(card);
+    fragment.appendChild(card);
   });
 
-  // Attach Event Listeners for Quantity Controls
-  document.querySelectorAll('.btn-minus').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      const idx = parseInt(e.currentTarget.getAttribute('data-index'));
-      updateCheckoutQuantity(idx, -1);
-    });
-  });
+  productListContainer.appendChild(fragment);
+}
 
-  document.querySelectorAll('.btn-plus').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      const idx = parseInt(e.currentTarget.getAttribute('data-index'));
-      updateCheckoutQuantity(idx, 1);
-    });
-  });
+// ==========================================
+// QUANTITY AND DELETE EVENTS
+// Event delegation: প্রতিটি বাটনে আলাদা listener নয়
+// ==========================================
+if (productListContainer) {
+  productListContainer.addEventListener("click", event => {
+    const minusButton = event.target.closest(".btn-minus");
+    const plusButton = event.target.closest(".btn-plus");
+    const deleteButton = event.target.closest(".delete-btn");
 
-  // Attach Event Listeners for Delete
-  document.querySelectorAll('.delete-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      deleteIndexTarget = parseInt(e.currentTarget.getAttribute('data-index'));
-      deleteModal.classList.remove('hidden');
-    });
+    if (minusButton) {
+      updateCheckoutQuantity(Number(minusButton.dataset.index), -1);
+      return;
+    }
+
+    if (plusButton) {
+      updateCheckoutQuantity(Number(plusButton.dataset.index), 1);
+      return;
+    }
+
+    if (deleteButton) {
+      deleteIndexTarget = Number(deleteButton.dataset.index);
+
+      if (deleteModal) deleteModal.classList.remove("hidden");
+    }
   });
 }
 
 // ==========================================
-// QUANTITY UPDATE LOGIC
+// QUANTITY UPDATE
 // ==========================================
 async function updateCheckoutQuantity(index, change) {
   if (index < 0 || index >= cartProducts.length) return;
 
-  const item = cartProducts[index];
-  const currentQty = item.quantity || 1;
-  const currentTotalPrice = Number(item.productPrice) || 0;
+  const product = cartProducts[index];
+  const oldQuantity = Math.max(1, Number(product.quantity) || 1);
+  const unitPrice = getProductUnitPrice(product);
+  const newQuantity = oldQuantity + change;
 
-  // সূত্র: unitPrice = productPrice / quantity
-  const unitPrice = currentTotalPrice / currentQty;
-  const newQty = currentQty + change;
-
-  if (newQty < 1) return; // 1 এর নিচে নামবে না
-
-  const newTotalPrice = unitPrice * newQty;
+  if (newQuantity < 1) return;
 
   cartProducts[index] = {
-    ...item,
-    quantity: newQty,
-    productPrice: newTotalPrice
+    ...product,
+    quantity: newQuantity,
+    productPrice: unitPrice * newQuantity
   };
+
+  if (!saveCartToLocalStorage()) return;
 
   renderProductCards();
   await validatePromoCode(true);
   recalculateTotals();
-
-  try {
-    const cartRef = doc(db, "carts", currentUser.uid);
-    await updateDoc(cartRef, {
-      productItem: cartProducts
-    });
-  } catch (err) {
-    console.error("Cart quantity update failed in Firestore:", err);
-    showToast("পরিমাণ আপডেট করতে সমস্যা হয়েছে।");
-  }
 }
 
 // ==========================================
-// PRODUCT DELETE FLOW
+// DELETE PRODUCT
 // ==========================================
-cancelDeleteBtn.addEventListener('click', () => {
-  deleteIndexTarget = null;
-  deleteModal.classList.add('hidden');
-});
-
-confirmDeleteBtn.addEventListener('click', async () => {
-  if (deleteIndexTarget === null) return;
-  
-  deleteModal.classList.add('hidden');
-  showLoader("পণ্য রিমুভ করা হচ্ছে...");
-
-  try {
-    cartProducts.splice(deleteIndexTarget, 1);
-    const cartRef = doc(db, "carts", currentUser.uid);
-
-    const batch = writeBatch(db);
-    batch.update(cartRef, { productItem: cartProducts });
-    await batch.commit();
-
+if (cancelDeleteBtn) {
+  cancelDeleteBtn.addEventListener("click", () => {
     deleteIndexTarget = null;
-    hideLoader();
 
-    if (cartProducts.length === 0) {
-      checkoutSection.classList.add('hidden');
-      emptyCartScreen.classList.remove('hidden');
-    } else {
-      renderProductCards();
-      await validatePromoCode(true);
-      recalculateTotals();
+    if (deleteModal) deleteModal.classList.add("hidden");
+  });
+}
+
+if (confirmDeleteBtn) {
+  confirmDeleteBtn.addEventListener("click", async () => {
+    if (
+      deleteIndexTarget === null ||
+      deleteIndexTarget < 0 ||
+      deleteIndexTarget >= cartProducts.length
+    ) {
+      return;
     }
 
-  } catch (err) {
-    console.error("Delete Error:", err);
-    hideLoader();
-    showToast("পণ্য রিমুভ করা সম্ভব হয়নি। আবার চেষ্টা করুন।");
-  }
-});
+    const previousCart = [...cartProducts];
+
+    cartProducts.splice(deleteIndexTarget, 1);
+
+    if (!saveCartToLocalStorage()) {
+      cartProducts = previousCart;
+      return;
+    }
+
+    deleteIndexTarget = null;
+
+    if (deleteModal) deleteModal.classList.add("hidden");
+
+    renderProductCards();
+    await validatePromoCode(true);
+    recalculateTotals();
+  });
+}
 
 // ==========================================
 // CALCULATION LOGIC
 // ==========================================
 function calculateSubtotal() {
-  return cartProducts.reduce((sum, item) => sum + (Number(item.productPrice) || 0), 0);
+  return cartProducts.reduce(
+    (sum, product) => sum + (Number(product.productPrice) || 0),
+    0
+  );
 }
 
 function calculateDeliveryCharge() {
-  const deliverySite = deliverySiteSelect.value;
+  const deliverySite = deliverySiteSelect?.value || "";
+
   if (!deliverySite) return 0;
 
   let totalDelivery = 0;
-  cartProducts.forEach(prod => {
-    if (prod.freeDelivery !== true) {
-      if (deliverySite === 'inside_dhaka') {
-        totalDelivery += 60;
-      } else if (deliverySite === 'outside_dhaka') {
-        totalDelivery += 120;
-      }
+
+  cartProducts.forEach(product => {
+    if (product.freeDelivery === true) return;
+
+    if (deliverySite === "inside_dhaka") {
+      totalDelivery += 60;
+    } else if (deliverySite === "outside_dhaka") {
+      totalDelivery += 120;
     }
   });
+
   return totalDelivery;
 }
 
 function recalculateTotals() {
   const subtotal = calculateSubtotal();
   const deliveryCharge = calculateDeliveryCharge();
-  const discount = appliedDiscount ? Number(appliedDiscount) : 0;
-  const total = subtotal + deliveryCharge - discount;
+  const discount = Math.max(0, Number(appliedDiscount) || 0);
 
-  summarySubtotalEl.textContent = formatCurrency(subtotal);
-  summaryDeliveryEl.textContent = formatCurrency(deliveryCharge);
-  summaryDiscountEl.textContent = discount > 0 ? `-${formatCurrency(discount)}` : '-৳০';
-  summaryTotalEl.textContent = formatCurrency(total < 0 ? 0 : total);
+  const total = Math.max(0, subtotal + deliveryCharge - discount);
 
-  return { subtotal, deliveryCharge, discount, total: total < 0 ? 0 : total };
+  if (summarySubtotalEl) {
+    summarySubtotalEl.textContent = formatCurrency(subtotal);
+  }
+
+  if (summaryDeliveryEl) {
+    summaryDeliveryEl.textContent = formatCurrency(deliveryCharge);
+  }
+
+  if (summaryDiscountEl) {
+    summaryDiscountEl.textContent =
+      discount > 0 ? `-${formatCurrency(discount)}` : "-৳০";
+  }
+
+  if (summaryTotalEl) {
+    summaryTotalEl.textContent = formatCurrency(total);
+  }
+
+  return { subtotal, deliveryCharge, discount, total };
 }
 
-deliverySiteSelect.addEventListener('change', recalculateTotals);
+if (deliverySiteSelect) {
+  deliverySiteSelect.addEventListener("change", recalculateTotals);
+}
 
 // ==========================================
 // PROMO CODE VALIDATION
+// আগের Firestore promoCode collection ব্যবহার হবে
+// Login লাগবে না
 // ==========================================
-applyPromoBtn.addEventListener('click', () => validatePromoCode(false));
+if (applyPromoBtn) {
+  applyPromoBtn.addEventListener("click", () => validatePromoCode(false));
+}
 
 async function validatePromoCode(silent = false) {
-  const code = promoInput.value.trim();
+  const code = promoInput?.value.trim() || "";
+
   if (!code) {
     appliedDiscount = null;
-    promoMessageEl.className = 'promo-message hidden';
+
+    if (promoMessageEl) {
+      promoMessageEl.textContent = "";
+      promoMessageEl.className = "promo-message hidden";
+    }
+
     recalculateTotals();
     return;
   }
@@ -414,7 +543,6 @@ async function validatePromoCode(silent = false) {
   try {
     const promoRef = doc(db, "promoCode", code);
     const promoSnap = await getDoc(promoRef);
-
     const subtotal = calculateSubtotal();
 
     if (!promoSnap.exists()) {
@@ -427,25 +555,41 @@ async function validatePromoCode(silent = false) {
 
     const promoData = promoSnap.data();
 
-    if (promoData.shoppingLimit && subtotal < promoData.shoppingLimit) {
+    if (
+      promoData.shoppingLimit &&
+      subtotal < Number(promoData.shoppingLimit)
+    ) {
       appliedDiscount = null;
-      showPromoMsg(`সর্বনিম্ন ৳${toBanglaNum(promoData.shoppingLimit)} এর কেনাকাটায় এই কোডটি প্রযোজ্য।`, "error");
+
+      showPromoMsg(
+        `সর্বনিম্ন ${formatCurrency(promoData.shoppingLimit)} এর কেনাকাটায় এই কোডটি প্রযোজ্য।`,
+        "error"
+      );
+
       if (!silent) hideLoader();
       recalculateTotals();
       return;
     }
 
-    if (promoData.expiredTime && Date.now() > promoData.expiredTime) {
+    if (
+      promoData.expiredTime &&
+      Date.now() > Number(promoData.expiredTime)
+    ) {
       appliedDiscount = null;
       showPromoMsg("প্রোমো কোডের মেয়াদ শেষ হয়ে গেছে।", "error");
+
       if (!silent) hideLoader();
       recalculateTotals();
       return;
     }
 
-    if (promoData.discountPrice && Number(promoData.discountPrice) > 0) {
+    if (Number(promoData.discountPrice) > 0) {
       appliedDiscount = Number(promoData.discountPrice);
-      showPromoMsg(`প্রোমো কোড সফলভাবে প্রযোজ্য হয়েছে! ৳${toBanglaNum(appliedDiscount)} ডিসকাউন্ট।`, "success");
+
+      showPromoMsg(
+        `প্রোমো কোড সফলভাবে প্রযোজ্য হয়েছে! ${formatCurrency(appliedDiscount)} ডিসকাউন্ট।`,
+        "success"
+      );
     } else {
       appliedDiscount = null;
       showPromoMsg("প্রোমো কোডটিতে কোনো ডিসকাউন্ট পাওয়া যায়নি।", "error");
@@ -454,19 +598,27 @@ async function validatePromoCode(silent = false) {
     if (!silent) hideLoader();
     recalculateTotals();
 
-  } catch (err) {
-    console.error("Promo Error:", err);
+  } catch (error) {
+    console.error("Promo Error:", error);
+
     appliedDiscount = null;
+
     if (!silent) {
       hideLoader();
-      showPromoMsg("প্রোমো কোড যাচাই করতে সমস্যা হয়েছে।", "error");
+      showPromoMsg(
+        "প্রোমো কোড যাচাই করতে সমস্যা হয়েছে। ইন্টারনেট সংযোগ পরীক্ষা করুন।",
+        "error"
+      );
     }
+
     recalculateTotals();
   }
 }
 
-function showPromoMsg(text, type) {
-  promoMessageEl.textContent = text;
+function showPromoMsg(message, type) {
+  if (!promoMessageEl) return;
+
+  promoMessageEl.textContent = message;
   promoMessageEl.className = `promo-message ${type}`;
 }
 
@@ -479,26 +631,86 @@ function generateOrderId() {
 }
 
 // ==========================================
-// SUBMIT ORDER LOGIC
+// ORDER FORM VALIDATION
 // ==========================================
-submitOrderBtn.addEventListener('click', submitOrderFlow);
+function validateOrderForm() {
+  const name = nameInput?.value.trim() || "";
+  const phone = phoneInput?.value.trim() || "";
+  const deliverySite = deliverySiteSelect?.value || "";
+  const vibag = vibagInput?.value.trim() || "";
+  const jela = jelaInput?.value.trim() || "";
+  const thana = thanaInput?.value.trim() || "";
 
-async function submitOrderFlow() {
+  if (!name) {
+    showToast("আপনার নাম লিখুন।");
+    return false;
+  }
+
+  if (!/^01\d{9}$/.test(phone)) {
+    showToast("সঠিক ১১ সংখ্যার মোবাইল নাম্বার দিন।");
+    return false;
+  }
+
+  if (!deliverySite) {
+    showToast("ডেলিভারি এরিয়া নির্বাচন করুন।");
+    return false;
+  }
+
+  if (!vibag || !jela || !thana) {
+    showToast("বিভাগ, জেলা এবং থানা/উপজেলা লিখুন।");
+    return false;
+  }
+
+  if (cartProducts.length === 0) {
+    showToast("আপনার কার্টে কোনো পণ্য নেই।");
+    return false;
+  }
+
+  return true;
+}
+
+// ==========================================
+// SUBMIT ORDER
+// Login UID / buyer profile / database cart নেই
+// Order Firestore-এ save হবে
+// ==========================================
+if (submitOrderBtn) {
+  submitOrderBtn.addEventListener("click", submitOrderFlow);
+}
+
+if (checkoutForm) {
+  checkoutForm.addEventListener("submit", event => {
+    event.preventDefault();
+    submitOrderFlow();
+  });
+}
+
+async function submitOrderFlow(event) {
+  if (event) event.preventDefault();
+
+  if (isSubmittingOrder) return;
+  if (!validateOrderForm()) return;
+
+  // Submit করার আগে LocalStorage থেকে সর্বশেষ কার্ট পড়া
+  cartProducts = readCartFromLocalStorage();
+
+  if (cartProducts.length === 0) {
+    renderProductCards();
+    showToast("আপনার কার্টে কোনো পণ্য নেই।");
+    return;
+  }
+
   const name = nameInput.value.trim();
   const phone = phoneInput.value.trim();
   const deliverySite = deliverySiteSelect.value;
   const vibag = vibagInput.value.trim();
   const jela = jelaInput.value.trim();
   const thana = thanaInput.value.trim();
-  const note = noteInput.value.trim() || "";
-
-  if (!name) { showToast("আপনার নাম লিখুন।"); return; }
-  if (!/^01\d{9}$/.test(phone)) { showToast("সঠিক ১১ সংখ্যার মোবাইল নাম্বার দিন।"); return; }
-  if (!deliverySite) { showToast("ডেলিভারি এরিয়া নির্বাচন করুন।"); return; }
-  if (!vibag || !jela || !thana) { showToast("বিভাগ, জেলা এবং থানা/উপজেলা লিখুন।"); return; }
-  if (!currentUser || cartProducts.length === 0) { showToast("অর্ডার তৈরি করা যায়নি।"); return; }
+  const note = noteInput?.value.trim() || "";
 
   const { subtotal, deliveryCharge, discount, total } = recalculateTotals();
+
+  isSubmittingOrder = true;
   submitOrderBtn.disabled = true;
 
   try {
@@ -508,117 +720,175 @@ async function submitOrderFlow() {
     while (attempts < 10) {
       const tempId = generateOrderId();
       const idRef = doc(db, "id", tempId);
-      showLoader(`আইডি যাচাই করা হচ্ছে... (${toBanglaNum(attempts+1)})`);
+
+      showLoader(`অর্ডার আইডি তৈরি হচ্ছে... (${toBanglaNum(attempts + 1)})`);
 
       try {
-        await runTransaction(db, async (transaction) => {
+        await runTransaction(db, async transaction => {
           const idSnap = await transaction.get(idRef);
+
           if (idSnap.exists()) {
-            throw "exists";
+            throw new Error("ORDER_ID_EXISTS");
           }
+
+          // Login UID এখানে আর ব্যবহার হচ্ছে না
           transaction.set(idRef, {
             use: true,
             createdAt: serverTimestamp(),
-            uid: currentUser.uid
+            guestOrder: true
           });
         });
+
         finalOrderId = tempId;
         break;
-      } catch (e) {
-        if (e === "exists") {
+
+      } catch (error) {
+        if (error.message === "ORDER_ID_EXISTS") {
           attempts++;
           continue;
         }
-        throw e;
+
+        throw error;
       }
     }
 
-    if (!finalOrderId) throw new Error("অর্ডার আইডি তৈরি করা যায়নি।");
+    if (!finalOrderId) {
+      throw new Error("অর্ডার আইডি তৈরি করা যায়নি। আবার চেষ্টা করুন।");
+    }
 
-    showLoader("অর্ডার তৈরি হচ্ছে...");
+    showLoader("আপনার অর্ডার জমা হচ্ছে...");
+
     const orderRef = doc(db, "orders", finalOrderId);
 
-    // Security Rules Exact Schema Object Construction
     const orderPayload = {
       orderId: finalOrderId,
       createdAt: serverTimestamp(),
       productItem: cartProducts,
       status: "pending",
-      uid: currentUser.uid,
-      email: currentUser.email,
-      thana: thana,
-      jela: jela,
-      vibag: vibag,
-      deliverySite: deliverySite,
-      note: note,
+
+      // Guest checkout: uid ও email নেই
+      guestOrder: true,
+
+      thana,
+      jela,
+      vibag,
+      deliverySite,
+      note,
       deliveryCharge: Number(deliveryCharge),
-      phone: phone,
+      phone,
       subtotal: Number(subtotal),
       total: Number(total),
       discount: Number(discount),
-      name: name
+      name
     };
 
-    console.log("========== ORDER DEBUG ==========");
-    console.log("Auth UID:", auth.currentUser?.uid);
-    console.log("Current UID:", currentUser?.uid);
-    console.log("Current Email:", currentUser?.email);
-    console.log("Auth Email:", auth.currentUser?.email);
-    console.log("Delivery Site:", deliverySite);
-    console.log("Phone:", phone);
-    console.log("Order ID:", finalOrderId);
-    console.log("Order Payload:", orderPayload);
-    console.log("================================");
+    console.log("Guest Order Payload:", {
+      ...orderPayload,
+      createdAt: "serverTimestamp"
+    });
 
+    // Order save
     await setDoc(orderRef, orderPayload);
-    createdOrderSnapshot = { ...orderPayload, createdAt: new Date().toISOString() };
 
-    try {
-      const cartRef = doc(db, "carts", currentUser.uid);
-      await updateDoc(cartRef, { productItem: [] });
-    } catch (cartErr) {
-      console.warn("Cart clear error:", cartErr);
+    createdOrderSnapshot = {
+      ...orderPayload,
+      createdAt: new Date().toISOString()
+    };
+
+    // অর্ডার সফলভাবে save হওয়ার পরই কার্ট পরিষ্কার হবে
+    cartProducts = [];
+    localStorage.removeItem(CART_STORAGE_KEY);
+
+    appliedDiscount = null;
+
+    if (promoInput) promoInput.value = "";
+
+    if (promoMessageEl) {
+      promoMessageEl.textContent = "";
+      promoMessageEl.className = "promo-message hidden";
     }
 
-    hideLoader();
-    successModal.classList.remove('hidden');
+    renderProductCards();
+    recalculateTotals();
 
-  } catch (err) {
-    console.error("Order Creation Error:", err);
     hideLoader();
+
+    if (successModal) {
+      successModal.classList.remove("hidden");
+    } else {
+      showToast(`অর্ডার সফল হয়েছে! অর্ডার আইডি: ${finalOrderId}`);
+    }
+
+    // Order complete হওয়ার পর ডাবল-সাবমিশন বন্ধ থাকবে
+    submitOrderBtn.disabled = true;
+
+  } catch (error) {
+    console.error("Order Creation Error:", error);
+
+    hideLoader();
+
     submitOrderBtn.disabled = false;
-    showToast(err.message || "অর্ডার প্রক্রিয়াকরণে সমস্যা দেখা দিয়েছে।");
+    isSubmittingOrder = false;
+
+    showToast(
+      error.message && error.message !== "ORDER_ID_EXISTS"
+        ? error.message
+        : "অর্ডার জমা দিতে সমস্যা হয়েছে। আবার চেষ্টা করুন।"
+    );
   }
 }
 
 // ==========================================
-// HIDDEN JSON COPY INTERACTION
+// SUCCESS TITLE CLICK: ORDER JSON COPY
 // ==========================================
-successTitle.addEventListener('click', async () => {
-  if (!createdOrderSnapshot) return;
-  
-  try {
-    const jsonStr = JSON.stringify(createdOrderSnapshot, null, 2);
-    await navigator.clipboard.writeText(jsonStr);
-    showToast("তথ্য কপি হয়েছে।");
-  } catch (err) {
-    console.error("Clipboard copy failed:", err);
-  }
+if (successTitle) {
+  successTitle.addEventListener("click", async () => {
+    if (!createdOrderSnapshot) return;
+
+    try {
+      await navigator.clipboard.writeText(
+        JSON.stringify(createdOrderSnapshot, null, 2)
+      );
+
+      showToast("অর্ডারের তথ্য কপি হয়েছে।");
+    } catch (error) {
+      console.error("Clipboard copy failed:", error);
+      showToast("তথ্য কপি করা যায়নি।");
+    }
+  });
+}
+
+// ==========================================
+// SYNC CART IF ANOTHER PAGE UPDATES IT
+// ==========================================
+window.addEventListener("storage", event => {
+  if (event.key !== CART_STORAGE_KEY) return;
+
+  cartProducts = readCartFromLocalStorage();
+  renderProductCards();
+  recalculateTotals();
+});
+
+window.addEventListener("sera-cart-updated", () => {
+  cartProducts = readCartFromLocalStorage();
+  renderProductCards();
+  recalculateTotals();
 });
 
 // ==========================================
-// LOAD FOOTER DYNAMICALLY
+// LOAD FOOTER
 // ==========================================
 async function loadFooter() {
+  const footerContainer = document.getElementById("footer-container");
+  if (!footerContainer) return;
+
   try {
-    const res = await fetch('https://seraproduct.com/footer');
-    if (res.ok) {
-      const html = await res.text();
-      document.getElementById('footer-container').innerHTML = html;
+    const response = await fetch("https://seraproduct.com/footer");
+
+    if (response.ok) {
+      footerContainer.innerHTML = await response.text();
     }
-  } catch (err) {
-    console.error("Footer load error:", err);
+  } catch (error) {
+    console.error("Footer load error:", error);
   }
 }
-
-loadFooter();
