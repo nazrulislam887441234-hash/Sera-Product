@@ -1,20 +1,21 @@
+
 /* ==========================================
    FIREBASE CONFIGURATION & INITIALIZATION
    ========================================== */
 const firebaseConfig = {
-  apiKey: "AIzaSyBRSt2aoSJ-lumYAWGAXE6ncui7__TqJ4E",
-  authDomain: "sera-product.firebaseapp.com",
-  projectId: "sera-product",
-  storageBucket: "sera-product.firebasestorage.app",
-  messagingSenderId: "516762224598",
-  appId: "1:516762224598:web:b6a571f355a8a4a97c0677",
-  measurementId: "G-RLMWH43FXX"
+    apiKey: "AIzaSyBRSt2aoSJ-lumYAWGAXE6ncui7__TqJ4E",
+    authDomain: "sera-product.firebaseapp.com",
+    projectId: "sera-product",
+    storageBucket: "sera-product.firebasestorage.app",
+    messagingSenderId: "516762224598",
+    appId: "1:516762224598:web:b6a571f355a8a4a97c0677",
+    measurementId: "G-RLMWH43FXX"
 };
 
-// Initialize Firebase
 if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
 }
+
 const db = firebase.firestore();
 
 /* ==========================================
@@ -29,416 +30,814 @@ const bannerTrack = document.getElementById('bannerTrack');
 const bannerDots = document.getElementById('bannerDots');
 
 const categoryGrid = document.getElementById('categoryGrid');
-const loadMoreCategoryContainer = document.getElementById('loadMoreCategoryContainer');
-const loadMoreCategoryBtn = document.getElementById('loadMoreCategoryBtn');
+const loadMoreCategoryContainer =
+    document.getElementById('loadMoreCategoryContainer');
+const loadMoreCategoryBtn =
+    document.getElementById('loadMoreCategoryBtn');
 
 const productGrid = document.getElementById('productGrid');
 const infiniteLoader = document.getElementById('infiniteLoader');
 
-// YouTube section variables
 const ytVideosGrid = document.getElementById('ytVideosGrid');
-const loadMoreYtContainer = document.getElementById('loadMoreYtContainer');
+const loadMoreYtContainer =
+    document.getElementById('loadMoreYtContainer');
 const loadMoreYtBtn = document.getElementById('loadMoreYtBtn');
-let ytLastVisible = null;
 
+let ytLastVisible = null;
 let categoryLastVisible = null;
 let productLastVisible = null;
+
 let isProductFetching = false;
 let hasMoreProducts = true;
-let bannerSlidesCount = 2; // Default 2 banners
+let productLoadFailed = false;
+
+let isCategoryFetching = false;
+let hasMoreCategories = true;
+
+let isYtFetching = false;
+let hasMoreYtVideos = true;
+
+let bannerSlidesCount = 0;
 let currentBannerIndex = 0;
 let bannerInterval = null;
+let bannerEventsInitialized = false;
+let appInitialized = false;
+
+/* ==========================================
+   COMMON HELPERS
+   ========================================== */
+function escapeHtml(value) {
+    return String(value ?? '').replace(/[&<>"']/g, char => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+    })[char]);
+}
+
+function showMessage(container, message, color = '#777') {
+    if (!container) return;
+
+    container.innerHTML = `
+        <div style="grid-column:1/-1;text-align:center;
+                    color:${color};padding:20px;">
+            ${escapeHtml(message)}
+        </div>
+    `;
+}
+
+function setLoaderVisible(visible) {
+    if (infiniteLoader) {
+        infiniteLoader.style.display = visible ? 'flex' : 'none';
+    }
+}
 
 /* ==========================================
    MOBILE DRAWER TOGGLE
    ========================================== */
 function toggleDrawer() {
+    if (!mobileDrawer || !drawerOverlay) return;
+
     mobileDrawer.classList.toggle('active');
     drawerOverlay.classList.toggle('active');
 }
 
-mobileMenuToggle.addEventListener('click', toggleDrawer);
-drawerClose.addEventListener('click', toggleDrawer);
-drawerOverlay.addEventListener('click', toggleDrawer);
+if (mobileMenuToggle) {
+    mobileMenuToggle.addEventListener('click', toggleDrawer);
+}
+
+if (drawerClose) {
+    drawerClose.addEventListener('click', toggleDrawer);
+}
+
+if (drawerOverlay) {
+    drawerOverlay.addEventListener('click', toggleDrawer);
+}
 
 /* ==========================================
    FOOTER LOADER
    ========================================== */
 async function loadFooter() {
+    const footerContainer = document.getElementById('footerContainer');
+    if (!footerContainer) return;
+
     try {
-        const response = await fetch('https://seraproduct.com/footer.html');
-        if (response.ok) {
-            const html = await response.text();
-            document.getElementById('footerContainer').innerHTML = html;
-        } else {
-            console.warn('Footer could not be loaded.');
+        const response = await fetch(
+            'https://seraproduct.com/footer.html'
+        );
+
+        if (!response.ok) {
+            throw new Error(`Footer HTTP error: ${response.status}`);
         }
+
+        footerContainer.innerHTML = await response.text();
     } catch (error) {
         console.error('Error loading footer:', error);
     }
 }
 
 /* ==========================================
-   BANNER CAROUSEL & FIREBASE BANNERS
+   BANNER CAROUSEL
+   Banner auto-slide remains enabled
    ========================================== */
 function initBannerCarousel() {
+    if (!bannerTrack || !bannerDots) return;
+
     const slides = bannerTrack.querySelectorAll('.banner-slide');
     bannerSlidesCount = slides.length;
 
-    // Create dots
     bannerDots.innerHTML = '';
-    for (let i = 0; i < bannerSlidesCount; i++) {
-        const dot = document.createElement('div');
-        dot.className = `banner-dot ${i === 0 ? 'active' : ''}`;
-        dot.addEventListener('click', () => goToBanner(i));
-        bannerDots.appendChild(dot);
+
+    if (bannerSlidesCount === 0) {
+        stopBannerAutoSlide();
+        return;
     }
 
-    startBannerAutoSlide();
+    currentBannerIndex = Math.min(
+        currentBannerIndex,
+        bannerSlidesCount - 1
+    );
 
-    // Pause on interaction
-    bannerTrack.addEventListener('mouseenter', stopBannerAutoSlide);
-    bannerTrack.addEventListener('mouseleave', startBannerAutoSlide);
-    bannerTrack.addEventListener('touchstart', stopBannerAutoSlide);
-    bannerTrack.addEventListener('touchend', startBannerAutoSlide);
+    const fragment = document.createDocumentFragment();
+
+    for (let i = 0; i < bannerSlidesCount; i++) {
+        const dot = document.createElement('div');
+
+        dot.className =
+            `banner-dot ${i === currentBannerIndex ? 'active' : ''}`;
+
+        dot.addEventListener('click', () => goToBanner(i));
+        fragment.appendChild(dot);
+    }
+
+    bannerDots.appendChild(fragment);
+
+    if (!bannerEventsInitialized) {
+        bannerTrack.addEventListener('mouseenter', stopBannerAutoSlide);
+        bannerTrack.addEventListener('mouseleave', startBannerAutoSlide);
+        bannerTrack.addEventListener('touchstart', stopBannerAutoSlide);
+        bannerTrack.addEventListener('touchend', startBannerAutoSlide);
+
+        bannerEventsInitialized = true;
+    }
+
+    goToBanner(currentBannerIndex);
+    startBannerAutoSlide();
 }
 
 function goToBanner(index) {
-    currentBannerIndex = index;
-    bannerTrack.style.transform = `translateX(-${currentBannerIndex * 100}%)`;
+    if (!bannerTrack || bannerSlidesCount === 0) return;
+
+    currentBannerIndex =
+        ((index % bannerSlidesCount) + bannerSlidesCount)
+        % bannerSlidesCount;
+
+    bannerTrack.style.transform =
+        `translateX(-${currentBannerIndex * 100}%)`;
+
     updateBannerDots();
 }
 
 function updateBannerDots() {
-    const dots = bannerDots.querySelectorAll('.banner-dot');
-    dots.forEach((dot, idx) => {
+    if (!bannerDots) return;
+
+    bannerDots.querySelectorAll('.banner-dot').forEach((dot, idx) => {
         dot.classList.toggle('active', idx === currentBannerIndex);
     });
 }
 
 function startBannerAutoSlide() {
-    if (bannerInterval) clearInterval(bannerInterval);
+    stopBannerAutoSlide();
+
+    if (bannerSlidesCount <= 1) return;
+
     bannerInterval = setInterval(() => {
-        currentBannerIndex++;
-        if (currentBannerIndex >= bannerSlidesCount) {
-            currentBannerIndex = 0; // Seamlessly loop back to the first banner without reversing direction
-        }
-        goToBanner(currentBannerIndex);
+        goToBanner(currentBannerIndex + 1);
     }, 4000);
 }
 
 function stopBannerAutoSlide() {
-    if (bannerInterval) clearInterval(bannerInterval);
+    if (bannerInterval !== null) {
+        clearInterval(bannerInterval);
+        bannerInterval = null;
+    }
 }
 
 async function loadFirebaseBanners() {
+    if (!bannerTrack) return;
+
     try {
         const snapshot = await db.collection('home_banner')
-            .orderBy('createdAt', 'desc') // Corrected field name from createAt to createdAt
+            .orderBy('createdAt', 'desc')
             .limit(5)
             .get();
 
+        const fragment = document.createDocumentFragment();
+
         snapshot.forEach(doc => {
             const data = doc.data();
-            if (data.bannerLink) {
-                const slide = document.createElement('div');
-                slide.className = 'banner-slide';
-                if (data.clickLink) {
-                    slide.style.cursor = 'pointer';
-                    slide.addEventListener('click', () => {
-                        window.location.href = data.clickLink;
-                    });
-                }
-                const img = document.createElement('img');
-                img.src = data.bannerLink;
-                img.alt = 'Firebase Banner';
-                img.loading = 'lazy';
-                slide.appendChild(img);
-                bannerTrack.appendChild(slide);
+
+            if (!data.bannerLink) return;
+
+            const slide = document.createElement('div');
+            slide.className = 'banner-slide';
+
+            if (data.clickLink) {
+                slide.style.cursor = 'pointer';
+
+                slide.addEventListener('click', () => {
+                    window.location.href = data.clickLink;
+                });
             }
+
+            const img = document.createElement('img');
+            img.src = data.bannerLink;
+            img.alt = 'Firebase Banner';
+            img.loading = 'lazy';
+
+            slide.appendChild(img);
+            fragment.appendChild(slide);
         });
 
-        // Re-init carousel with new slides
-        initBannerCarousel();
+        bannerTrack.appendChild(fragment);
     } catch (error) {
         console.error('Error loading Firebase banners:', error);
+    } finally {
+        initBannerCarousel();
     }
 }
 
 /* ==========================================
-   POPULAR CATEGORIES (Pagination & Firebase)
+   POPULAR CATEGORIES
+   Pagination + DocumentFragment + Retry
    ========================================== */
 async function loadCategories(isInitial = true) {
+    if (isCategoryFetching) return;
+    if (!isInitial && !hasMoreCategories) return;
+    if (!categoryGrid) return;
+
+    if (isInitial) {
+        categoryLastVisible = null;
+        hasMoreCategories = true;
+    }
+
+    isCategoryFetching = true;
+
+    if (loadMoreCategoryBtn) {
+        loadMoreCategoryBtn.disabled = true;
+    }
+
     try {
-        let query = db.collection('categories').orderBy('createdAt', 'desc').limit(10);
+        let query = db.collection('categories')
+            .orderBy('createdAt', 'desc');
+
         if (!isInitial && categoryLastVisible) {
             query = query.startAfter(categoryLastVisible);
         }
 
-        const snapshot = await query.get();
+        const snapshot = await query.limit(10).get();
+
         if (isInitial) {
             categoryGrid.innerHTML = '';
         }
 
-        if (snapshot.empty && isInitial) {
-            categoryGrid.innerHTML = '<div style="grid-column: span 3; text-align: center; color: #777; padding: 20px;">কোনো ক্যাটাগরি পাওয়া যায়নি।</div>';
-            loadMoreCategoryContainer.style.display = 'none';
+        if (snapshot.empty) {
+            hasMoreCategories = false;
+
+            if (isInitial) {
+                showMessage(categoryGrid, 'কোনো ক্যাটাগরি পাওয়া যায়নি।');
+            }
+
+            if (loadMoreCategoryContainer) {
+                loadMoreCategoryContainer.style.display = 'none';
+            }
+
             return;
         }
 
-        categoryLastVisible = snapshot.docs[snapshot.docs.length - 1];
+        categoryLastVisible =
+            snapshot.docs[snapshot.docs.length - 1];
+
+        // Build category cards off-DOM first.
+        const fragment = document.createDocumentFragment();
 
         snapshot.forEach(doc => {
             const cat = doc.data();
-            const slug = cat.categorySlug || cat.categoryName.toLowerCase().replace(/\s+/g, '-');
-            
+
+            const categoryName = cat.categoryName || 'Category';
+            const slug = cat.categorySlug ||
+                categoryName.toLowerCase().replace(/\s+/g, '-');
+
             const card = document.createElement('div');
             card.className = 'category-card';
+
             card.addEventListener('click', () => {
-                window.location.href = `https://seraproduct.com/category?${encodeURIComponent(slug)}`;
+                window.location.href =
+                    `https://seraproduct.com/category?${encodeURIComponent(slug)}`;
             });
 
             card.innerHTML = `
                 <div class="category-img-wrap">
-                    <img src="${cat.image || 'https://via.placeholder.com/70'}" alt="${cat.categoryName}" loading="lazy">
+                    <img
+                        src="${escapeHtml(cat.image || 'https://via.placeholder.com/70')}"
+                        alt="${escapeHtml(categoryName)}"
+                        loading="lazy">
                 </div>
-                <div class="category-name">${cat.categoryName}</div>
+                <div class="category-name">
+                    ${escapeHtml(categoryName)}
+                </div>
             `;
-            categoryGrid.appendChild(card);
+
+            fragment.appendChild(card);
         });
 
-        if (snapshot.docs.length < 10) {
-            loadMoreCategoryContainer.style.display = 'none';
-        } else {
-            loadMoreCategoryContainer.style.display = 'block';
+        // Add all category cards to the grid in one DOM operation.
+        categoryGrid.appendChild(fragment);
+
+        hasMoreCategories = snapshot.docs.length === 10;
+
+        if (loadMoreCategoryContainer) {
+            loadMoreCategoryContainer.style.display =
+                hasMoreCategories ? 'block' : 'none';
         }
     } catch (error) {
         console.error('Error loading categories:', error);
+
         if (isInitial) {
-            categoryGrid.innerHTML = `
-                <div style="grid-column: span 3; text-align: center; padding: 20px;">
-                    <p style="color: #e53935; margin-bottom: 10px;">দুঃখিত, তথ্য লোড করা সম্ভব হয়নি। আবার চেষ্টা করুন</p>
-                    <button class="btn-load-more" onclick="loadCategories(true)">পুনরায় চেষ্টা করুন</button>
-                </div>
-            `;
+            categoryGrid.innerHTML = '';
+
+            const errorBox = document.createElement('div');
+            errorBox.style.cssText =
+                'grid-column:1/-1;text-align:center;padding:20px;';
+
+            const message = document.createElement('p');
+            message.style.color = '#e53935';
+            message.textContent =
+                'দুঃখিত, ক্যাটাগরি লোড হয়নি। আবার চেষ্টা করুন।';
+
+            const retryBtn = document.createElement('button');
+            retryBtn.className = 'btn-load-more';
+            retryBtn.textContent = 'পুনরায় চেষ্টা করুন';
+
+            retryBtn.addEventListener('click', () => {
+                loadCategories(true);
+            });
+
+            errorBox.append(message, retryBtn);
+            categoryGrid.appendChild(errorBox);
+        } else {
+            console.error('Could not load the next category page.');
+        }
+    } finally {
+        isCategoryFetching = false;
+
+        if (loadMoreCategoryBtn) {
+            loadMoreCategoryBtn.disabled = false;
         }
     }
 }
 
-loadMoreCategoryBtn.addEventListener('click', () => loadCategories(false));
+if (loadMoreCategoryBtn) {
+    loadMoreCategoryBtn.addEventListener('click', () => {
+        loadCategories(false);
+    });
+}
 
 /* ==========================================
-   POPULAR PRODUCTS (Infinite Scroll & Firebase)
+   POPULAR PRODUCTS
+   Infinite Scroll + Pagination + Retry
+   + DocumentFragment
+
+   Product images do not auto-slide.
+   Only the first product image is displayed.
    ========================================== */
 async function loadProducts(isInitial = true) {
-    if (isProductFetching || !hasMoreProducts) return;
+    if (isProductFetching) return;
+    if (!isInitial && (!hasMoreProducts || productLoadFailed)) return;
+    if (!productGrid) return;
+
+    if (isInitial) {
+        productLastVisible = null;
+        hasMoreProducts = true;
+        productLoadFailed = false;
+    }
+
     isProductFetching = true;
-    infiniteLoader.style.display = 'flex';
+    setLoaderVisible(true);
 
     try {
-        let query = db.collection('products').orderBy('createdAt', 'desc').limit(20);
+        let query = db.collection('products')
+            .orderBy('createdAt', 'desc');
+
         if (!isInitial && productLastVisible) {
             query = query.startAfter(productLastVisible);
         }
 
-        const snapshot = await query.get();
+        const snapshot = await query.limit(20).get();
+
         if (isInitial) {
             productGrid.innerHTML = '';
         }
 
-        if (snapshot.empty && isInitial) {
-            productGrid.innerHTML = '<div style="grid-column: span 3; text-align: center; color: #777; padding: 20px;">কোনো পণ্য পাওয়া যায়নি।</div>';
-            infiniteLoader.style.display = 'none';
-            isProductFetching = false;
-            return;
-        }
-
         if (snapshot.empty) {
             hasMoreProducts = false;
-            infiniteLoader.style.display = 'none';
-            isProductFetching = false;
+
+            if (isInitial) {
+                showMessage(productGrid, 'কোনো পণ্য পাওয়া যায়নি।');
+            }
+
             return;
         }
 
-        productLastVisible = snapshot.docs[snapshot.docs.length - 1];
+        productLastVisible =
+            snapshot.docs[snapshot.docs.length - 1];
+
+        // Build all product cards off-DOM first.
+        const fragment = document.createDocumentFragment();
 
         snapshot.forEach(doc => {
             const p = doc.data();
-            const slug = p.productSlug || doc.id;
-            const images = Array.isArray(p.image) ? p.image : [p.image];
-            const currentImg = images[0] || 'https://via.placeholder.com/200';
 
-            const oldPrice = p.customerOldPrice || p.customerPrice;
-            const currentPrice = p.customerPrice || 0;
+            const productName = p.productName || 'Product';
+            const slug = p.productSlug || doc.id;
+
+            const images = Array.isArray(p.image)
+                ? p.image.filter(Boolean)
+                : (p.image ? [p.image] : []);
+
+            // Show first image only; no image auto-slide.
+            const currentImg =
+                images[0] || 'https://via.placeholder.com/200';
+
+            const currentPrice = Number(p.customerPrice) || 0;
+            const oldPrice = Number(
+                p.customerOldPrice || p.customerPrice
+            ) || 0;
+
             let discountPercent = 0;
             let saving = 0;
 
-            if (oldPrice > currentPrice) {
-                discountPercent = Math.round(((oldPrice - currentPrice) / oldPrice) * 100);
+            if (oldPrice > currentPrice && oldPrice > 0) {
+                discountPercent = Math.round(
+                    ((oldPrice - currentPrice) / oldPrice) * 100
+                );
+
                 saving = oldPrice - currentPrice;
             }
 
+            const productUrl =
+                `https://seraproduct.com/product?${encodeURIComponent(slug)}`;
+
             const card = document.createElement('div');
             card.className = 'product-card';
+
             card.addEventListener('click', () => {
-                window.location.href = `https://seraproduct.com/product?${encodeURIComponent(slug)}`;
+                window.location.href = productUrl;
             });
 
             card.innerHTML = `
                 <div class="product-img-wrap">
-                    ${p.freeDelivery ? '<span class="badge-free-delivery">ফ্রি ডেলিভারি</span>' : ''}
-                    ${discountPercent > 0 ? `<span class="badge-discount">${discountPercent}% OFF</span>` : ''}
-                    <img src="${currentImg}" alt="${p.productName}" loading="lazy" class="prod-img">
+                    ${p.freeDelivery
+                        ? '<span class="badge-free-delivery">ফ্রি ডেলিভারি</span>'
+                        : ''}
+                    ${discountPercent > 0
+                        ? `<span class="badge-discount">${discountPercent}% OFF</span>`
+                        : ''}
+                    <img
+                        src="${escapeHtml(currentImg)}"
+                        alt="${escapeHtml(productName)}"
+                        loading="lazy"
+                        class="prod-img">
                 </div>
+
                 <div class="product-info">
                     <div>
-                        <h4 class="product-title">${p.productName}</h4>
+                        <h4 class="product-title">
+                            ${escapeHtml(productName)}
+                        </h4>
+
                         <div class="product-price-box">
-                            <span class="current-price">৳${currentPrice}</span>
-                            ${oldPrice > currentPrice ? `<span class="old-price">৳${oldPrice}</span>` : ''}
+                            <span class="current-price">
+                                ৳${currentPrice}
+                            </span>
+                            ${oldPrice > currentPrice
+                                ? `<span class="old-price">৳${oldPrice}</span>`
+                                : ''}
                         </div>
-                        ${saving > 0 ? `<div class="saving-text">সাশ্রয় ৳${saving}</div>` : ''}
+
+                        ${saving > 0
+                            ? `<div class="saving-text">সাশ্রয় ৳${saving}</div>`
+                            : ''}
                     </div>
-                    <button class="btn-order" onclick="event.stopPropagation(); window.location.href='https://seraproduct.com/product?${encodeURIComponent(slug)}'">অর্ডার করুন</button>
+
+                    <button class="btn-order" type="button">
+                        অর্ডার করুন
+                    </button>
                 </div>
             `;
 
-            productGrid.appendChild(card);
+            const orderBtn = card.querySelector('.btn-order');
 
-            // Auto image slider if multiple images
-            if (images.length > 1) {
-                let imgIdx = 0;
-                const imgEl = card.querySelector('.prod-img');
-                setInterval(() => {
-                    imgIdx = (imgIdx + 1) % images.length;
-                    imgEl.src = images[imgIdx];
-                }, 3000);
+            orderBtn.addEventListener('click', event => {
+                event.stopPropagation();
+                window.location.href = productUrl;
+            });
+
+            // Append each card to the fragment, not directly to the grid.
+            fragment.appendChild(card);
+        });
+
+        // Add all product cards to the grid in one DOM operation.
+        productGrid.appendChild(fragment);
+
+        hasMoreProducts = snapshot.docs.length === 20;
+        productLoadFailed = false;
+
+    } catch (error) {
+        console.error('Error loading products:', error);
+
+        productLoadFailed = true;
+
+        const oldError = productGrid.querySelector(
+            '.product-load-error'
+        );
+
+        if (oldError) oldError.remove();
+
+        const errorBox = document.createElement('div');
+        errorBox.className = 'product-load-error';
+        errorBox.style.cssText =
+            'grid-column:1/-1;text-align:center;padding:20px;';
+
+        const message = document.createElement('p');
+        message.style.color = '#e53935';
+        message.textContent =
+            'দুঃখিত, পণ্য লোড করা সম্ভব হয়নি। আবার চেষ্টা করুন।';
+
+        const retryBtn = document.createElement('button');
+        retryBtn.className = 'btn-load-more';
+        retryBtn.textContent = 'পুনরায় চেষ্টা করুন';
+
+        retryBtn.addEventListener('click', () => {
+            errorBox.remove();
+
+            if (isInitial) {
+                loadProducts(true);
+            } else {
+                productLoadFailed = false;
+                loadProducts(false);
             }
         });
 
-        isProductFetching = false;
-        infiniteLoader.style.display = 'none';
+        errorBox.append(message, retryBtn);
 
-        if (snapshot.docs.length < 20) {
-            hasMoreProducts = false;
-        }
-    } catch (error) {
-        console.error('Error loading products:', error);
-        isProductFetching = false;
-        infiniteLoader.style.display = 'none';
         if (isInitial) {
-            productGrid.innerHTML = `
-                <div style="grid-column: span 3; text-align: center; padding: 20px;">
-                    <p style="color: #e53935; margin-bottom: 10px;">দুঃখিত, তথ্য লোড করা সম্ভব হয়নি। আবার চেষ্টা করুন</p>
-                    <button class="btn-load-more" onclick="loadProducts(true)">পুনরায় চেষ্টা করুন</button>
-                </div>
-            `;
+            productGrid.innerHTML = '';
         }
+
+        productGrid.appendChild(errorBox);
+    } finally {
+        isProductFetching = false;
+        setLoaderVisible(false);
     }
 }
 
 /* ==========================================
-   YOUTUBE CHANNEL VIDEOS (FROM 'videos' COLLECTION)
+   YOUTUBE VIDEOS
+   Pagination + Retry
    ========================================== */
 async function loadYtVideos(isInitial = true) {
+    if (isYtFetching) return;
+    if (!isInitial && !hasMoreYtVideos) return;
+    if (!ytVideosGrid) return;
+
+    if (isInitial) {
+        ytLastVisible = null;
+        hasMoreYtVideos = true;
+    }
+
+    isYtFetching = true;
+
+    if (loadMoreYtBtn) {
+        loadMoreYtBtn.disabled = true;
+    }
+
     try {
-        let query = db.collection('videos').orderBy('createdAt', 'desc').limit(10);
+        let query = db.collection('videos')
+            .orderBy('createdAt', 'desc');
+
         if (!isInitial && ytLastVisible) {
             query = query.startAfter(ytLastVisible);
         }
 
-        const snapshot = await query.get();
+        const snapshot = await query.limit(10).get();
+
         if (isInitial) {
             ytVideosGrid.innerHTML = '';
         }
 
-        if (snapshot.empty && isInitial) {
-            ytVideosGrid.innerHTML = '<div style="grid-column: span 3; text-align: center; color: #777; padding: 20px;">কোনো ভিডিও পাওয়া যায়নি।</div>';
-            loadMoreYtContainer.style.display = 'none';
-            return;
-        }
-
         if (snapshot.empty) {
-            loadMoreYtContainer.style.display = 'none';
+            hasMoreYtVideos = false;
+
+            if (isInitial) {
+                showMessage(ytVideosGrid, 'কোনো ভিডিও পাওয়া যায়নি।');
+            }
+
+            if (loadMoreYtContainer) {
+                loadMoreYtContainer.style.display = 'none';
+            }
+
             return;
         }
 
         ytLastVisible = snapshot.docs[snapshot.docs.length - 1];
 
+        const fragment = document.createDocumentFragment();
+
         snapshot.forEach(doc => {
             const v = doc.data();
+
             const card = document.createElement('div');
             card.className = 'yt-video-card';
 
-            card.innerHTML = `
-                <div class="yt-video-embed-wrap" onclick="playYtVideo(this, '${v.videoLink}')">
-                    <img src="${v.thumbnail || 'https://via.placeholder.com/300x169'}" alt="${v.title || 'VIDEO'}" class="yt-thumb" loading="lazy">
-                    <div class="yt-play-btn">
-                        <svg width="48" height="48" viewBox="0 0 24 24" fill="#ff6a00"><path d="M8 5v14l11-7z"/></svg>
-                    </div>
-                </div>
-                <div class="yt-video-info">
-                    <h4 class="yt-video-title">${v.title || 'VIDEO'}</h4>
-                </div>
+            const embedWrap = document.createElement('div');
+            embedWrap.className = 'yt-video-embed-wrap';
+
+            const thumbnail = document.createElement('img');
+            thumbnail.src =
+                v.thumbnail || 'https://via.placeholder.com/300x169';
+            thumbnail.alt = v.title || 'VIDEO';
+            thumbnail.className = 'yt-thumb';
+            thumbnail.loading = 'lazy';
+
+            const playButton = document.createElement('div');
+            playButton.className = 'yt-play-btn';
+            playButton.innerHTML = `
+                <svg width="48" height="48" viewBox="0 0 24 24"
+                     fill="#ff6a00">
+                    <path d="M8 5v14l11-7z"></path>
+                </svg>
             `;
-            ytVideosGrid.appendChild(card);
+
+            embedWrap.append(thumbnail, playButton);
+
+            embedWrap.addEventListener('click', () => {
+                playYtVideo(embedWrap, v.videoLink);
+            });
+
+            const info = document.createElement('div');
+            info.className = 'yt-video-info';
+
+            const title = document.createElement('h4');
+            title.className = 'yt-video-title';
+            title.textContent = v.title || 'VIDEO';
+
+            info.appendChild(title);
+            card.append(embedWrap, info);
+
+            fragment.appendChild(card);
         });
 
-        if (snapshot.docs.length < 10) {
-            loadMoreYtContainer.style.display = 'none';
-        } else {
-            loadMoreYtContainer.style.display = 'block';
+        ytVideosGrid.appendChild(fragment);
+
+        hasMoreYtVideos = snapshot.docs.length === 10;
+
+        if (loadMoreYtContainer) {
+            loadMoreYtContainer.style.display =
+                hasMoreYtVideos ? 'block' : 'none';
         }
+
     } catch (error) {
         console.error('Error loading YouTube videos:', error);
+
         if (isInitial) {
-            ytVideosGrid.innerHTML = '<div style="grid-column: span 3; text-align: center; color: #e53935; padding: 20px;">ভিডিও লোড করতে সমস্যা হয়েছে।</div>';
+            showMessage(
+                ytVideosGrid,
+                'ভিডিও লোড করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।',
+                '#e53935'
+            );
+        }
+    } finally {
+        isYtFetching = false;
+
+        if (loadMoreYtBtn) {
+            loadMoreYtBtn.disabled = false;
         }
     }
 }
 
 function playYtVideo(element, embedLink) {
-    if (!embedLink) return;
-    const iframe = document.createElement('iframe');
-    iframe.setAttribute('src', `${embedLink}?autoplay=1`);
-    iframe.setAttribute('title', 'YouTube video player');
-    iframe.setAttribute('frameborder', '0');
-    iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
-    iframe.setAttribute('allowfullscreen', 'true');
-    iframe.style.width = '100%';
-    iframe.style.height = '100%';
-    iframe.style.position = 'absolute';
-    iframe.style.top = '0';
-    iframe.style.left = '0';
-    
-    element.innerHTML = '';
-    element.appendChild(iframe);
+    if (!element || !embedLink) return;
+
+    try {
+        const videoUrl = new URL(embedLink);
+
+        const allowedHosts = [
+            'www.youtube.com',
+            'youtube.com',
+            'www.youtube-nocookie.com',
+            'youtube-nocookie.com'
+        ];
+
+        if (
+            !allowedHosts.includes(videoUrl.hostname) ||
+            !videoUrl.pathname.startsWith('/embed/')
+        ) {
+            console.error('Invalid YouTube embed URL:', embedLink);
+            return;
+        }
+
+        videoUrl.searchParams.set('autoplay', '1');
+
+        const iframe = document.createElement('iframe');
+        iframe.src = videoUrl.toString();
+        iframe.title = 'YouTube video player';
+        iframe.setAttribute('frameborder', '0');
+        iframe.setAttribute(
+            'allow',
+            'accelerometer; autoplay; clipboard-write; ' +
+            'encrypted-media; gyroscope; picture-in-picture; web-share'
+        );
+        iframe.setAttribute('allowfullscreen', 'true');
+
+        iframe.style.cssText =
+            'width:100%;height:100%;position:absolute;top:0;left:0;';
+
+        element.innerHTML = '';
+        element.appendChild(iframe);
+
+    } catch (error) {
+        console.error('Could not play YouTube video:', error);
+    }
 }
 
-loadMoreYtBtn.addEventListener('click', () => loadYtVideos(false));
+if (loadMoreYtBtn) {
+    loadMoreYtBtn.addEventListener('click', () => {
+        loadYtVideos(false);
+    });
+}
 
 /* ==========================================
    INFINITE SCROLL OBSERVER
    ========================================== */
 function initInfiniteScroll() {
-    const observer = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && !isProductFetching && hasMoreProducts) {
+    if (!infiniteLoader || !('IntersectionObserver' in window)) {
+        console.warn(
+            'IntersectionObserver unavailable; using scroll fallback.'
+        );
+
+        window.addEventListener('scroll', () => {
+            if (
+                window.innerHeight + window.scrollY >=
+                document.documentElement.scrollHeight - 300
+            ) {
+                loadProducts(false);
+            }
+        }, { passive: true });
+
+        return;
+    }
+
+    const observer = new IntersectionObserver(entries => {
+        if (
+            entries.some(entry => entry.isIntersecting) &&
+            !isProductFetching &&
+            hasMoreProducts &&
+            !productLoadFailed
+        ) {
             loadProducts(false);
         }
-    }, { rootMargin: '200px' });
+    }, {
+        rootMargin: '200px'
+    });
 
     observer.observe(infiniteLoader);
 }
 
 /* ==========================================
-   INITIALIZE APP ON DOM LOAD
+   INITIALIZE APP
    ========================================== */
-document.addEventListener('DOMContentLoaded', () => {
+function initializeAppPage() {
+    if (appInitialized) return;
+    appInitialized = true;
+
     initBannerCarousel();
+
     loadFirebaseBanners();
     loadCategories(true);
     loadProducts(true);
     loadYtVideos(true);
     initInfiniteScroll();
     loadFooter();
-});
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener(
+        'DOMContentLoaded',
+        initializeAppPage,
+        { once: true }
+    );
+} else {
+    initializeAppPage();
+}
